@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Your one-page trail linking all the places people can find you.">
+    <title>BioTrail</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css?v=50">
+</head>
+<body class="live-page live-loading">
+    <!-- Live link page for a created BioTrail profile -->
+    <div class="live-shell">
+        <header class="live-topbar">
+            <a class="live-brand" href="../index.html" aria-label="Back to BioTrail">
+                BioTrail<svg class="material-icon brand-mark" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M680-80q-50 0-85-35t-35-85q0-6 3-28L282-392q-16 15-37 23.5t-45 8.5q-50 0-85-35t-35-85q0-50 35-85t85-35q24 0 45 8.5t37 23.5l281-164q-2-7-2.5-13.5T560-760q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35q-24 0-45-8.5T598-672L317-508q2 7 2.5 13.5t.5 14.5q0 8-.5 14.5T317-452l281 164q16-15 37-23.5t45-8.5q50 0 85 35t35 85q0 50-35 85t-85 35Zm0-80q17 0 28.5-11.5T720-200q0-17-11.5-28.5T680-240q-17 0-28.5 11.5T640-200q0 17 11.5 28.5T680-160ZM200-440q17 0 28.5-11.5T240-480q0-17-11.5-28.5T200-520q-17 0-28.5 11.5T160-480q0 17 11.5 28.5T200-440Zm508.5-291.5Q720-743 720-760t-11.5-28.5Q697-800 680-800t-28.5 11.5Q640-777 640-760t11.5 28.5Q663-720 680-720t28.5-11.5ZM680-200ZM200-480Zm480-280Z"/></svg>
+            </a>
+            <span class="live-url-wrap">
+                <a class="live-url" href="#" id="live-url" aria-label="Your BioTrail address"></a>
+                <span class="live-url-tooltip" id="live-url-tooltip" role="tooltip"></span>
+            </span>
+            <a class="live-edit" href="#" target="_top">Edit your page</a>
+        </header>
+
+        <main class="live-main">
+            <div class="live-avatar" id="live-avatar" aria-hidden="true">BT</div>
+            <h1 id="live-name">BioTrail creator</h1>
+            <p class="live-role" id="live-role">Creative director &amp; storyteller</p>
+            <p class="live-bio">Bringing my projects, writing and shop into one place - follow along wherever you like.</p>
+
+            <div class="live-links" id="live-links" aria-label="Links on this page"></div>
+
+            <p class="live-byline">
+                Made with BioTrail<svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M680-80q-50 0-85-35t-35-85q0-6 3-28L282-392q-16 15-37 23.5t-45 8.5q-50 0-85-35t-35-85q0-50 35-85t85-35q24 0 45 8.5t37 23.5l281-164q-2-7-2.5-13.5T560-760q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35q-24 0-45-8.5T598-672L317-508q2 7 2.5 13.5t.5 14.5q0 8-.5 14.5T317-452l281 164q16-15 37-23.5t45-8.5q50 0 85 35t35 85q0 50-35 85t-85 35Zm0-80q17 0 28.5-11.5T720-200q0-17-11.5-28.5T680-240q-17 0-28.5 11.5T640-200q0 17 11.5 28.5T680-160ZM200-440q17 0 28.5-11.5T240-480q0-17-11.5-28.5T200-520q-17 0-28.5 11.5T160-480q0 17 11.5 28.5T200-440Zm508.5-291.5Q720-743 720-760t-11.5-28.5Q697-800 680-800t-28.5 11.5Q640-777 640-760t11.5 28.5Q663-720 680-720t28.5-11.5ZM680-200ZM200-480Zm480-280Z"/></svg>
+            </p>
+        </main>
+    </div>
+
+<script src="../assets/js/dashboard-icons.js?v=46"></script>
+    <script src="../assets/js/account.js?v=45"></script>
+    <script>
+        (function () {
+            var account = window.bioTrailAccount || null;
+
+            function readStore(key) {
+                try {
+                    return JSON.parse(localStorage.getItem(key) || "null");
+                } catch (error) {
+                    return null;
+                }
+            }
+
+            var icons = window.bioTrailDashIcons || {};
+            var defaultLinks = [
+                { title: "Watch my latest video", url: "https://youtube.com/@creator", icon: "smart_display", enabled: true },
+                { title: "Shop the new collection", url: "https://shop.biotrail.me/creator", icon: "storefront", enabled: true },
+                { title: "Read my articles", url: "https://blog.example.com/posts", icon: "auto_stories", enabled: true },
+                { title: "Book a discovery call", url: "https://calendar.example.com/meet", icon: "calendar_month", enabled: true }
+            ];
+            var defaultTheme = { accent: "lime", shape: "pill", bg: "paper" };
+
+            var ARROW = '<svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M640-624 284-268q-11 11-28 11t-28-11q-11-11-11-28t11-28l356-356H280q-17 0-28.5-11.5T240-720q0-17 11.5-28.5T280-760h400q17 0 28.5 11.5T720-720v400q0 17-11.5 28.5T680-280q-17 0-28.5-11.5T640-320v-304Z"/></svg>';
+
+            function initials(value) {
+                return value.trim().split(/\s+/).map(function (word) { return word.charAt(0); }).join("").slice(0, 2).toUpperCase();
+            }
+
+            function hostOf(value) {
+                var host = String(value || "").replace(/^https?:\/\//, "");
+                return host ? host.split("/")[0] : value;
+            }
+
+            function resolveState(previewState) {
+                if (previewState && typeof previewState === "object" && ("pageId" in previewState || "links" in previewState)) {
+                    return previewState;
+                }
+                var params = new URLSearchParams(window.location.search);
+                var state = { profile: readStore("biotrail_profile") || {} };
+                var page = null;
+                var requestedPageId = params.get("page");
+                var requestedHandle = params.get("username");
+                if (account) {
+                    if (requestedPageId) {
+                        page = account.findPage({ id: requestedPageId });
+                    }
+                    if (!page && !requestedPageId && requestedHandle) {
+                        page = account.findPage({ handle: requestedHandle });
+                    }
+                    if (!page && !requestedPageId && !requestedHandle) {
+                        page = account.findPage({}) || null;
+                    }
+                }
+                if (page) {
+                    state.pageId = page.id;
+                    state.title = page.title;
+                    state.handle = page.handle;
+                    state.links = page.links;
+                    state.theme = page.theme || defaultTheme;
+                } else {
+                    state.links = readStore("biotrail_links") || [];
+                    state.theme = readStore("biotrail_theme") || defaultTheme;
+                    state.handle = requestedHandle || (state.profile && state.profile.username) || "page";
+                }
+                return state;
+            }
+
+            function renderLivePage(previewState) {
+                var state = resolveState(previewState || null);
+                var stored = state.profile || {};
+                var theme = state.theme || defaultTheme;
+                var links = (state.links || []).filter(function (link) { return link.enabled; });
+                var username = String(state.handle || stored.username || "mytrail").toLowerCase();
+                var pageId = state.pageId || null;
+                var name = stored.name || state.title || "BioTrail creator";
+                var role = stored.role || "Creative director & storyteller";
+                var bio = stored.bio || "Bringing my projects, writing and shop into one place - follow along wherever you like.";
+
+                var body = document.body;
+                ["lime", "purple", "ink", "coral"].forEach(function (accent) { body.classList.remove("live-accent-" + accent); });
+                ["pill", "rounded", "square"].forEach(function (shape) { body.classList.remove("live-shape-" + shape); });
+                ["paper", "ink", "lime"].forEach(function (bg) { body.classList.remove("live-bg-" + bg); });
+                body.classList.add("live-accent-" + (theme.accent || "lime"));
+                body.classList.add("live-shape-" + (theme.shape || "pill"));
+                body.classList.add("live-bg-" + (theme.bg || "paper"));
+
+                var url = document.getElementById("live-url");
+                var urlTooltip = document.getElementById("live-url-tooltip");
+                var avatar = document.getElementById("live-avatar");
+                var nameEl = document.getElementById("live-name");
+                var roleEl = document.getElementById("live-role");
+                var bioEl = document.querySelector(".live-bio");
+                var linksEl = document.getElementById("live-links");
+                var editEl = document.querySelector(".live-edit");
+
+                if (url) {
+                    var fullUrl = "biotrail.me/" + username;
+                    url.textContent = fullUrl;
+                    url.title = fullUrl;
+                    url.setAttribute("aria-label", "Your BioTrail address: " + fullUrl);
+                    url.setAttribute("aria-describedby", "live-url-tooltip");
+                    url.href = pageId
+                        ? "profile.html?page=" + encodeURIComponent(pageId)
+                        : "profile.html?username=" + encodeURIComponent(username);
+                }
+                if (urlTooltip) {
+                    urlTooltip.textContent = fullUrl;
+                }
+                if (editEl) {
+                    editEl.href = pageId
+                        ? "dashboard.html?page=" + encodeURIComponent(pageId) + "&panel=settings"
+                        : "dashboard.html?panel=settings";
+                }
+                if (avatar) {
+                    if (stored.avatar) {
+                        avatar.classList.add("is-photo");
+                        avatar.innerHTML = '<img src="' + stored.avatar + '" alt="">';
+                    } else {
+                        avatar.classList.remove("is-photo");
+                        avatar.textContent = initials(name);
+                    }
+                }
+                if (nameEl) {
+                    nameEl.textContent = name;
+                }
+                if (roleEl) {
+                    roleEl.textContent = role;
+                }
+                if (bioEl) {
+                    bioEl.textContent = bio;
+                }
+
+                if (linksEl) {
+                    linksEl.innerHTML = links.map(function (link, index) {
+                        return '<a class="live-link' + (index === 0 ? " is-accent" : "") + '" href="' + link.url + '">' +
+                            '<span class="live-link-icon">' + (icons[link.icon] ? '<svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="' + icons[link.icon] + '"/></svg>' : "") + "</span>" +
+                            "<span><strong>" + link.title + "</strong><small>" + hostOf(link.url) + "</small></span>" +
+                            ARROW + "</a>";
+                    }).join("");
+                }
+
+                document.title = name + " on BioTrail";
+                body.classList.remove("live-loading");
+            }
+
+var previewStateCache = null;
+
+            renderLivePage();
+
+            window.addEventListener("message", function (event) {
+                if (event.source !== window.parent || !event.data || event.data.type !== "biotrail:preview-update") {
+                    return;
+                }
+                previewStateCache = event.data;
+                renderLivePage(event.data);
+            });
+
+            function requestPreviewState() {
+                if (window.parent !== window && window.parent.postMessage) {
+                    window.parent.postMessage({ type: "biotrail:preview-request" }, window.location.origin === "null" ? "*" : window.location.origin);
+                }
+            }
+
+            function refreshLivePage() {
+                if (previewStateCache) {
+                    renderLivePage(previewStateCache);
+                    return;
+                }
+                renderLivePage();
+            }
+
+            requestPreviewState();
+
+            window.addEventListener("storage", function (event) {
+                if (event.key === "biotrail_pages" || event.key === "biotrail_links" || event.key === "biotrail_profile" || event.key === "biotrail_theme" || event.key === null) {
+                    renderLivePage();
+                }
+            });
+
+            window.addEventListener("focus", function () {
+                refreshLivePage();
+            });
+            document.addEventListener("visibilitychange", function () {
+                if (!document.hidden) {
+                    refreshLivePage();
+                }
+            });
+
+            window.addEventListener("pageshow", refreshLivePage);
+        })();
+    </script>
+<script src="../assets/js/session.js?v=47"></script>
+</body>
+</html>

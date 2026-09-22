@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Manage your BioTrail page - links, appearance, analytics and settings.">
+    <title>Dashboard | BioTrail</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css?v=50">
+</head>
+<body class="dash-page dash-loading">
+    <div class="dash">
+<aside class="dash-sidebar">
+            <a class="dash-brand" href="pages.html" aria-label="BioTrail account">
+                BioTrail<svg class="material-icon brand-mark" viewBox="0 -960 960 960" data-icon="share" aria-hidden="true" focusable="false"></svg>
+            </a>
+            <a class="dash-plan" href="../view/pricing.html">
+                <span>Free plan</span>
+                <small>Upgrade</small>
+            </a>
+
+            <nav class="dash-nav" aria-label="Dashboard sections">
+                <a class="dash-nav-item" href="pages.html">
+                    <svg class="material-icon" viewBox="0 -960 960 960" data-icon="link" aria-hidden="true" focusable="false"></svg>
+                    My pages
+                </a>
+                <button class="dash-nav-item is-active" type="button" data-panel="links">
+                    <svg class="material-icon" viewBox="0 -960 960 960" data-icon="edit" aria-hidden="true" focusable="false"></svg>
+                    Links
+                </button>
+                <button class="dash-nav-item" type="button" data-panel="appearance">
+                    <svg class="material-icon" viewBox="0 -960 960 960" data-icon="palette" aria-hidden="true" focusable="false"></svg>
+                    Appearance
+                </button>
+                <button class="dash-nav-item" type="button" data-panel="analytics">
+                    <svg class="material-icon" viewBox="0 -960 960 960" data-icon="insights" aria-hidden="true" focusable="false"></svg>
+                    Analytics
+                </button>
+                <button class="dash-nav-item" type="button" data-panel="settings">
+                    <svg class="material-icon" viewBox="0 -960 960 960" data-icon="settings" aria-hidden="true" focusable="false"></svg>
+                    Settings
+                </button>
+            </nav>
+
+            <a class="dash-view-page" href="profile.html">
+                <svg class="material-icon" viewBox="0 -960 960 960" data-icon="visibility" aria-hidden="true" focusable="false"></svg>
+                View my page
+            </a>
+        </aside>
+
+        <main class="dash-main">
+            <header class="dash-topbar">
+                <div class="dash-title">
+                    <p class="dash-kicker">Dashboard</p>
+                    <h1>Links</h1>
+                </div>
+                <div class="dash-top-actions">
+                    <label class="dash-search">
+                        <svg class="material-icon" viewBox="0 -960 960 960" data-icon="search" aria-hidden="true" focusable="false"></svg>
+                        <input id="links-search" type="search" placeholder="Search links" aria-label="Search links">
+                    </label>
+                    <div class="dash-action-buttons">
+                        <button class="button button-light" id="preview-button" type="button">
+                            <svg class="material-icon" viewBox="0 -960 960 960" data-icon="visibility" aria-hidden="true" focusable="false"></svg>
+                            Preview
+                        </button>
+                        <button class="button button-dark" id="add-link-button" type="button">
+                            <svg class="material-icon" viewBox="0 -960 960 960" data-icon="add" aria-hidden="true" focusable="false"></svg>
+                            Add new link
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <section class="dash-panel is-active" data-panel="links">
+                <div class="dash-profile-card">
+                    <span class="dash-avatar" id="dash-avatar" aria-hidden="true">BT</span>
+                    <div class="dash-profile-meta">
+                        <strong id="dash-display-name">BioTrail creator</strong>
+                        <span class="dash-handle">biotrail.me/<b id="dash-handle-name">mytrail</b></span>
+                    </div>
+                    <button class="text-link" type="button" data-goto-settings>Edit profile</button>
+                </div>
+
+                <p class="dash-section-label" id="links-count-label">My links</p>
+                <div class="link-card-list" id="link-card-list" aria-live="polite"></div>
+
+                <button class="dash-add-row" type="button" id="add-link-row">
+                    <svg class="material-icon" viewBox="0 -960 960 960" data-icon="add" aria-hidden="true" focusable="false"></svg>
+                    Add new link
+                </button>
+            </section>
+
+            <section class="dash-panel" data-panel="appearance">
+                <div class="dash-panel-inner">
+                    <h2>Appearance</h2>
+                    <p class="dash-panel-hint">Changes apply to your live page instantly.</p>
+
+                    <div class="dash-swatch-group">
+                        <span class="dash-field-label">Accent colour</span>
+                        <div class="dash-swatches" id="accent-swatches">
+                            <button type="button" data-accent="lime" data-label="Lime">Lime</button>
+                            <button type="button" data-accent="purple" data-label="Purple">Purple</button>
+                            <button type="button" data-accent="ink" data-label="Ink">Ink</button>
+                            <button type="button" data-accent="coral" data-label="Coral">Coral</button>
+                        </div>
+                    </div>
+
+                    <div class="dash-swatch-group">
+                        <span class="dash-field-label">Link shape</span>
+                        <div class="dash-swatches" id="shape-options">
+                            <button type="button" data-shape="pill" data-label="Pill">Pill</button>
+                            <button type="button" data-shape="rounded" data-label="Rounded">Rounded</button>
+                            <button type="button" data-shape="square" data-label="Square">Square</button>
+                        </div>
+                    </div>
+
+                    <div class="dash-swatch-group">
+                        <span class="dash-field-label">Background</span>
+                        <div class="dash-swatches" id="background-options">
+                            <button type="button" data-bg="paper" data-label="Light">Light</button>
+                            <button type="button" data-bg="ink" data-label="Dark">Dark</button>
+                            <button type="button" data-bg="lime" data-label="Lime">Lime</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="dash-panel" data-panel="analytics">
+                <div class="dash-panel-inner">
+                    <h2>Analytics</h2>
+                    <p class="dash-panel-hint">See how your page is performing this week.</p>
+
+                    <div class="dash-stats">
+                        <div class="dash-stat is-views">
+                            <div class="dash-stat-head">
+                                <span class="dash-stat-icon"><svg class="material-icon" viewBox="0 -960 960 960" data-icon="visibility" aria-hidden="true" focusable="false"></svg></span>
+                                <small class="dash-stat-trend">+12.4%</small>
+                            </div>
+                            <strong id="stat-views">1,284</strong>
+                            <span class="dash-stat-label">Views</span>
+                            <small class="dash-stat-period">Last 7 days</small>
+                        </div>
+                        <div class="dash-stat is-clicks">
+                            <div class="dash-stat-head">
+                                <span class="dash-stat-icon"><svg class="material-icon" viewBox="0 -960 960 960" data-icon="link" aria-hidden="true" focusable="false"></svg></span>
+                                <small class="dash-stat-trend">+8.1%</small>
+                            </div>
+                            <strong id="stat-clicks">508</strong>
+                            <span class="dash-stat-label">Clicks</span>
+                            <small class="dash-stat-period">Across all links</small>
+                        </div>
+                        <div class="dash-stat is-rate">
+                            <div class="dash-stat-head">
+                                <span class="dash-stat-icon"><svg class="material-icon" viewBox="0 -960 960 960" data-icon="insights" aria-hidden="true" focusable="false"></svg></span>
+                                <small class="dash-stat-trend">Healthy</small>
+                            </div>
+                            <strong id="stat-ctr">39.6%</strong>
+                            <span class="dash-stat-label">Click rate</span>
+                            <small class="dash-stat-period">Clicks from views</small>
+                        </div>
+                    </div>
+
+                    <figure class="dash-chart" aria-labelledby="activity-chart-title">
+                        <figcaption class="dash-chart-head">
+                            <div class="dash-chart-title">
+                                <small>Page activity</small>
+                                <strong id="activity-chart-title">Views this week</strong>
+                            </div>
+                            <div class="dash-chart-legend" aria-label="Chart legend">
+                                <span><i aria-hidden="true"></i>Views</span>
+                                <b>Last 7 days</b>
+                            </div>
+                        </figcaption>
+                        <div class="dash-line-chart" id="analytics-line-chart"></div>
+                    </figure>
+
+                    <p class="dash-section-label">Most clicked links</p>
+                    <div class="dash-top-links" id="top-links"></div>
+                </div>
+            </section>
+
+            <section class="dash-panel" data-panel="settings">
+                <div class="dash-panel-inner">
+                    <p class="dash-panel-hint">This is what shows on your live page.</p>
+
+<form id="settings-form" novalidate>
+                        <p class="dash-section-label">Your page</p>
+                        <div class="form-field">
+                            <label for="settings-page-name">Page name</label>
+                            <input id="settings-page-name" type="text" autocomplete="off">
+                        </div>
+                        <div class="form-field">
+                            <label for="settings-page-handle">Page address</label>
+                            <input id="settings-page-handle" type="text" pattern="[a-z0-9_-]{3,20}" autocomplete="off">
+                            <span class="form-hint" id="settings-page-hint">biotrail.me/</span>
+                        </div>
+
+                        <p class="dash-section-label" style="margin-top: 22px;">Your account</p>
+                        <div class="form-field">
+                            <span class="dash-field-label">Profile picture</span>
+                            <div class="avatar-picker">
+                                <span class="avatar-preview" id="avatar-preview" aria-hidden="true">BT</span>
+                                <div class="avatar-picker-actions">
+                                    <label class="button button-dark" for="avatar-upload">Upload photo</label>
+                                    <input id="avatar-upload" type="file" accept="image/*" hidden>
+                                    <button class="avatar-remove" id="avatar-remove" type="button">Remove</button>
+                                </div>
+                            </div>
+                            <span class="form-hint">JPG or PNG up to 2MB. Shown instead of your initials on the live page.</span>
+                        </div>
+                        <div class="form-field">
+                            <label for="settings-name">Display name</label>
+                            <input id="settings-name" type="text" autocomplete="name">
+                        </div>
+                        <div class="form-field">
+                            <label for="settings-username">Username</label>
+                            <input id="settings-username" type="text" pattern="[a-z0-9_-]{3,20}" autocomplete="off">
+                            <span class="form-hint" id="settings-url-hint">biotrail.me/</span>
+                        </div>
+                        <div class="form-field">
+                            <label for="settings-role">Tagline / role</label>
+                            <input id="settings-role" type="text">
+                        </div>
+                        <div class="form-field">
+                            <label for="settings-bio">Bio</label>
+                            <textarea id="settings-bio" rows="3"></textarea>
+                        </div>
+                        <div class="auth-actions">
+                            <button class="button button-dark" type="submit">Save changes</button>
+                        </div>
+                        <p class="auth-message" id="settings-message" aria-live="polite"></p>
+                    </form>
+                </div>
+            </section>
+</main>
+
+        <aside class="dash-preview-pane">
+            <div class="dash-preview-head">
+                <span>Live preview</span>
+                <a href="profile.html">
+                    <svg class="material-icon" viewBox="0 -960 960 960" data-icon="arrow_outward" aria-hidden="true" focusable="false"></svg>
+                    Open
+                </a>
+            </div>
+            <iframe id="live-preview-frame" src="about:blank" title="Your page live preview"></iframe>
+        </aside>
+    </div>
+
+    <!-- Add / edit link modal -->
+    <div class="dash-modal" id="link-modal" hidden>
+        <div class="dash-modal-card" role="dialog" aria-modal="true" aria-labelledby="link-modal-title">
+            <div class="dash-modal-heading">
+                <h2 id="link-modal-title">Add new link</h2>
+                <button class="dash-modal-close" id="link-modal-close" type="button" aria-label="Close">
+                    <svg class="material-icon" viewBox="0 -960 960 960" data-icon="close" aria-hidden="true" focusable="false"></svg>
+                </button>
+            </div>
+            <form id="link-form" novalidate>
+                <div class="form-field">
+                    <label for="link-title">Title</label>
+                    <input id="link-title" type="text" placeholder="Watch my latest video" required>
+                </div>
+                <div class="form-field">
+                    <label for="link-url">URL</label>
+                    <input id="link-url" type="url" placeholder="https://youtube.com/..." required>
+                </div>
+                <div class="form-field">
+                    <label for="link-icon">Icon</label>
+                    <select id="link-icon">
+                        <option value="smart_display">Video</option>
+                        <option value="storefront">Store</option>
+                        <option value="auto_stories">Article</option>
+                        <option value="language">Website</option>
+                        <option value="mail">Email</option>
+                        <option value="shopping_bag">Product</option>
+                        <option value="calendar_month">Booking</option>
+                        <option value="bolt">Quick link</option>
+                        <option value="link">Link</option>
+                    </select>
+                </div>
+                <label class="dash-switch-row">
+                    <span>Enabled on your page</span>
+                    <span class="dash-toggle is-on" id="link-enabled" role="switch" aria-checked="true" tabindex="0"></span>
+                </label>
+                <div class="dash-modal-actions">
+                    <button class="button button-light" type="button" id="link-cancel">Cancel</button>
+                    <button class="button button-dark" type="submit">Save link</button>
+                </div>
+                <p class="auth-message" id="link-message" aria-live="polite"></p>
+            </form>
+        </div>
+    </div>
+
+    <div class="dash-toast" id="dash-toast" role="status" hidden></div>
+
+<script src="../assets/js/icon-paths.js"></script>
+<script src="../assets/js/dashboard-icons.js"></script>
+<script src="../assets/js/account.js?v=45"></script>
+<script src="../assets/js/dashboard.js?v=48"></script>
+<script src="../assets/js/session.js?v=47"></script>
+</body>
+</html>

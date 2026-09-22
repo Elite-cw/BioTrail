@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Page metadata, fonts and stylesheet -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="BioTrail helps creators share every important part of their world from one memorable page.">
+    <title>BioTrail | Everything you share, one easy trail</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css?v=50">
+</head>
+<body>
+    <!-- Announcement bar -->
+    <div class="announcement" id="announcement">
+        <p><span><svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="m480-362 111 84q12 8 24 .5t7-21.5l-42-139 109-78q12-9 7-22.5T677-552H544l-45-146q-5-14-19-14t-19 14l-45 146H283q-14 0-19 13.5t7 22.5l109 78-42 139q-5 14 7 21.5t24-.5l111-84Zm0 282q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-400Zm0 320q133 0 226.5-93.5T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160Z"/></svg> NEW</span> Turn scattered links into a guided journey.</p>
+        <button class="announcement-close" id="announcement-close" type="button" aria-label="Dismiss announcement">
+            <svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>
+        </button>
+    </div>
+
+    <div class="home-shell">
+        <!-- Header and main navigation -->
+        <header class="site-header">
+            <nav class="navbar" aria-label="Main navigation">
+                <a class="brand" href="index.html" aria-label="BioTrail home">
+                    BioTrail<svg class="material-icon brand-mark" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M680-80q-50 0-85-35t-35-85q0-6 3-28L282-392q-16 15-37 23.5t-45 8.5q-50 0-85-35t-35-85q0-50 35-85t85-35q24 0 45 8.5t37 23.5l281-164q-2-7-2.5-13.5T560-760q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35q-24 0-45-8.5T598-672L317-508q2 7 2.5 13.5t.5 14.5q0 8-.5 14.5T317-452l281 164q16-15 37-23.5t45-8.5q50 0 85 35t35 85q0 50-35 85t-85 35Zm0-80q17 0 28.5-11.5T720-200q0-17-11.5-28.5T680-240q-17 0-28.5 11.5T640-200q0 17 11.5 28.5T680-160ZM200-440q17 0 28.5-11.5T240-480q0-17-11.5-28.5T200-520q-17 0-28.5 11.5T160-480q0 17 11.5 28.5T200-440Zm508.5-291.5Q720-743 720-760t-11.5-28.5Q697-800 680-800t-28.5 11.5Q640-777 640-760t11.5 28.5Q663-720 680-720t28.5-11.5ZM680-200ZM200-480Zm480-280Z"/></svg>
+                </a>
+
+                <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
+                    <svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M160-240q-17 0-28.5-11.5T120-280q0-17 11.5-28.5T160-320h640q17 0 28.5 11.5T840-280q0 17-11.5 28.5T800-240H160Zm0-200q-17 0-28.5-11.5T120-480q0-17 11.5-28.5T160-520h640q17 0 28.5 11.5T840-480q0 17-11.5 28.5T800-440H160Zm0-200q-17 0-28.5-11.5T120-680q0-17 11.5-28.5T160-720h640q17 0 28.5 11.5T840-680q0 17-11.5 28.5T800-640H160Z"/></svg>
+                    <span class="sr-only">Open navigation</span>
+                </button>
+
+                <div class="nav-menu" id="nav-menu">
+                    <ul class="nav-links">
+                        <li class="nav-dropdown">
+                            <button class="nav-link dropdown-toggle" type="button" aria-expanded="false" aria-controls="products-menu">
+                                Products
+                            </button>
+                            <div class="dropdown-menu" id="products-menu">
+                                <a href="view/products.html#link-page">
+                                    <strong>Link page</strong>
+                                    <span>Bring your content together.</span>
+                                </a>
+                                <a href="view/products.html#creator-store">
+                                    <strong>Creator store</strong>
+                                    <span>Showcase offers and downloads.</span>
+                                </a>
+                                <a href="view/products.html#insights">
+                                    <strong>Audience insights</strong>
+                                    <span>Learn what visitors explore.</span>
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="nav-dropdown">
+                            <button class="nav-link dropdown-toggle" type="button" aria-expanded="false" aria-controls="templates-menu">
+                                Templates
+                            </button>
+                            <div class="dropdown-menu" id="templates-menu">
+                                <a href="view/templates.html#gallery">
+                                    <strong>Template gallery</strong>
+                                    <span>Every ready-made look at a glance.</span>
+                                </a>
+                                <a href="view/templates.html#how-it-works">
+                                    <strong>Make it yours</strong>
+                                    <span>Preview and customize in minutes.</span>
+                                </a>
+                                <a href="view/templates.html#template-grid">
+                                    <strong>Start from a look</strong>
+                                    <span>Browse the full gallery of cards.</span>
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="nav-dropdown">
+                            <button class="nav-link dropdown-toggle" type="button" aria-expanded="false" aria-controls="marketplace-menu">
+                                Marketplace
+                            </button>
+                            <div class="dropdown-menu" id="marketplace-menu">
+                                <a href="view/marketplace.html#all">
+                                    <strong>Explore the marketplace</strong>
+                                    <span>Fresh finds from the community.</span>
+                                </a>
+                                <a href="view/marketplace.html#sell">
+                                    <strong>Sell your things</strong>
+                                    <span>Turn what you make into what you earn.</span>
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class="nav-dropdown">
+                            <button class="nav-link dropdown-toggle" type="button" aria-expanded="false" aria-controls="learn-menu">
+                                Learn
+                            </button>
+                            <div class="dropdown-menu" id="learn-menu">
+                                <a href="view/learn.html#resources">
+                                    <strong>Resources</strong>
+                                    <span>Ideas for a stronger profile.</span>
+                                </a>
+                                <a href="view/learn.html#guides">
+                                    <strong>Guides</strong>
+                                    <span>Simple step-by-step lessons.</span>
+                                </a>
+                                <a href="view/learn.html#stories">
+                                    <strong>Creator stories</strong>
+                                    <span>See how people use BioTrail.</span>
+                                </a>
+                            </div>
+                        </li>
+
+                        <li><a class="nav-link" href="view/pricing.html">Pricing</a></li>
+                    </ul>
+
+                    <div class="nav-actions">
+                        <a class="button button-light" href="view/login.html">Log in</a>
+                        <a class="button button-dark" href="view/signup.html">Sign up free</a>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Homepage content -->
+        <main>
+            <!-- Hero section -->
+            <section class="hero">
+                <div class="hero-copy">
+                    <p class="eyebrow"><svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="m706-706-70-32q-6-3-8.5-8t-2.5-10q0-5 2.5-10t8.5-8l70-32 32-70q3-6 8-9t10-3q5 0 10 3t8 9l32 70 70 32q6 3 9 8t3 10q0 5-3 10t-9 8l-70 32-32 70q-3 6-8 8.5t-10 2.5q-5 0-10-2.5t-8-8.5l-32-70ZM260-380l-160-73q-9-4-13-11.5T83-480q0-8 4-15.5t13-11.5l160-73 73-160q4-9 11.5-13t15.5-4q8 0 15.5 4t11.5 13l73 160 160 73q9 4 13 11.5t4 15.5q0 8-4 15.5T620-453l-160 73-73 160q-4 9-11.5 13t-15.5 4q-8 0-15.5-4T333-220l-73-160Zm100 26 40-86 86-40-86-40-40-86-40 86-86 40 86 40 40 86Zm350 204-70-32q-6-3-9-8t-3-10q0-5 3-10t9-8l70-32 32-70q3-6 8-9t10-3q5 0 10 3t8 9l32 70 70 32q6 3 9 8t3 10q0 5-3 10t-9 8l-70 32-32 70q-3 6-8 9t-10 3q-5 0-10-3t-8-9l-32-70ZM360-480Z"/></svg> One page. Every side of you.</p>
+                    <h1>Your whole world,<br>one easy trail.</h1>
+                    <p class="hero-description">
+                        Gather your work, content, shop and social profiles in one beautiful place that helps every visitor find what matters to them.
+                    </p>
+
+                    <form class="claim-form" id="claim-form" novalidate>
+                        <label class="username-field" for="username">
+                            <span>biotrail.me/</span>
+                            <input id="username" name="username" type="text" placeholder="" autocomplete="off" aria-describedby="claim-message">
+                        </label>
+                        <button class="button button-primary" type="submit">Claim your page</button>
+                    </form>
+                    <p class="claim-message" id="claim-message" aria-live="polite"></p>
+                </div>
+
+                <div class="hero-visual">
+                    <img src="assets/images/biotrail-hero.png" alt="A creative professional standing beside a large phone showing a link profile">
+                    <div class="hero-note">
+                        <svg class="material-icon hero-note-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M640-624 284-268q-11 11-28 11t-28-11q-11-11-11-28t11-28l356-356H280q-17 0-28.5-11.5T240-720q0-17 11.5-28.5T280-760h400q17 0 28.5 11.5T720-720v400q0 17-11.5 28.5T680-280q-17 0-28.5-11.5T640-320v-304Z"/></svg>
+                        <p><strong>Guide every visit</strong><br>Let people choose their path.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Page customization section -->
+            <section class="feature-section customize-section" id="features">
+                <div class="builder-demo" aria-label="Example of the BioTrail page builder">
+                    <div class="builder-sidebar">
+                        <div class="builder-dots" aria-hidden="true">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <div class="builder-tool is-selected">
+                            <svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M280-280q-83 0-141.5-58.5T80-480q0-83 58.5-141.5T280-680h120q17 0 28.5 11.5T440-640q0 17-11.5 28.5T400-600H280q-50 0-85 35t-35 85q0 50 35 85t85 35h120q17 0 28.5 11.5T440-320q0 17-11.5 28.5T400-280H280Zm80-160q-17 0-28.5-11.5T320-480q0-17 11.5-28.5T360-520h240q17 0 28.5 11.5T640-480q0 17-11.5 28.5T600-440H360Zm200 160q-17 0-28.5-11.5T520-320q0-17 11.5-28.5T560-360h120q50 0 85-35t35-85q0-50-35-85t-85-35H560q-17 0-28.5-11.5T520-640q0-17 11.5-28.5T560-680h120q83 0 141.5 58.5T880-480q0 83-58.5 141.5T680-280H560Z"/></svg>
+                            <span>Links</span>
+                        </div>
+                        <div class="builder-tool">
+                            <svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M200-200h57l391-391-57-57-391 391v57Zm-40 80q-17 0-28.5-11.5T120-160v-97q0-16 6-30.5t17-25.5l505-504q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L313-143q-11 11-25.5 17t-30.5 6h-97Zm600-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
+                            <span>Design</span>
+                        </div>
+                        <div class="builder-tool">
+                            <svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M291.5-468.5Q280-457 280-440v120q0 17 11.5 28.5T320-280q17 0 28.5-11.5T360-320v-120q0-17-11.5-28.5T320-480q-17 0-28.5 11.5Zm320-200Q600-657 600-640v320q0 17 11.5 28.5T640-280q17 0 28.5-11.5T680-320v-320q0-17-11.5-28.5T640-680q-17 0-28.5 11.5Zm-160 280Q440-377 440-360v40q0 17 11.5 28.5T480-280q17 0 28.5-11.5T520-320v-40q0-17-11.5-28.5T480-400q-17 0-28.5 11.5ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Zm308.5 268.5Q520-503 520-520t-11.5-28.5Q497-560 480-560t-28.5 11.5Q440-537 440-520t11.5 28.5Q463-480 480-480t28.5-11.5Z"/></svg>
+                            <span>Insights</span>
+                        </div>
+                    </div>
+
+                    <div class="builder-panel">
+                        <div class="builder-heading">
+                            <div>
+                                <span>My page</span>
+                                <strong>Add and arrange your links</strong>
+                            </div>
+                            <button id="builder-add-button" type="button" aria-label="Add a new example link" aria-expanded="false" aria-controls="builder-new-card">
+                                <svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M440-440H240q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h200v-200q0-17 11.5-28.5T480-760q17 0 28.5 11.5T520-720v200h200q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H520v200q0 17-11.5 28.5T480-200q-17 0-28.5-11.5T440-240v-200Z"/></svg>
+                            </button>
+                        </div>
+
+                        <div class="builder-link-card">
+                            <svg class="material-icon drag-handle" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M360-160q-33 0-56.5-23.5T280-240q0-33 23.5-56.5T360-320q33 0 56.5 23.5T440-240q0 33-23.5 56.5T360-160Zm240 0q-33 0-56.5-23.5T520-240q0-33 23.5-56.5T600-320q33 0 56.5 23.5T680-240q0 33-23.5 56.5T600-160ZM360-400q-33 0-56.5-23.5T280-480q0-33 23.5-56.5T360-560q33 0 56.5 23.5T440-480q0 33-23.5 56.5T360-400Zm240 0q-33 0-56.5-23.5T520-480q0-33 23.5-56.5T600-560q33 0 56.5 23.5T680-480q0 33-23.5 56.5T600-400ZM360-640q-33 0-56.5-23.5T280-720q0-33 23.5-56.5T360-800q33 0 56.5 23.5T440-720q0 33-23.5 56.5T360-640Zm240 0q-33 0-56.5-23.5T520-720q0-33 23.5-56.5T600-800q33 0 56.5 23.5T680-720q0 33-23.5 56.5T600-640Z"/></svg>
+                            <div>
+                                <strong>My latest video</strong>
+                                <small>youtube.com/watch</small>
+                            </div>
+                            <span class="link-switch is-on" aria-label="Link enabled"></span>
+                        </div>
+                        <div class="builder-link-card">
+                            <svg class="material-icon drag-handle" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M360-160q-33 0-56.5-23.5T280-240q0-33 23.5-56.5T360-320q33 0 56.5 23.5T440-240q0 33-23.5 56.5T360-160Zm240 0q-33 0-56.5-23.5T520-240q0-33 23.5-56.5T600-320q33 0 56.5 23.5T680-240q0 33-23.5 56.5T600-160ZM360-400q-33 0-56.5-23.5T280-480q0-33 23.5-56.5T360-560q33 0 56.5 23.5T440-480q0 33-23.5 56.5T360-400Zm240 0q-33 0-56.5-23.5T520-480q0-33 23.5-56.5T600-560q33 0 56.5 23.5T680-480q0 33-23.5 56.5T600-400ZM360-640q-33 0-56.5-23.5T280-720q0-33 23.5-56.5T360-800q33 0 56.5 23.5T440-720q0 33-23.5 56.5T360-640Zm240 0q-33 0-56.5-23.5T520-720q0-33 23.5-56.5T600-800q33 0 56.5 23.5T680-720q0 33-23.5 56.5T600-640Z"/></svg>
+                            <div>
+                                <strong>Shop the new collection</strong>
+                                <small>myshop.com/new</small>
+                            </div>
+                            <span class="link-switch is-on" aria-label="Link enabled"></span>
+                        </div>
+                        <div class="builder-link-card">
+                            <svg class="material-icon drag-handle" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M360-160q-33 0-56.5-23.5T280-240q0-33 23.5-56.5T360-320q33 0 56.5 23.5T440-240q0 33-23.5 56.5T360-160Zm240 0q-33 0-56.5-23.5T520-240q0-33 23.5-56.5T600-320q33 0 56.5 23.5T680-240q0 33-23.5 56.5T600-160ZM360-400q-33 0-56.5-23.5T280-480q0-33 23.5-56.5T360-560q33 0 56.5 23.5T440-480q0 33-23.5 56.5T360-400Zm240 0q-33 0-56.5-23.5T520-480q0-33 23.5-56.5T600-560q33 0 56.5 23.5T680-480q0 33-23.5 56.5T600-400ZM360-640q-33 0-56.5-23.5T280-720q0-33 23.5-56.5T360-800q33 0 56.5 23.5T440-720q0 33-23.5 56.5T360-640Zm240 0q-33 0-56.5-23.5T520-720q0-33 23.5-56.5T600-800q33 0 56.5 23.5T680-720q0 33-23.5 56.5T600-640Z"/></svg>
+                            <div>
+                                <strong>Book a session</strong>
+                                <small>calendar.com/meet</small>
+                            </div>
+                            <span class="link-switch" aria-label="Link disabled"></span>
+                        </div>
+                        <div class="builder-link-card" id="builder-new-card" hidden>
+                            <svg class="material-icon drag-handle" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M360-160q-33 0-56.5-23.5T280-240q0-33 23.5-56.5T360-320q33 0 56.5 23.5T440-240q0 33-23.5 56.5T360-160Zm240 0q-33 0-56.5-23.5T520-240q0-33 23.5-56.5T600-320q33 0 56.5 23.5T680-240q0 33-23.5 56.5T600-160ZM360-400q-33 0-56.5-23.5T280-480q0-33 23.5-56.5T360-560q33 0 56.5 23.5T440-480q0 33-23.5 56.5T360-400Zm240 0q-33 0-56.5-23.5T520-480q0-33 23.5-56.5T600-560q33 0 56.5 23.5T680-480q0 33-23.5 56.5T600-400ZM360-640q-33 0-56.5-23.5T280-720q0-33 23.5-56.5T360-800q33 0 56.5 23.5T440-720q0 33-23.5 56.5T360-640Zm240 0q-33 0-56.5-23.5T520-720q0-33 23.5-56.5T600-800q33 0 56.5 23.5T680-720q0 33-23.5 56.5T600-640Z"/></svg>
+                            <div>
+                                <strong>New BioTrail link</strong>
+                                <small>Add your destination</small>
+                            </div>
+                            <span class="link-switch is-on" aria-label="Link enabled"></span>
+                        </div>
+                    </div>
+
+                    <div class="phone-preview">
+                        <div class="phone-speaker"></div>
+                        <div class="preview-avatar">JR</div>
+                        <strong>Jordan Rivers</strong>
+                        <small>Creative director &amp; storyteller</small>
+                        <a href="view/products.html#link-page">Watch my latest video</a>
+                        <a href="view/products.html#creator-store">Shop the new collection</a>
+                        <a href="view/products.html">See all my work</a>
+                    </div>
+                </div>
+
+                <div class="section-copy">
+                    <p class="section-kicker">Create your space</p>
+                    <h2>Build a page that feels unmistakably yours.</h2>
+                    <p>Bring your content, services and shop together, then shape every colour, card and detail around your personal brand.</p>
+                    <a class="button section-button" href="view/signup.html">Start building free</a>
+                </div>
+            </section>
+
+            <!-- Share anywhere section -->
+            <section class="feature-section share-section" id="share-anywhere">
+                <div class="section-copy">
+                    <p class="section-kicker">Share it everywhere</p>
+                    <h2>Take your BioTrail wherever your audience finds you.</h2>
+                    <p>Add one memorable address to every social profile, message or email. Use your personal QR code to connect printed materials and real-world moments to your page.</p>
+                    <a class="button section-button" href="view/signup.html">Get started for free</a>
+                </div>
+
+                <div class="share-demo" aria-label="Example of sharing a BioTrail link and QR code">
+                    <div class="share-profile-card">
+                        <div class="share-avatar">KO</div>
+                        <strong>Kemi Okafor</strong>
+                        <small>Food, travel &amp; everyday stories</small>
+                        <span>biotrail.me/kemi</span>
+                    </div>
+                    <div class="qr-card">
+                        <svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M520-120v-80h80v80h-80Zm-80-80v-200h80v200h-80Zm320-120v-160h80v160h-80Zm-80-160v-80h80v80h-80Zm-480 80v-80h80v80h-80Zm-80-80v-80h80v80h-80Zm360-280v-80h80v80h-80ZM180-660h120v-120H180v120Zm-60 20v-160q0-17 11.5-28.5T160-840h160q17 0 28.5 11.5T360-800v160q0 17-11.5 28.5T320-600H160q-17 0-28.5-11.5T120-640Zm60 460h120v-120H180v120Zm-60 20v-160q0-17 11.5-28.5T160-360h160q17 0 28.5 11.5T360-320v160q0 17-11.5 28.5T320-120H160q-17 0-28.5-11.5T120-160Zm540-500h120v-120H660v120Zm-60 20v-160q0-17 11.5-28.5T640-840h160q17 0 28.5 11.5T840-800v160q0 17-11.5 28.5T800-600H640q-17 0-28.5-11.5T600-640Zm80 520v-120h-80v-80h160v120h80v80H680ZM520-400v-80h160v80H520Zm-160 0v-80h-80v-80h240v80h-80v80h-80Zm40-200v-160h80v80h80v80H400Zm-190-90v-60h60v60h-60Zm0 480v-60h60v60h-60Zm480-480v-60h60v60h-60Z"/></svg>
+                        <div>
+                            <strong>Scan to visit</strong>
+                            <small>biotrail.me/kemi</small>
+                        </div>
+                    </div>
+                    <div class="platform-bubbles" aria-hidden="true">
+                        <span><svg class="brand-icon" viewBox="0 0 16 16" focusable="false"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708C16 15.487 15.474 16 14.825 16H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/></svg></span>
+                        <span><svg class="brand-icon" viewBox="0 0 24 24" focusable="false"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></span>
+                        <span><svg class="brand-icon" viewBox="0 0 24 24" focusable="false"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Audience insights section -->
+            <section class="audience-section" id="insights">
+                <div class="section-copy">
+                    <p class="section-kicker">Understand your audience</p>
+                    <h2>See what people choose, not just what they click.</h2>
+                    <p>Track visits, link activity and the trails people follow. Use those patterns to improve your page and keep your audience engaged.</p>
+                    <a class="button section-button light-section-button" href="view/products.html#insights">Explore insights</a>
+                </div>
+
+                <div class="insights-demo" aria-label="Example BioTrail audience insights">
+                    <div class="dashboard-topbar">
+                        <div>
+                            <svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M120-160q-33 0-56.5-23.5T40-240q0-33 23.5-56.5T120-320h10.5q4.5 0 9.5 2l182-182q-2-5-2-9.5V-520q0-33 23.5-56.5T400-600q33 0 56.5 23.5T480-520q0 2-2 20l102 102q5-2 9.5-2h21q4.5 0 9.5 2l142-142q-2-5-2-9.5V-560q0-33 23.5-56.5T840-640q33 0 56.5 23.5T920-560q0 33-23.5 56.5T840-480h-10.5q-4.5 0-9.5-2L678-340q2 5 2 9.5v10.5q0 33-23.5 56.5T600-240q-33 0-56.5-23.5T520-320v-10.5q0-4.5 2-9.5L420-442q-5 2-9.5 2H400q-2 0-20-2L198-260q2 5 2 9.5v10.5q0 33-23.5 56.5T120-160Zm40-401-25-54-54-25 54-25 25-54 25 54 54 25-54 25-25 54Zm440-39-38-82-82-38 82-38 38-82 38 82 82 38-82 38-38 82Z"/></svg>
+                            <p><small>BioTrail analytics</small><strong>Overview</strong></p>
+                        </div>
+                        <span class="dashboard-period">Last 7 days</span>
+                    </div>
+
+                    <div class="dashboard-panels">
+                        <article class="dashboard-card paths-card">
+                            <div class="dashboard-card-title">
+                                <strong>Top visitor paths</strong>
+                                <svg class="material-icon dashboard-more-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M240-400q-33 0-56.5-23.5T160-480q0-33 23.5-56.5T240-560q33 0 56.5 23.5T320-480q0 33-23.5 56.5T240-400Zm240 0q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm240 0q-33 0-56.5-23.5T640-480q0-33 23.5-56.5T720-560q33 0 56.5 23.5T800-480q0 33-23.5 56.5T720-400Z"/></svg>
+                            </div>
+                            <div class="path-gauge" aria-hidden="true">
+                                <div class="gauge-ring"></div>
+                                <p><strong>2,985</strong><span>trail starts</span></p>
+                            </div>
+                            <div class="path-legend">
+                                <span><i></i>Hire me 46%</span>
+                                <span><i></i>Shop 32%</span>
+                                <span><i></i>Learn 22%</span>
+                            </div>
+                        </article>
+
+                        <article class="dashboard-card trend-card">
+                            <div class="dashboard-card-title">
+                                <strong>Click activity</strong>
+                                <span>+18%</span>
+                            </div>
+                            <div class="trend-total"><strong>43,500</strong><small>total clicks</small></div>
+                            <div class="trend-chart" aria-hidden="true">
+                                <svg viewBox="0 0 330 120" preserveAspectRatio="none">
+                                    <line x1="0" y1="24" x2="330" y2="24"></line>
+                                    <line x1="0" y1="60" x2="330" y2="60"></line>
+                                    <line x1="0" y1="96" x2="330" y2="96"></line>
+                                    <path d="M4 90 L38 67 L72 76 L104 47 L138 62 L171 39 L204 70 L237 50 L270 57 L326 22"></path>
+                                    <circle cx="237" cy="50" r="5"></circle>
+                                </svg>
+                                <span>5.4K</span>
+                            </div>
+                        </article>
+
+                        <article class="dashboard-card sales-summary-card">
+                            <small>Creator sales</small>
+                            <strong>$2,362</strong>
+                            <span>+12.9% <svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M640-624 284-268q-11 11-28 11t-28-11q-11-11-11-28t11-28l356-356H280q-17 0-28.5-11.5T240-720q0-17 11.5-28.5T280-760h400q17 0 28.5 11.5T720-720v400q0 17-11.5 28.5T680-280q-17 0-28.5-11.5T640-320v-304Z"/></svg></span>
+                            <div class="sales-mini-chart" aria-hidden="true">
+                                <svg viewBox="0 0 180 52" preserveAspectRatio="none">
+                                    <line x1="0" y1="42" x2="180" y2="42"></line>
+                                    <path class="sales-chart-area" d="M2 42 L24 35 L46 38 L68 24 L90 29 L112 16 L134 21 L156 8 L178 12 L178 52 L2 52 Z"></path>
+                                    <path class="sales-chart-line" d="M2 42 L24 35 L46 38 L68 24 L90 29 L112 16 L134 21 L156 8 L178 12"></path>
+                                    <circle cx="178" cy="12" r="4"></circle>
+                                </svg>
+                            </div>
+                        </article>
+
+                        <article class="dashboard-card audience-summary-card">
+                            <small>Audience summary</small>
+                            <p><span>New visitors</span><strong>1,552</strong></p>
+                            <p><span>Returning</span><strong>960</strong></p>
+                            <p><span>Trail finishes</span><strong>836</strong></p>
+                        </article>
+
+                        <article class="dashboard-card location-card">
+                            <div class="half-earth" aria-hidden="true"></div>
+                            <div class="location-copy">
+                                <svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M325-111.5q-73-31.5-127.5-86t-86-127.5Q80-398 80-480.5t31.5-155q31.5-72.5 86-127t127.5-86Q398-880 480.5-880t155 31.5q72.5 31.5 127 86t86 127Q880-563 880-480.5T848.5-325q-31.5 73-86 127.5t-127 86Q563-80 480.5-80T325-111.5ZM480-162q26-36 45-75t31-83H404q12 44 31 83t45 75Zm-104-16q-18-33-31.5-68.5T322-320H204q29 50 72.5 87t99.5 55Zm208 0q56-18 99.5-55t72.5-87H638q-9 38-22.5 73.5T584-178ZM170-400h136q-3-20-4.5-39.5T300-480q0-21 1.5-40.5T306-560H170q-5 20-7.5 39.5T160-480q0 21 2.5 40.5T170-400Zm216 0h188q3-20 4.5-39.5T580-480q0-21-1.5-40.5T574-560H386q-3 20-4.5 39.5T380-480q0 21 1.5 40.5T386-400Zm268 0h136q5-20 7.5-39.5T800-480q0-21-2.5-40.5T790-560H654q3 20 4.5 39.5T660-480q0 21-1.5 40.5T654-400Zm-16-240h118q-29-50-72.5-87T584-782q18 33 31.5 68.5T638-640Zm-234 0h152q-12-44-31-83t-45-75q-26 36-45 75t-31 83Zm-200 0h118q9-38 22.5-73.5T376-782q-56 18-99.5 55T204-640Z"/></svg>
+                                <div>
+                                    <small>Top location</small>
+                                    <strong>Lagos</strong>
+                                    <span>38% of visits</span>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Guided Trails feature section -->
+            <section class="feature-section guided-section" id="guided-trails">
+                <div class="section-copy">
+                    <p class="original-label">
+                        <svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="m706-706-70-32q-6-3-8.5-8t-2.5-10q0-5 2.5-10t8.5-8l70-32 32-70q3-6 8-9t10-3q5 0 10 3t8 9l32 70 70 32q6 3 9 8t3 10q0 5-3 10t-9 8l-70 32-32 70q-3 6-8 8.5t-10 2.5q-5 0-10-2.5t-8-8.5l-32-70ZM260-380l-160-73q-9-4-13-11.5T83-480q0-8 4-15.5t13-11.5l160-73 73-160q4-9 11.5-13t15.5-4q8 0 15.5 4t11.5 13l73 160 160 73q9 4 13 11.5t4 15.5q0 8-4 15.5T620-453l-160 73-73 160q-4 9-11.5 13t-15.5 4q-8 0-15.5-4T333-220l-73-160Zm100 26 40-86 86-40-86-40-40-86-40 86-86 40 86 40 40 86Zm350 204-70-32q-6-3-9-8t-3-10q0-5 3-10t9-8l70-32 32-70q3-6 8-9t10-3q5 0 10 3t8 9l32 70 70 32q6 3 9 8t3 10q0 5-3 10t-9 8l-70 32-32 70q-3 6-8 9t-10 3q-5 0-10-3t-8-9l-32-70ZM360-480Z"/></svg>
+                        BioTrail original
+                    </p>
+                    <p class="section-kicker">Guided Trails</p>
+                    <h2>Let every visitor choose why they came.</h2>
+                    <p>Instead of showing everyone the same long list, BioTrail can place the most useful links first for each visitor's goal.</p>
+
+                    <div class="trail-controls" aria-label="Preview different visitor trails">
+                        <button class="trail-button is-active" type="button" data-trail="hire" aria-pressed="true">Hire me</button>
+                        <button class="trail-button" type="button" data-trail="shop" aria-pressed="false">Shop</button>
+                        <button class="trail-button" type="button" data-trail="learn" aria-pressed="false">Learn</button>
+                    </div>
+                </div>
+
+                <div class="trail-demo">
+                    <div class="trail-demo-top">
+                        <div class="trail-avatar">JT</div>
+                        <div>
+                            <strong>Jordan Taylor</strong>
+                            <span>Designer, teacher, maker</span>
+                        </div>
+                    </div>
+                    <div class="trail-question">
+                        <svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M247-167q-47-47-47-113v-327q-35-13-57.5-43.5T120-720q0-50 35-85t85-35q50 0 85 35t35 85q0 39-22.5 69.5T280-607v327q0 33 23.5 56.5T360-200q33 0 56.5-23.5T440-280v-400q0-66 47-113t113-47q66 0 113 47t47 113v327q35 13 57.5 43.5T840-240q0 50-35 85t-85 35q-50 0-85-35t-35-85q0-39 22.5-70t57.5-43v-327q0-33-23.5-56.5T600-760q-33 0-56.5 23.5T520-680v400q0 66-47 113t-113 47q-66 0-113-47Zm-7-513q17 0 28.5-11.5T280-720q0-17-11.5-28.5T240-760q-17 0-28.5 11.5T200-720q0 17 11.5 28.5T240-680Zm480 480q17 0 28.5-11.5T760-240q0-17-11.5-28.5T720-280q-17 0-28.5 11.5T680-240q0 17 11.5 28.5T720-200ZM240-720Zm480 480Z"/></svg>
+                        <p><small>Your selected trail</small><strong id="trail-heading">Work with Jordan</strong></p>
+                    </div>
+                    <p class="trail-description" id="trail-description">The best links for clients and collaborators are now at the top.</p>
+                    <div class="trail-links">
+                        <a id="trail-link-one" href="view/products.html">View selected projects <svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M640-624 284-268q-11 11-28 11t-28-11q-11-11-11-28t11-28l356-356H280q-17 0-28.5-11.5T240-720q0-17 11.5-28.5T280-760h400q17 0 28.5 11.5T720-720v400q0 17-11.5 28.5T680-280q-17 0-28.5-11.5T640-320v-304Z"/></svg></a>
+                        <a id="trail-link-two" href="view/products.html">Book a discovery call <svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M640-624 284-268q-11 11-28 11t-28-11q-11-11-11-28t11-28l356-356H280q-17 0-28.5-11.5T240-720q0-17 11.5-28.5T280-760h400q17 0 28.5 11.5T720-720v400q0 17-11.5 28.5T680-280q-17 0-28.5-11.5T640-320v-304Z"/></svg></a>
+                        <a id="trail-link-three" href="view/products.html">Download my résumé <svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M640-624 284-268q-11 11-28 11t-28-11q-11-11-11-28t11-28l356-356H280q-17 0-28.5-11.5T240-720q0-17 11.5-28.5T280-760h400q17 0 28.5 11.5T720-720v400q0 17-11.5 28.5T680-280q-17 0-28.5-11.5T640-320v-304Z"/></svg></a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Freshness Check feature section -->
+            <section class="feature-section freshness-section" id="freshness-check">
+                <div class="freshness-demo">
+                    <div class="freshness-heading">
+                        <div>
+                            <svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M131.5-131.5Q120-143 120-160v-40q0-17 11.5-28.5T160-240q17 0 28.5 11.5T200-200v40q0 17-11.5 28.5T160-120q-17 0-28.5-11.5Zm160 0Q280-143 280-160v-220q0-17 11.5-28.5T320-420q17 0 28.5 11.5T360-380v220q0 17-11.5 28.5T320-120q-17 0-28.5-11.5Zm160 0Q440-143 440-160v-140q0-17 11.5-28.5T480-340q17 0 28.5 11.5T520-300v140q0 17-11.5 28.5T480-120q-17 0-28.5-11.5Zm160 0Q600-143 600-160v-200q0-17 11.5-28.5T640-400q17 0 28.5 11.5T680-360v200q0 17-11.5 28.5T640-120q-17 0-28.5-11.5Zm160 0Q760-143 760-160v-360q0-17 11.5-28.5T800-560q17 0 28.5 11.5T840-520v360q0 17-11.5 28.5T800-120q-17 0-28.5-11.5ZM560-481q-16 0-30.5-6T503-504L400-607 188-395q-12 12-28.5 11.5T131-396q-11-12-10.5-28.5T132-452l211-211q12-12 26.5-17.5T400-686q16 0 31 5.5t26 17.5l103 103 212-212q12-12 28.5-11.5T829-771q11 12 10.5 28.5T828-715L617-504q-11 11-26 17t-31 6Z"/></svg>
+                            <p><small>Page health</small><strong>Your links</strong></p>
+                        </div>
+                        <span class="health-score" id="health-score">2 of 3 fresh</span>
+                    </div>
+
+                    <div class="health-row">
+                        <span class="health-icon is-good"><svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="m424-408-86-86q-11-11-28-11t-28 11q-11 11-11 28t11 28l114 114q12 12 28 12t28-12l226-226q11-11 11-28t-11-28q-11-11-28-11t-28 11L424-408Zm56 328q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
+                        <p><strong>Portfolio</strong><small>Checked today</small></p>
+                        <span class="health-status is-good">Fresh</span>
+                    </div>
+                    <div class="health-row">
+                        <span class="health-icon is-good"><svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="m424-408-86-86q-11-11-28-11t-28 11q-11 11-11 28t11 28l114 114q12 12 28 12t28-12l226-226q11-11 11-28t-11-28q-11-11-28-11t-28 11L424-408Zm56 328q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg></span>
+                        <p><strong>Creator shop</strong><small>Checked today</small></p>
+                        <span class="health-status is-good">Fresh</span>
+                    </div>
+                    <div class="health-row needs-check" id="health-warning-row">
+                        <span class="health-icon"><svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M480-120q-75 0-140.5-28.5t-114-77q-48.5-48.5-77-114T120-480q0-75 28.5-140.5t77-114q48.5-48.5 114-77T480-840q82 0 155.5 35T760-706v-54q0-17 11.5-28.5T800-800q17 0 28.5 11.5T840-760v160q0 17-11.5 28.5T800-560H640q-17 0-28.5-11.5T600-600q0-17 11.5-28.5T640-640h70q-41-56-101-88t-129-32q-117 0-198.5 81.5T200-480q0 117 81.5 198.5T480-200q95 0 170-57t99-147q5-16 18-24t29-6q17 2 27 14.5t6 27.5q-29 119-126 195.5T480-120Zm40-376 100 100q11 11 11 28t-11 28q-11 11-28 11t-28-11L452-452q-6-6-9-13.5t-3-15.5v-159q0-17 11.5-28.5T480-680q17 0 28.5 11.5T520-640v144Z"/></svg></span>
+                        <p><strong>Summer collection</strong><small id="health-detail">Not checked in 30 days</small></p>
+                        <span class="health-status" id="health-status">Review</span>
+                    </div>
+
+                    <button class="freshness-button" id="freshness-button" type="button">
+                        <svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M480-120q-75 0-140.5-28.5t-114-77q-48.5-48.5-77-114T120-480q0-75 28.5-140.5t77-114q48.5-48.5 114-77T480-840q82 0 155.5 35T760-706v-54q0-17 11.5-28.5T800-800q17 0 28.5 11.5T840-760v160q0 17-11.5 28.5T800-560H640q-17 0-28.5-11.5T600-600q0-17 11.5-28.5T640-640h70q-41-56-101-88t-129-32q-117 0-198.5 81.5T200-480q0 117 81.5 198.5T480-200q95 0 170-57t99-147q5-16 18-24t29-6q17 2 27 14.5t6 27.5q-29 119-126 195.5T480-120Zm40-376 100 100q11 11 11 28t-11 28q-11 11-28 11t-28-11L452-452q-6-6-9-13.5t-3-15.5v-159q0-17 11.5-28.5T480-680q17 0 28.5 11.5T520-640v144Z"/></svg>
+                        <span id="freshness-button-label">Run freshness check</span>
+                    </button>
+                    <p class="freshness-message" id="freshness-message" aria-live="polite"></p>
+                </div>
+
+                <div class="section-copy">
+                    <p class="original-label dark-label">
+                        <svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="m706-706-70-32q-6-3-8.5-8t-2.5-10q0-5 2.5-10t8.5-8l70-32 32-70q3-6 8-9t10-3q5 0 10 3t8 9l32 70 70 32q6 3 9 8t3 10q0 5-3 10t-9 8l-70 32-32 70q-3 6-8 8.5t-10 2.5q-5 0-10-2.5t-8-8.5l-32-70ZM260-380l-160-73q-9-4-13-11.5T83-480q0-8 4-15.5t13-11.5l160-73 73-160q4-9 11.5-13t15.5-4q8 0 15.5 4t11.5 13l73 160 160 73q9 4 13 11.5t4 15.5q0 8-4 15.5T620-453l-160 73-73 160q-4 9-11.5 13t-15.5 4q-8 0-15.5-4T333-220l-73-160Zm100 26 40-86 86-40-86-40-40-86-40 86-86 40 86 40 40 86Zm350 204-70-32q-6-3-9-8t-3-10q0-5 3-10t9-8l70-32 32-70q3-6 8-9t10-3q5 0 10 3t8 9l32 70 70 32q6 3 9 8t3 10q0 5-3 10t-9 8l-70 32-32 70q-3 6-8 9t-10 3q-5 0-10-3t-8-9l-32-70ZM360-480Z"/></svg>
+                        BioTrail original
+                    </p>
+                    <p class="section-kicker">Freshness Check</p>
+                    <h2>Keep every path useful, current and ready.</h2>
+                    <p>See which links may be outdated before visitors meet an expired offer or a page that no longer works.</p>
+                    <a class="text-link" href="view/products.html#insights">Explore audience tools <svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M640-624 284-268q-11 11-28 11t-28-11q-11-11-11-28t11-28l356-356H280q-17 0-28.5-11.5T240-720q0-17 11.5-28.5T280-760h400q17 0 28.5 11.5T720-720v400q0 17-11.5 28.5T680-280q-17 0-28.5-11.5T640-320v-304Z"/></svg></a>
+                </div>
+            </section>
+
+            <!-- Creator showcase section -->
+            <section class="creator-showcase-section" id="creator-showcase">
+                <div class="showcase-heading">
+                    <p class="section-kicker">Built for every kind of creator</p>
+                    <h2>One BioTrail for every side of what you do.</h2>
+                    <p>Explore sample pages for creators, small businesses and professionals.</p>
+                </div>
+
+                <div class="showcase-categories" aria-label="BioTrail creator categories">
+                    <span class="is-active"><svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M234-276q51-39 114-61.5T480-360q69 0 132 22.5T726-276q35-41 54.5-93T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 59 19.5 111t54.5 93Zm246-164q-59 0-99.5-40.5T340-580q0-59 40.5-99.5T480-720q59 0 99.5 40.5T620-580q0 59-40.5 99.5T480-440Zm0 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q53 0 100-15.5t86-44.5q-39-29-86-44.5T480-280q-53 0-100 15.5T294-220q39 29 86 44.5T480-160Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/></svg> Creators</span>
+                    <span><svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M201-120q-33 0-56.5-23.5T121-200v-318q-23-21-35.5-54t-.5-72l42-136q8-26 28.5-43t47.5-17h556q27 0 47 16.5t29 43.5l42 136q12 39-.5 71T841-518v318q0 33-23.5 56.5T761-120H201Zm368-440q27 0 41-18.5t11-41.5l-22-140h-78v148q0 21 14 36.5t34 15.5Zm-180 0q23 0 37.5-15.5T441-612v-148h-78l-22 140q-4 24 10.5 42t37.5 18Zm-178 0q18 0 31.5-13t16.5-33l22-154h-78l-40 134q-6 20 6.5 43t41.5 23Zm540 0q29 0 42-23t6-43l-42-134h-76l22 154q3 20 16.5 33t31.5 13ZM201-200h560v-282q-5 2-6.5 2H751q-27 0-47.5-9T663-518q-18 18-41 28t-49 10q-27 0-50.5-10T481-518q-17 18-39.5 28T393-480q-29 0-52.5-10T299-518q-21 21-41.5 29.5T211-480h-4.5q-2.5 0-5.5-2v282Zm560 0H201h560Z"/></svg> Businesses</span>
+                    <span><svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M400-120q-66 0-113-47t-47-113q0-66 47-113t113-47q23 0 42.5 5.5T480-418v-382q0-17 11.5-28.5T520-840h160q17 0 28.5 11.5T720-800v80q0 17-11.5 28.5T680-680H560v400q0 66-47 113t-113 47Z"/></svg> Artists</span>
+                    <span><svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M160-120q-33 0-56.5-23.5T80-200v-440q0-33 23.5-56.5T160-720h160v-80q0-33 23.5-56.5T400-880h160q33 0 56.5 23.5T640-800v80h160q33 0 56.5 23.5T880-640v440q0 33-23.5 56.5T800-120H160Zm0-80h640v-440H160v440Zm240-520h160v-80H400v80ZM160-200v-440 440Z"/></svg> Professionals</span>
+                </div>
+
+                <div class="profile-showcase-grid">
+                    <article class="profile-showcase-card profile-purple">
+                        <div class="profile-top"><span>NM</span><small>@nadiamakes</small></div>
+                        <div class="mini-profile-links"><span>Latest video</span><span>My design resources</span><span>Work with me</span></div>
+                        <p>Content creator</p>
+                    </article>
+                    <article class="profile-showcase-card profile-coral">
+                        <div class="profile-top"><span>AB</span><small>@abakehouse</small></div>
+                        <div class="mini-profile-links"><span>Order this week</span><span>View the menu</span><span>Book catering</span></div>
+                        <p>Small business</p>
+                    </article>
+                    <article class="profile-showcase-card profile-blue">
+                        <div class="profile-top"><span>TO</span><small>@tundeonkeys</small></div>
+                        <div class="mini-profile-links"><span>Listen now</span><span>Upcoming shows</span><span>Join the mailing list</span></div>
+                        <p>Independent artist</p>
+                    </article>
+                </div>
+            </section>
+
+            <!-- Product capabilities section -->
+            <section class="use-cases-section capabilities-section" id="capabilities">
+                <div class="section-heading">
+                    <p class="section-kicker">Do more with one link</p>
+                    <h2>Share, earn and grow from one clear page.</h2>
+                </div>
+
+                <div class="capability-grid">
+                    <a class="capability-card creator-card" href="view/products.html#link-page">
+                        <svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M325-111.5q-73-31.5-127.5-86t-86-127.5Q80-398 80-480.5t31.5-155q31.5-72.5 86-127t127.5-86Q398-880 480.5-880t155 31.5q72.5 31.5 127 86t86 127Q880-563 880-480.5T848.5-325q-31.5 73-86 127.5t-127 86Q563-80 480.5-80T325-111.5ZM480-162q26-36 45-75t31-83H404q12 44 31 83t45 75Zm-104-16q-18-33-31.5-68.5T322-320H204q29 50 72.5 87t99.5 55Zm208 0q56-18 99.5-55t72.5-87H638q-9 38-22.5 73.5T584-178ZM170-400h136q-3-20-4.5-39.5T300-480q0-21 1.5-40.5T306-560H170q-5 20-7.5 39.5T160-480q0 21 2.5 40.5T170-400Zm216 0h188q3-20 4.5-39.5T580-480q0-21-1.5-40.5T574-560H386q-3 20-4.5 39.5T380-480q0 21 1.5 40.5T386-400Zm268 0h136q5-20 7.5-39.5T800-480q0-21-2.5-40.5T790-560H654q3 20 4.5 39.5T660-480q0 21-1.5 40.5T654-400Zm-16-240h118q-29-50-72.5-87T584-782q18 33 31.5 68.5T638-640Zm-234 0h152q-12-44-31-83t-45-75q-26 36-45 75t-31 83Zm-200 0h118q9-38 22.5-73.5T376-782q-56 18-99.5 55T204-640Z"/></svg>
+                        <div><strong>Share every kind of content</strong><small>Bring videos, writing, music, profiles and communities together in one place.</small></div>
+                        <svg class="material-icon capability-arrow" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M640-624 284-268q-11 11-28 11t-28-11q-11-11-11-28t11-28l356-356H280q-17 0-28.5-11.5T240-720q0-17 11.5-28.5T280-760h400q17 0 28.5 11.5T720-720v400q0 17-11.5 28.5T680-280q-17 0-28.5-11.5T640-320v-304Z"/></svg>
+                    </a>
+                    <a class="capability-card business-card" href="view/products.html#creator-store">
+                        <svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M201-120q-33 0-56.5-23.5T121-200v-318q-23-21-35.5-54t-.5-72l42-136q8-26 28.5-43t47.5-17h556q27 0 47 16.5t29 43.5l42 136q12 39-.5 71T841-518v318q0 33-23.5 56.5T761-120H201Zm368-440q27 0 41-18.5t11-41.5l-22-140h-78v148q0 21 14 36.5t34 15.5Zm-180 0q23 0 37.5-15.5T441-612v-148h-78l-22 140q-4 24 10.5 42t37.5 18Zm-178 0q18 0 31.5-13t16.5-33l22-154h-78l-40 134q-6 20 6.5 43t41.5 23Zm540 0q29 0 42-23t6-43l-42-134h-76l22 154q3 20 16.5 33t31.5 13ZM201-200h560v-282q-5 2-6.5 2H751q-27 0-47.5-9T663-518q-18 18-41 28t-49 10q-27 0-50.5-10T481-518q-17 18-39.5 28T393-480q-29 0-52.5-10T299-518q-21 21-41.5 29.5T211-480h-4.5q-2.5 0-5.5-2v282Zm560 0H201h560Z"/></svg>
+                        <div><strong>Sell products and take bookings</strong><small>Help visitors reach your offers, appointments and digital downloads quickly.</small></div>
+                        <svg class="material-icon capability-arrow" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M640-624 284-268q-11 11-28 11t-28-11q-11-11-11-28t11-28l356-356H280q-17 0-28.5-11.5T240-720q0-17 11.5-28.5T280-760h400q17 0 28.5 11.5T720-720v400q0 17-11.5 28.5T680-280q-17 0-28.5-11.5T640-320v-304Z"/></svg>
+                    </a>
+                    <a class="capability-card seller-card" href="view/products.html#insights">
+                        <svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M108-255q-12-12-11.5-28.5T108-311l211-214q23-23 57-23t57 23l103 104 208-206h-64q-17 0-28.5-11.5T640-667q0-17 11.5-28.5T680-707h160q17 0 28.5 11.5T880-667v160q0 17-11.5 28.5T840-467q-17 0-28.5-11.5T800-507v-64L593-364q-23 23-57 23t-57-23L376-467 164-255q-11 11-28 11t-28-11Z"/></svg>
+                        <div><strong>Grow and understand your audience</strong><small>See what interests people and keep improving the paths they follow.</small></div>
+                        <svg class="material-icon capability-arrow" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M640-624 284-268q-11 11-28 11t-28-11q-11-11-11-28t11-28l356-356H280q-17 0-28.5-11.5T240-720q0-17 11.5-28.5T280-760h400q17 0 28.5 11.5T720-720v400q0 17-11.5 28.5T680-280q-17 0-28.5-11.5T640-320v-304Z"/></svg>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Pricing call-to-action section -->
+            <section class="plans-section">
+                <div>
+                    <p class="section-kicker"><svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="m354-287 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143Zm126 18L314-169q-11 7-23 6t-21-8q-9-7-14-17.5t-2-23.5l44-189-147-127q-10-9-12.5-20.5T140-571q4-11 12-18t22-9l194-17 75-178q5-12 15.5-18t21.5-6q11 0 21.5 6t15.5 18l75 178 194 17q14 2 22 9t12 18q4 11 1.5 22.5T809-528L662-401l44 189q3 13-2 23.5T690-171q-9 7-21 8t-23-6L480-269Zm0-201Z"/></svg> Why BioTrail</p>
+                    <h2>A fast, friendly and thoughtful link-in-bio tool.</h2>
+                </div>
+                <a class="button section-button" href="view/pricing.html">Explore all plans</a>
+            </section>
+
+            <!-- Social platforms section -->
+            <section class="platform-section">
+                <p class="section-kicker">Share your BioTrail on</p>
+                <h2>The places your audience already knows.</h2>
+                <div class="platform-list" aria-label="Platforms where a BioTrail link can be shared">
+                    <div class="platform-item instagram-item">
+                        <svg class="platform-logo" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path d="M7.03.084c-1.277.06-2.149.264-2.911.563-.789.308-1.458.72-2.123 1.388C1.331 2.702.921 3.371.616 4.161.321 4.925.121 5.798.064 7.075.008 8.353-.005 8.763.002 12.022c.006 3.259.02 3.667.082 4.947.061 1.277.264 2.149.564 2.911.308.789.72 1.458 1.388 2.123.668.665 1.337 1.074 2.129 1.38.763.295 1.636.496 2.913.552 1.277.056 1.688.069 4.946.063 3.258-.006 3.668-.021 4.948-.081 1.28-.061 2.147-.266 2.91-.564.789-.309 1.458-.72 2.123-1.388.665-.668 1.074-1.338 1.38-2.128.295-.763.496-1.636.551-2.912.056-1.281.07-1.69.063-4.948-.006-3.258-.021-3.667-.081-4.947-.061-1.279-.264-2.148-.564-2.911-.308-.789-.72-1.457-1.387-2.123C20.299 1.33 19.628.921 18.838.617 18.074.321 17.202.12 15.924.065 14.647.009 14.236-.005 10.977.001 7.718.008 7.31.022 6.03.084m.14 21.693c-1.17-.051-1.805-.245-2.229-.408-.56-.216-.96-.477-1.382-.895-.422-.418-.681-.819-.9-1.378-.164-.424-.362-1.058-.417-2.228-.06-1.265-.072-1.645-.079-4.848-.007-3.204.005-3.583.061-4.848.05-1.169.245-1.805.408-2.228.216-.561.476-.96.895-1.382.419-.422.818-.681 1.378-.9.423-.165 1.058-.362 2.227-.417 1.266-.06 1.645-.072 4.848-.079 3.203-.007 3.584.005 4.85.061 1.169.051 1.805.244 2.228.408.561.216.96.475 1.382.895.422.419.681.818.9 1.379.165.422.362 1.056.417 2.226.06 1.266.074 1.645.08 4.848.006 3.203-.006 3.583-.061 4.848-.051 1.17-.245 1.806-.408 2.229-.216.56-.476.96-.896 1.381-.419.422-.818.681-1.378.9-.422.165-1.058.362-2.226.418-1.266.059-1.645.072-4.85.079-3.204.007-3.582-.006-4.848-.061M16.953 5.586a1.44 1.44 0 1 0 1.437-1.442 1.44 1.44 0 0 0-1.437 1.442M5.839 12.012a6.161 6.161 0 1 0 12.323-.024 6.161 6.161 0 0 0-12.323.024M8 12.008A4 4 0 1 1 12.008 16 4 4 0 0 1 8 12.008"></path>
+                        </svg>
+                        <strong>Instagram</strong>
+                    </div>
+
+                    <div class="platform-item tiktok-item">
+                        <svg class="platform-logo" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"></path>
+                        </svg>
+                        <strong>TikTok</strong>
+                    </div>
+
+                    <div class="platform-item youtube-item">
+                        <svg class="platform-logo" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"></path>
+                        </svg>
+                        <strong>YouTube</strong>
+                    </div>
+
+                    <div class="platform-item linkedin-item">
+                        <svg class="platform-logo" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                            <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708C16 15.487 15.474 16 14.825 16H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"></path>
+                        </svg>
+                        <strong>LinkedIn</strong>
+                    </div>
+
+                    <div class="platform-item whatsapp-item">
+                        <svg class="platform-logo" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"></path>
+                        </svg>
+                        <strong>WhatsApp</strong>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Creator stories section -->
+            <section class="stories-section" id="stories">
+                <div class="story-intro">
+                    <p class="section-kicker">Presentation demo stories</p>
+                    <h2>A clearer page can open the right next door.</h2>
+                    <p>These sample stories demonstrate the outcomes BioTrail is designed to support.</p>
+                </div>
+
+                <div class="story-slider">
+                    <article class="story-card is-active" data-story-slide>
+                        <svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="m262-300 58-100q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 23-5.5 42.5T458-480L331-260q-5 9-14 14.5t-20 5.5q-23 0-34.5-20t-.5-40Zm360 0 58-100q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 23-5.5 42.5T818-480L691-260q-5 9-14 14.5t-20 5.5q-23 0-34.5-20t-.5-40ZM320-500q25 0 42.5-17.5T380-560q0-25-17.5-42.5T320-620q-25 0-42.5 17.5T260-560q0 25 17.5 42.5T320-500Zm360 0q25 0 42.5-17.5T740-560q0-25-17.5-42.5T680-620q-25 0-42.5 17.5T620-560q0 25 17.5 42.5T680-500Zm0-60Zm-360 0Z"/></svg>
+                        <p>"People can now choose whether they want my portfolio, services or tutorials without searching through everything."</p>
+                        <div><strong>Maya</strong><span>Example creator</span></div>
+                    </article>
+                    <article class="story-card" data-story-slide hidden>
+                        <svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="m262-300 58-100q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 23-5.5 42.5T458-480L331-260q-5 9-14 14.5t-20 5.5q-23 0-34.5-20t-.5-40Zm360 0 58-100q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 23-5.5 42.5T818-480L691-260q-5 9-14 14.5t-20 5.5q-23 0-34.5-20t-.5-40ZM320-500q25 0 42.5-17.5T380-560q0-25-17.5-42.5T320-620q-25 0-42.5 17.5T260-560q0 25 17.5 42.5T320-500Zm360 0q25 0 42.5-17.5T740-560q0-25-17.5-42.5T680-620q-25 0-42.5 17.5T620-560q0 25 17.5 42.5T680-500Zm0-60Zm-360 0Z"/></svg>
+                        <p>"My booking link and current offers finally live together, so customers reach the right page much faster."</p>
+                        <div><strong>Noah</strong><span>Example small-business owner</span></div>
+                    </article>
+                    <article class="story-card" data-story-slide hidden>
+                        <svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="m262-300 58-100q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 23-5.5 42.5T458-480L331-260q-5 9-14 14.5t-20 5.5q-23 0-34.5-20t-.5-40Zm360 0 58-100q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 23-5.5 42.5T818-480L691-260q-5 9-14 14.5t-20 5.5q-23 0-34.5-20t-.5-40ZM320-500q25 0 42.5-17.5T380-560q0-25-17.5-42.5T320-620q-25 0-42.5 17.5T260-560q0 25 17.5 42.5T320-500Zm360 0q25 0 42.5-17.5T740-560q0-25-17.5-42.5T680-620q-25 0-42.5 17.5T620-560q0 25 17.5 42.5T680-500Zm0-60Zm-360 0Z"/></svg>
+                        <p>"Guided Trails helps listeners find my newest release first while collaborators can go straight to my contact details."</p>
+                        <div><strong>Zuri</strong><span>Example musician</span></div>
+                    </article>
+                    <div class="story-controls">
+                        <button id="story-previous" type="button" aria-label="Previous story"><svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="m313-440 196 196q12 12 11.5 28T508-188q-12 11-28 11.5T452-188L188-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l264-264q11-11 27.5-11t28.5 11q12 12 12 28.5T508-715L313-520h447q17 0 28.5 11.5T800-480q0 17-11.5 28.5T760-440H313Z"/></svg></button>
+                        <span id="story-position">1 / 3</span>
+                        <button id="story-next" type="button" aria-label="Next story"><svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M647-440H200q-17 0-28.5-11.5T160-480q0-17 11.5-28.5T200-520h447L451-716q-12-12-11.5-28t12.5-28q12-11 28-11.5t28 11.5l264 264q6 6 8.5 13t2.5 15q0 8-2.5 15t-8.5 13L508-188q-11 11-27.5 11T452-188q-12-12-12-28.5t12-28.5l195-195Z"/></svg></button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Frequently asked questions section -->
+            <section class="faq-section" id="questions">
+                <div class="section-heading">
+                    <p class="section-kicker"><svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M480-120q-17 0-28.5-11.5T440-160q0-17 11.5-28.5T480-200h280v-284q0-117-81.5-198.5T480-764q-117 0-198.5 81.5T200-484v204q0 17-11.5 28.5T160-240q-33 0-56.5-23.5T80-320v-80q0-21 10.5-39.5T120-469l3-53q8-68 39.5-126t79-101q47.5-43 109-67T480-840q68 0 129 24t109 66.5Q766-707 797-649t40 126l3 52q19 9 29.5 27t10.5 38v92q0 20-10.5 38T840-249v49q0 33-23.5 56.5T760-120H480ZM360-400q-17 0-28.5-11.5T320-440q0-17 11.5-28.5T360-480q17 0 28.5 11.5T400-440q0 17-11.5 28.5T360-400Zm240 0q-17 0-28.5-11.5T560-440q0-17 11.5-28.5T600-480q17 0 28.5 11.5T640-440q0 17-11.5 28.5T600-400Zm-359-62q-7-106 64-182t177-76q89 0 156.5 56.5T720-519q-91-1-167.5-49T435-698q-16 80-67.5 142.5T241-462Z"/></svg> Questions, answered</p>
+                    <h2>A few things you may want to know.</h2>
+                </div>
+
+                <div class="faq-list">
+                    <details>
+                        <summary><span>What is BioTrail?</span><span class="faq-toggle-icons" aria-hidden="true"><svg class="material-icon faq-icon-add" viewBox="0 -960 960 960" focusable="false"><path d="M440-440H240q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h200v-200q0-17 11.5-28.5T480-760q17 0 28.5 11.5T520-720v200h200q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H520v200q0 17-11.5 28.5T480-200q-17 0-28.5-11.5T440-240v-200Z"/></svg><svg class="material-icon faq-icon-remove" viewBox="0 -960 960 960" focusable="false"><path d="M240-440q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h480q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H240Z"/></svg></span></summary>
+                        <p>BioTrail is a single page for your important links, content, products and contact points. You share one address and visitors choose where to go next.</p>
+                    </details>
+                    <details>
+                        <summary><span>What makes Guided Trails different?</span><span class="faq-toggle-icons" aria-hidden="true"><svg class="material-icon faq-icon-add" viewBox="0 -960 960 960" focusable="false"><path d="M440-440H240q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h200v-200q0-17 11.5-28.5T480-760q17 0 28.5 11.5T520-720v200h200q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H520v200q0 17-11.5 28.5T480-200q-17 0-28.5-11.5T440-240v-200Z"/></svg><svg class="material-icon faq-icon-remove" viewBox="0 -960 960 960" focusable="false"><path d="M240-440q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h480q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H240Z"/></svg></span></summary>
+                        <p>Guided Trails lets visitors choose a goal such as hiring, shopping or learning. BioTrail can then place the most relevant links first instead of showing everyone the same order.</p>
+                    </details>
+                    <details>
+                        <summary><span>Can I change the look of my page?</span><span class="faq-toggle-icons" aria-hidden="true"><svg class="material-icon faq-icon-add" viewBox="0 -960 960 960" focusable="false"><path d="M440-440H240q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h200v-200q0-17 11.5-28.5T480-760q17 0 28.5 11.5T520-720v200h200q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H520v200q0 17-11.5 28.5T480-200q-17 0-28.5-11.5T440-240v-200Z"/></svg><svg class="material-icon faq-icon-remove" viewBox="0 -960 960 960" focusable="false"><path d="M240-440q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h480q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H240Z"/></svg></span></summary>
+                        <p>Yes. BioTrail is designed to support your own colours, type, card styles and content so the page feels connected to your personal brand.</p>
+                    </details>
+                    <details>
+                        <summary><span>Can I start for free?</span><span class="faq-toggle-icons" aria-hidden="true"><svg class="material-icon faq-icon-add" viewBox="0 -960 960 960" focusable="false"><path d="M440-440H240q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h200v-200q0-17 11.5-28.5T480-760q17 0 28.5 11.5T520-720v200h200q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H520v200q0 17-11.5 28.5T480-200q-17 0-28.5-11.5T440-240v-200Z"/></svg><svg class="material-icon faq-icon-remove" viewBox="0 -960 960 960" focusable="false"><path d="M240-440q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h480q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H240Z"/></svg></span></summary>
+                        <p>Yes. You can create a free account and begin building your first page. More options are available on the pricing page.</p>
+                    </details>
+                    <details>
+                        <summary><span>How can I bring more people to my BioTrail?</span><span class="faq-toggle-icons" aria-hidden="true"><svg class="material-icon faq-icon-add" viewBox="0 -960 960 960" focusable="false"><path d="M440-440H240q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h200v-200q0-17 11.5-28.5T480-760q17 0 28.5 11.5T520-720v200h200q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H520v200q0 17-11.5 28.5T480-200q-17 0-28.5-11.5T440-240v-200Z"/></svg><svg class="material-icon faq-icon-remove" viewBox="0 -960 960 960" focusable="false"><path d="M240-440q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h480q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H240Z"/></svg></span></summary>
+                        <p>Add your BioTrail address to every social bio, your email signature and printed materials. A clear page title and focused links also help visitors understand what to do next.</p>
+                    </details>
+                    <details>
+                        <summary><span>How many links should I add?</span><span class="faq-toggle-icons" aria-hidden="true"><svg class="material-icon faq-icon-add" viewBox="0 -960 960 960" focusable="false"><path d="M440-440H240q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h200v-200q0-17 11.5-28.5T480-760q17 0 28.5 11.5T520-720v200h200q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H520v200q0 17-11.5 28.5T480-200q-17 0-28.5-11.5T440-240v-200Z"/></svg><svg class="material-icon faq-icon-remove" viewBox="0 -960 960 960" focusable="false"><path d="M240-440q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h480q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H240Z"/></svg></span></summary>
+                        <p>Add the links that support your current goals. Guided Trails can keep a larger collection useful by showing the most relevant choices first.</p>
+                    </details>
+                    <details>
+                        <summary><span>Do I still need a full website?</span><span class="faq-toggle-icons" aria-hidden="true"><svg class="material-icon faq-icon-add" viewBox="0 -960 960 960" focusable="false"><path d="M440-440H240q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h200v-200q0-17 11.5-28.5T480-760q17 0 28.5 11.5T520-720v200h200q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H520v200q0 17-11.5 28.5T480-200q-17 0-28.5-11.5T440-240v-200Z"/></svg><svg class="material-icon faq-icon-remove" viewBox="0 -960 960 960" focusable="false"><path d="M240-440q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h480q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H240Z"/></svg></span></summary>
+                        <p>Not always. BioTrail can be your simple public home when you mainly need to share links, offers and contact points. A larger website may still help when you need detailed pages or advanced services.</p>
+                    </details>
+                </div>
+            </section>
+
+            <!-- Closing call-to-action section -->
+            <section class="closing-section">
+                <div>
+                    <p class="section-kicker"><svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M284-506q14-28 29-54t33-52l-56-11-84 84 78 33Zm482-275q-70 2-149.5 41T472-636q-42 42-75 90t-49 90l114 113q42-16 90-49t90-75q65-65 104-144t41-149q0-4-1.5-8t-4.5-7q-3-3-7-4.5t-8-1.5ZM546-541q-23-23-23-56.5t23-56.5q23-23 57-23t57 23q23 23 23 56.5T660-541q-23 23-57 23t-57-23Zm-34 262 33 79 84-84-11-56q-26 18-52 32.5T512-279Zm351-534q8 110-36 214.5T688-399l20 99q4 20-2 39t-20 33L560-102q-15 15-36 11.5T495-114l-61-143-171-171-143-61q-20-8-24-29t11-36l126-126q14-14 33.5-20t39.5-2l99 20q95-95 199.5-139T819-857q8 1 16 4.5t14 9.5q6 6 9.5 14t4.5 16ZM157-321q35-35 85.5-35.5T328-322q35 35 34.5 85.5T327-151q-48 48-113.5 57T82-76q9-66 18-131.5T157-321Zm57 56q-17 17-23.5 41T180-175q25-4 49-10t41-23q12-12 13-29t-11-29q-12-12-29-11.5T214-265Z"/></svg> Your next step starts here</p>
+                    <h2>Start your corner of the internet today.</h2>
+                </div>
+                <form class="closing-claim-form" id="closing-claim-form" novalidate>
+                    <label for="closing-username">
+                        <span>biotrail.me/</span>
+                        <input id="closing-username" name="closing-username" type="text" placeholder="" autocomplete="off" aria-describedby="closing-claim-message">
+                    </label>
+                    <button class="button closing-button" type="submit">Claim your BioTrail</button>
+                    <p id="closing-claim-message" aria-live="polite"></p>
+                </form>
+            </section>
+        </main>
+
+        <!-- Website footer -->
+        <footer class="site-footer">
+            <div class="footer-main">
+                <div class="footer-intro">
+                    <a class="brand footer-brand" href="index.html">BioTrail<svg class="material-icon brand-mark" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M680-80q-50 0-85-35t-35-85q0-6 3-28L282-392q-16 15-37 23.5t-45 8.5q-50 0-85-35t-35-85q0-50 35-85t85-35q24 0 45 8.5t37 23.5l281-164q-2-7-2.5-13.5T560-760q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35q-24 0-45-8.5T598-672L317-508q2 7 2.5 13.5t.5 14.5q0 8-.5 14.5T317-452l281 164q16-15 37-23.5t45-8.5q50 0 85 35t35 85q0 50-35 85t-85 35Zm0-80q17 0 28.5-11.5T720-200q0-17-11.5-28.5T680-240q-17 0-28.5 11.5T640-200q0 17 11.5 28.5T680-160ZM200-440q17 0 28.5-11.5T240-480q0-17-11.5-28.5T200-520q-17 0-28.5 11.5T160-480q0 17 11.5 28.5T200-440Zm508.5-291.5Q720-743 720-760t-11.5-28.5Q697-800 680-800t-28.5 11.5Q640-777 640-760t11.5 28.5Q663-720 680-720t28.5-11.5ZM680-200ZM200-480Zm480-280Z"/></svg></a>
+                    <p>One thoughtful page for every side of what you do.</p>
+                </div>
+
+                <div class="footer-links">
+                    <div>
+                        <strong>Company</strong>
+                        <a href="view/products.html">Products</a>
+                        <a href="view/templates.html">Templates</a>
+                        <a href="view/pricing.html">Pricing</a>
+                    </div>
+                    <div>
+                        <strong>Community</strong>
+                        <a href="view/marketplace.html">Marketplace</a>
+                        <a href="view/learn.html#stories">Creator stories</a>
+                        <a href="view/templates.html">Explore templates</a>
+                    </div>
+                    <div>
+                        <strong>Support</strong>
+                        <a href="view/learn.html#resources">Resources</a>
+                        <a href="view/learn.html#guides">Guides</a>
+                        <a href="#questions">FAQs</a>
+                    </div>
+                    <div>
+                        <strong>Account</strong>
+                        <a href="view/login.html">Log in</a>
+                        <a href="view/signup.html">Sign up free</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 BioTrail. A junior developer portfolio project.</p>
+                <a href="mailto:hello@biotrail.me"><svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm640-480L501-453q-5 3-10.5 4.5T480-447q-5 0-10.5-1.5T459-453L160-640v400h640v-400ZM480-520l320-200H160l320 200ZM160-640v10-59 1-32 32-.5 58.5-10 400-400Z"/></svg> hello@biotrail.me</a>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Homepage interactions -->
+    <script src="assets/js/icon-paths.js"></script>
+    <script src="assets/js/script.js?v=46"></script>
+<script src="assets/js/session.js?v=47"></script>
+</body>
+</html>

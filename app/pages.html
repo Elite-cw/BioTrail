@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Manage the pages on your BioTrail account.">
+    <title>Your pages | BioTrail</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css?v=50">
+</head>
+<body class="dash-page">
+    <div class="dash">
+        <aside class="dash-sidebar">
+            <a class="dash-brand" href="pages.html" aria-label="BioTrail account">
+                BioTrail<svg class="material-icon brand-mark" viewBox="0 -960 960 960" data-icon="share" aria-hidden="true" focusable="false"></svg>
+            </a>
+            <a class="dash-plan" href="../view/pricing.html">
+                <span>Free plan</span>
+                <small>Upgrade</small>
+            </a>
+
+            <nav class="dash-nav" aria-label="Dashboard sections">
+                <button class="dash-nav-item is-active" type="button" data-panel="pages">
+                    <svg class="material-icon" viewBox="0 -960 960 960" data-icon="link" aria-hidden="true" focusable="false"></svg>
+                    Pages
+                </button>
+            </nav>
+
+            <div class="dash-sidebar-footer">
+                <a class="dash-view-page" href="dashboard.html">
+                    <svg class="material-icon" viewBox="0 -960 960 960" data-icon="arrow_outward" aria-hidden="true" focusable="false"></svg>
+                    Back to dashboard
+                </a>
+                <button class="dash-view-page dash-signout" type="button" data-signout data-signout-url="../index.html">
+                    <svg class="material-icon" viewBox="0 -960 960 960" data-icon="power_settings_new" aria-hidden="true" focusable="false"></svg>
+                    Sign out
+                </button>
+            </div>
+        </aside>
+
+        <main class="dash-main">
+            <header class="dash-topbar">
+                <div class="dash-title">
+                    <p class="dash-kicker">Your account</p>
+                    <h1>Pages</h1>
+                </div>
+                <div class="dash-top-actions">
+                    <button class="button button-dark" id="new-page-button" type="button">
+                        <svg class="material-icon" viewBox="0 -960 960 960" data-icon="add" aria-hidden="true" focusable="false"></svg>
+                        New page
+                    </button>
+                </div>
+            </header>
+
+            <section class="dash-panel is-active" data-panel="pages">
+                <div class="dash-profile-card">
+                    <span class="dash-avatar" id="pages-avatar" aria-hidden="true">BT</span>
+                    <div class="dash-profile-meta">
+                        <strong id="pages-display-name">BioTrail creator</strong>
+                        <span class="dash-handle">Logged in as biotrail.me/<b id="pages-handle-name">mytrail</b></span>
+                    </div>
+                </div>
+
+                <p class="dash-section-label" id="pages-count-label">Your pages</p>
+                <div class="dash-pages-grid" id="pages-grid"></div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Delete page confirmation modal -->
+    <div class="dash-modal" id="delete-page-modal" hidden>
+        <div class="dash-modal-card dash-confirm-card" role="dialog" aria-modal="true" aria-labelledby="delete-page-title" aria-describedby="delete-page-copy">
+            <div class="dash-modal-heading">
+                <h2 id="delete-page-title">Delete this page?</h2>
+                <button class="dash-modal-close" id="delete-page-modal-close" type="button" aria-label="Close delete confirmation">
+                    <svg class="material-icon" viewBox="0 -960 960 960" data-icon="close" aria-hidden="true" focusable="false"></svg>
+                </button>
+            </div>
+            <p class="dash-confirm-copy" id="delete-page-copy">
+                "<strong id="delete-page-name">This page</strong>" and its links will be permanently removed.
+            </p>
+            <div class="dash-modal-actions">
+                <button class="button button-light" id="cancel-page-delete" type="button">Cancel</button>
+                <button class="button button-danger" id="confirm-page-delete" type="button">
+                    <svg class="material-icon" viewBox="0 -960 960 960" data-icon="delete" aria-hidden="true" focusable="false"></svg>
+                    Delete page
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/icon-paths.js"></script>
+    <script src="../assets/js/dashboard-icons.js"></script>
+    <script src="../assets/js/account.js?v=45"></script>
+    <script src="../assets/js/pages-list.js?v=46"></script>
+    <script src="../assets/js/session.js?v=47"></script>
+</body>
+</html>

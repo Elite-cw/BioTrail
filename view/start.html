@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Page metadata, fonts and stylesheet -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Create your BioTrail account or log in to finish claiming your page.">
+    <title>Get started | BioTrail</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css?v=50">
+</head>
+<body class="coming-page">
+    <!-- Account choice page for a selected plan -->
+    <main class="coming-card auth-card">
+        <a class="brand" href="../index.html">BioTrail<svg class="material-icon brand-mark" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M680-80q-50 0-85-35t-35-85q0-6 3-28L282-392q-16 15-37 23.5t-45 8.5q-50 0-85-35t-35-85q0-50 35-85t85-35q24 0 45 8.5t37 23.5l281-164q-2-7-2.5-13.5T560-760q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35q-24 0-45-8.5T598-672L317-508q2 7 2.5 13.5t.5 14.5q0 8-.5 14.5T317-452l281 164q16-15 37-23.5t45-8.5q50 0 85 35t35 85q0 50-35 85t-85 35Zm0-80q17 0 28.5-11.5T720-200q0-17-11.5-28.5T680-240q-17 0-28.5 11.5T640-200q0 17 11.5 28.5T680-160ZM200-440q17 0 28.5-11.5T240-480q0-17-11.5-28.5T200-520q-17 0-28.5 11.5T160-480q0 17 11.5 28.5T200-440Zm508.5-291.5Q720-743 720-760t-11.5-28.5Q697-800 680-800t-28.5 11.5Q640-777 640-760t11.5 28.5Q663-720 680-720t28.5-11.5ZM680-200ZM200-480Zm480-280Z"/></svg></a>
+        <h1 id="start-heading">Almost there.</h1>
+        <p class="auth-sub" id="start-sub">Create a free account to claim your page, or log in if you already have one.</p>
+
+        <div class="start-plan" id="start-plan">
+            <div class="start-plan-meta">
+                <strong id="start-plan-name">Free</strong>
+                <small id="start-plan-billing">forever</small>
+            </div>
+            <span class="start-plan-price" id="start-plan-price">$0</span>
+        </div>
+
+        <div class="start-actions">
+            <a class="button button-dark" id="start-signup" href="signup.html">Create my account</a>
+            <a class="button button-light" id="start-login" href="login.html">Log in</a>
+        </div>
+
+        <div class="auth-divider">Already have an account?</div>
+        <p class="auth-alt">Welcome back - <a id="start-login-alt" href="login.html">Log in</a></p>
+    </main>
+
+    <!-- Subpage interactions -->
+    <script src="../assets/js/icon-paths.js"></script>
+    <script src="../assets/js/pages.js"></script>
+    <script src="../assets/js/session.js?v=47"></script>
+    <script>
+        (function () {
+            var plans = {
+                free: { name: "Free", monthly: "$0", annual: "$0", unit: "forever" },
+                starter: { name: "Starter", monthly: "$5", annual: "$3.50", unit: "per month" },
+                pro: { name: "Pro", monthly: "$9", annual: "$6", unit: "per month" }
+            };
+
+            var params = new URLSearchParams(window.location.search);
+            var planKey = (params.get("plan") || "free").toLowerCase();
+            var billing = params.get("billing") === "monthly" ? "monthly" : "annual";
+            var plan = plans[planKey] || plans.free;
+            var query = "?plan=" + encodeURIComponent(planKey) + "&billing=" + encodeURIComponent(billing);
+
+            document.getElementById("start-plan-name").textContent = plan.name;
+            document.getElementById("start-plan-billing").textContent = plan.unit;
+            document.getElementById("start-plan-price").textContent = billing === "monthly" ? plan.monthly : plan.annual;
+
+            if (planKey !== "free") {
+                document.getElementById("start-heading").textContent = "Claim your " + plan.name + " plan.";
+                document.getElementById("start-sub").textContent = "Create an account to finish your upgrade, or log in if you already have one.";
+                document.getElementById("start-signup").textContent = "Create account and continue";
+            }
+
+            document.getElementById("start-signup").setAttribute("href", "signup.html" + query);
+            document.getElementById("start-login").setAttribute("href", "login.html" + query);
+            document.getElementById("start-login-alt").setAttribute("href", "login.html" + query);
+
+            // A signed-in visitor should go straight to checkout.
+            try {
+                var session = localStorage.getItem("biotrail_session");
+                var active = session === "active" || (session === null && localStorage.getItem("biotrail_profile"));
+                if (active && planKey !== "free") {
+                    window.location.replace("../app/payment.html" + query);
+                }
+            } catch (error) {
+                /* ignore */
+            }
+        })();
+    </script>
+</body>
+</html>

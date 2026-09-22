@@ -1,0 +1,10 @@
+# OS noise
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+*.swp
+.idea/
+
+# Dependencies (not used, but keep it safe)
+node_modules/

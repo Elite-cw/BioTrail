@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Page metadata, fonts and stylesheet -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Securely upgrade your BioTrail plan by card or bank transfer.">
+    <title>Checkout | BioTrail</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css?v=50">
+</head>
+<body class="coming-page">
+    <!-- Checkout page for a selected plan -->
+    <main class="coming-card auth-card checkout-card">
+        <a class="brand" href="pages.html">BioTrail<svg class="material-icon brand-mark" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M680-80q-50 0-85-35t-35-85q0-6 3-28L282-392q-16 15-37 23.5t-45 8.5q-50 0-85-35t-35-85q0-50 35-85t85-35q24 0 45 8.5t37 23.5l281-164q-2-7-2.5-13.5T560-760q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35q-24 0-45-8.5T598-672L317-508q2 7 2.5 13.5t.5 14.5q0 8-.5 14.5T317-452l281 164q16-15 37-23.5t45-8.5q50 0 85 35t35 85q0 50-35 85t-85 35Zm0-80q17 0 28.5-11.5T720-200q0-17-11.5-28.5T680-240q-17 0-28.5 11.5T640-200q0 17 11.5 28.5T680-160ZM200-440q17 0 28.5-11.5T240-480q0-17-11.5-28.5T200-520q-17 0-28.5 11.5T160-480q0 17 11.5 28.5T200-440Zm508.5-291.5Q720-743 720-760t-11.5-28.5Q697-800 680-800t-28.5 11.5Q640-777 640-760t11.5 28.5Q663-720 680-720t28.5-11.5ZM680-200ZM200-480Zm480-280Z"/></svg></a>
+        <h1>Checkout</h1>
+        <p class="auth-sub">Finish your upgrade. Your payment is handled securely by Paystack.</p>
+
+        <div class="checkout-summary">
+            <div class="checkout-row">
+                <span>Plan</span>
+                <strong id="checkout-plan">-</strong>
+            </div>
+            <div class="checkout-row">
+                <span>Billing</span>
+                <strong id="checkout-billing">-</strong>
+            </div>
+            <div class="checkout-row checkout-row-total">
+                <span>Amount due today</span>
+                <strong id="checkout-amount">-</strong>
+            </div>
+        </div>
+
+        <div class="pay-methods" role="tablist" aria-label="Choose a payment method">
+            <button class="pay-method is-active" type="button" role="tab" aria-selected="true" data-method="card">
+                <svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M880-740v520q0 24-18 42t-42 18H140q-24 0-42-18t-18-42v-520q0-24 18-42t42-18h680q24 0 42 18t18 42ZM140-631h680v-109H140v109Zm0 129v282h680v-282H140Zm0 282v-520 520Z"/></svg>
+                <span>Card</span>
+            </button>
+            <button class="pay-method" type="button" role="tab" aria-selected="false" data-method="bank_transfer">
+                <svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M212-241v-339h60v339h-60Zm242 0v-339h60v339h-60ZM80-121v-60h800v60H80Zm608-120v-339h60v339h-60ZM80-640v-53l400-228 400 228v53H80Zm134-60h532-532Zm0 0h532L480-852 214-700Z"/></svg>
+                <span>Bank transfer</span>
+            </button>
+        </div>
+
+        <p class="pay-hint" id="pay-hint">Pay instantly with your debit or credit card.</p>
+
+        <button class="button button-dark pay-button" id="pay-button" type="button">Pay with Paystack</button>
+
+        <p class="pay-provider">Payments powered by <strong>Paystack</strong> - a free-to-start payment API with built-in support for cards and bank transfers.</p>
+        <p class="auth-message" id="pay-message" aria-live="polite"></p>
+
+        <div class="auth-divider">Changed your mind?</div>
+        <p class="auth-alt"><a href="pages.html">Back to my dashboard</a> &middot; <a href="../view/pricing.html">See plans</a></p>
+    </main>
+
+    <!-- Paystack inline checkout + page logic -->
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <script src="../assets/js/session.js?v=47"></script>
+    <script src="../assets/js/payment.js?v=1"></script>
+</body>
+</html>
