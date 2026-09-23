@@ -39,6 +39,47 @@
         }
     }
 
+    function readJson(key, fallback) {
+        try {
+            var value = JSON.parse(localStorage.getItem(key) || "null");
+            return value === null ? fallback : value;
+        } catch (error) {
+            return fallback;
+        }
+    }
+
+    // This is only a browser-local portfolio demo check, not secure authentication.
+    function demoPasswordCheck(email, password) {
+        var input = String(email || "").trim().toLowerCase() + "|biotrail-demo|" + String(password || "");
+        var hash = 2166136261;
+        for (var i = 0; i < input.length; i += 1) {
+            hash ^= input.charCodeAt(i);
+            hash += (hash << 1) + (hash << 4) + (hash << 7) + (hash << 8) + (hash << 24);
+        }
+        return ("00000000" + (hash >>> 0).toString(16)).slice(-8);
+    }
+
+    function safeNext(value) {
+        var next = String(value || "");
+        return /^\.\.\/app\/(dashboard|pages|payment)\.html(?:[?#].*)?$/.test(next) ? next : null;
+    }
+
+    function clearAccountState() {
+        [
+            "biotrail_profile",
+            "biotrail_auth",
+            "biotrail_pages",
+            "biotrail_links",
+            "biotrail_theme",
+            "biotrail_stats",
+            "biotrail_plan",
+            "biotrail_cart",
+            "biotrail_session"
+        ].forEach(function (key) {
+            localStorage.removeItem(key);
+        });
+    }
+
     // Mobile navigation
     var menuToggle = byId("menu-toggle");
     var navMenu = byId("nav-menu");
@@ -345,6 +386,7 @@
         var loginUsername = loginParams.get("username");
         var loginPlan = loginParams.get("plan");
         var loginBilling = loginParams.get("billing") || "annual";
+        var loginNext = safeNext(loginParams.get("next"));
         var loginMessage = byId("auth-message");
 
         if (loginUsername && loginMessage) {
@@ -371,6 +413,44 @@
                 return;
             }
 
+            var enteredEmail = email.value.trim().toLowerCase();
+            var savedProfile = readJson("biotrail_profile", {}) || {};
+            var savedAuth = readJson("biotrail_auth", {}) || {};
+            var savedEmail = String(savedProfile.email || savedAuth.email || "").trim().toLowerCase();
+
+            if (!savedProfile.username && !savedProfile.name && !savedEmail) {
+                message.textContent = "No BioTrail demo account was found in this browser. Create one first.";
+                message.classList.add("is-error");
+                return;
+            }
+
+            if (savedEmail && savedEmail !== enteredEmail) {
+                message.textContent = "That email does not match the BioTrail account saved in this browser.";
+                message.classList.add("is-error");
+                email.focus();
+                return;
+            }
+
+            var enteredCheck = demoPasswordCheck(enteredEmail, password.value);
+            if (savedAuth.passwordCheck && savedAuth.passwordCheck !== enteredCheck) {
+                message.textContent = "That demo password is incorrect.";
+                message.classList.add("is-error");
+                password.focus();
+                return;
+            }
+
+            // Upgrade older local demo accounts the first time they log in.
+            if (!savedEmail) {
+                savedProfile.email = enteredEmail;
+                localStorage.setItem("biotrail_profile", JSON.stringify(savedProfile));
+            }
+            if (!savedAuth.passwordCheck) {
+                localStorage.setItem("biotrail_auth", JSON.stringify({
+                    email: enteredEmail,
+                    passwordCheck: enteredCheck
+                }));
+            }
+
             message.textContent = "Welcome back — your trail is ready.";
             message.classList.add("is-success");
             localStorage.setItem("biotrail_session", "active");
@@ -379,6 +459,10 @@
             if (loginPlan && loginPlan !== "free") {
                 window.location.href = "../app/payment.html?plan=" + encodeURIComponent(loginPlan) +
                     "&billing=" + encodeURIComponent(loginBilling);
+                return;
+            }
+            if (loginNext) {
+                window.location.href = loginNext;
                 return;
             }
             window.location.href = "../app/dashboard.html" + (loginUsername ? "?username=" + encodeURIComponent(loginUsername) : "");
@@ -472,30 +556,36 @@
                 return;
             }
 
-            localStorage.setItem("biotrail_session", "active");
-            localStorage.setItem("biotrail_profile", JSON.stringify({
+            clearAccountState();
+
+            var profile = {
                 username: username,
                 name: name,
                 email: email,
-                role: "Your trail is live"
-            }));
-
-            if (chosenTemplateTheme) {
-                var seededPage = {
-                    id: "p" + Date.now(),
-                    title: name,
-                    handle: username.toLowerCase(),
-                    links: [
+                role: "Your trail is live",
+                bio: "Bringing my projects, writing and shop into one place — follow along wherever you like."
+            };
+            var seededPage = {
+                id: "p" + Date.now(),
+                title: name,
+                handle: username.toLowerCase(),
+                links: chosenTemplateTheme ? [
                         { title: "Watch my latest video", url: "https://youtube.com/@" + username, icon: "smart_display", enabled: true },
                         { title: "Shop the new collection", url: "https://shop.biotrail.me/" + username, icon: "storefront", enabled: true },
                         { title: "Book a discovery call", url: "https://calendar.example.com/meet", icon: "calendar_month", enabled: true },
                         { title: "Read my articles", url: "https://blog.example.com/posts", icon: "auto_stories", enabled: true }
-                    ],
-                    theme: chosenTemplateTheme,
-                    createdAt: Date.now()
-                };
-                localStorage.setItem("biotrail_pages", JSON.stringify([seededPage]));
-            }
+                    ] : [],
+                theme: chosenTemplateTheme || { accent: "lime", shape: "pill", bg: "paper", bgfx: "plain" },
+                createdAt: Date.now()
+            };
+
+            localStorage.setItem("biotrail_profile", JSON.stringify(profile));
+            localStorage.setItem("biotrail_auth", JSON.stringify({
+                email: email.toLowerCase(),
+                passwordCheck: demoPasswordCheck(email, password)
+            }));
+            localStorage.setItem("biotrail_pages", JSON.stringify([seededPage]));
+            localStorage.setItem("biotrail_session", "active");
 
             message.textContent = "Welcome to BioTrail, " + name + "! Taking you to your page…";
             message.classList.add("is-success");

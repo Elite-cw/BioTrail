@@ -13,7 +13,11 @@ BioTrail needs no build step and no dependencies.
 
 All pages reference shared, versioned assets (`assets/css/style.css?v=52`, `assets/js/*.js`). Bump the `?v=` query string on any asset you change so browsers pick up the new file instead of a cached copy.
 
-## How this version differs from LinkTree (and the earlier BioTrail)
+## Current prototype capabilities
+
+The items below are working prototype capabilities. The final **one or two unique
+features** for the project presentation have intentionally not been selected yet;
+that decision will be made separately so the core product remains the priority.
 
 Everything is still 100% static and stored in your own browser (`localStorage`). The
 new version adds the requested link-page features on top of the original editor:
@@ -94,14 +98,21 @@ Everything is stored in `localStorage` on your own machine:
 | Key                  | Purpose                                              |
 | -------------------- | ---------------------------------------------------- |
 | `biotrail_profile`   | `{ username, name, email, role, avatar }`            |
+| `biotrail_auth`      | Browser-local demo email/password check               |
 | `biotrail_pages`     | Array of pages `{ handle, title, links, theme, ... }` |
 | `biotrail_stats`     | Per-page analytics `{ pageId: { views, clicks } }`   |
 | `biotrail_session`   | `"active"` or `"signed_out"`                         |
 | `biotrail_plan`      | Active plan record after a successful checkout       |
 
 - Claiming an unclaimed handle signs you up; a claimed handle routes to login.
+- Login only opens the account saved in the same browser and checks the demo password created during sign-up.
 - The nav header becomes auth-aware when a session is active: "My dashboard" button plus your avatar/name chip, and plan CTAs point to your dashboard.
 - The **Free plan** is forever; the badge/plan label in the dashboard sidebar updates to your active plan after an upgrade.
+
+> **Prototype boundary:** this is not production authentication. The password
+> check is stored locally to make the portfolio demo flow coherent. Never use a
+> real password here. A production version requires a server, database, secure
+> password hashing, sessions and account recovery.
 
 ## Upgrades & payments
 
@@ -166,3 +177,4 @@ All viewport-height-dependent layouts use `100svh` (with `100vh` fallbacks) so b
 - Write UTF-8 **without BOM**. When scripting, use a `System.Text.UTF8Encoding($false)` writer - PowerShell's `Set-Content -Encoding UTF8` adds a BOM.
 - Keep the existing style: script files are `var`-style IIFEs; `session.js`, `dashboard.js`, `pages.js` etc. avoid ES6 module syntax for maximum `file://` compatibility.
 - After editing a cached asset, bump its `?v=` version everywhere it is referenced and sanity-check with `node --check` on JS and balanced braces in the stylesheet.
+- Use `PRESENTATION.md` for the verified demo order, scope boundaries and short speaking notes.

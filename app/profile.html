@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/style.css?v=54">
+    <link rel="stylesheet" href="../assets/css/style.css?v=58">
 </head>
 <body class="live-page live-loading">
     <!-- Live link page for a created BioTrail profile -->
@@ -76,6 +76,24 @@
             function hostOf(value) {
                 var host = String(value || "").replace(/^https?:\/\//, "");
                 return host ? host.split("/")[0] : value;
+            }
+
+            function escapeHtml(value) {
+                return String(value == null ? "" : value).replace(/[&<>"']/g, function (char) {
+                    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char];
+                });
+            }
+
+            function safeLinkUrl(value) {
+                var raw = String(value || "").trim();
+                try {
+                    var parsed = new URL(raw, window.location.href);
+                    return ["http:", "https:", "mailto:", "tel:"].indexOf(parsed.protocol) !== -1
+                        ? escapeHtml(raw)
+                        : "#";
+                } catch (error) {
+                    return "#";
+                }
             }
 
             // --- F9: visitor greeting from ref/utm params ----------------------
@@ -300,23 +318,19 @@
                 if (linksEl) {
                     var tabsMarkup = groups.length > 1
                         ? '<div class="live-groups" role="tablist" aria-label="Link groups">' + groups.map(function (group) {
-                            return '<button class="live-group' + (group === selectedGroup ? " is-active" : "") + '" type="button" role="tab" aria-selected="' + (group === selectedGroup) + '" data-group="' + String(group).replace(/[&"]/g, function (char) {
-                                return char === "&" ? "&amp;" : "&quot;";
-                            }) + '">' + String(group).replace(/[&<>"]/g, function (char) {
-                                return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char];
-                            }) + "</button>";
+                            return '<button class="live-group' + (group === selectedGroup ? " is-active" : "") + '" type="button" role="tab" aria-selected="' + (group === selectedGroup) + '" data-group="' + escapeHtml(group) + '">' + escapeHtml(group) + "</button>";
                         }).join("") + "</div>"
                         : "";
                     linksEl.innerHTML = tabsMarkup + visibleLinks.map(function (link, index) {
                         var embedSrc = link.embed ? embedUrl(link.url) : null;
                         var label = link.countdown && !embedSrc
-                            ? '<small class="live-link-countdown" data-countdown="' + link.countdown + '">' + formatCountdown(link.countdown) + "</small>"
-                            : "<small>" + hostOf(link.url) + "</small>";
-                        return '<a class="live-link' + (index === 0 ? " is-accent" : "") + '" href="' + link.url + '">' +
+                            ? '<small class="live-link-countdown" data-countdown="' + escapeHtml(link.countdown) + '">' + escapeHtml(formatCountdown(link.countdown)) + "</small>"
+                            : "<small>" + escapeHtml(hostOf(link.url)) + "</small>";
+                        return '<a class="live-link' + (index === 0 ? " is-accent" : "") + '" href="' + safeLinkUrl(link.url) + '">' +
                             '<span class="live-link-icon">' + (icons[link.icon] ? '<svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="' + icons[link.icon] + '"/></svg>' : "") + "</span>" +
-                            "<span><strong>" + link.title + "</strong>" + label + "</span>" +
+                            "<span><strong>" + escapeHtml(link.title) + "</strong>" + label + "</span>" +
                             ARROW + "</a>" +
-                            (embedSrc ? '<div class="live-embed"><iframe src="' + embedSrc + '" title="' + link.title + '" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe></div>' : "");
+                            (embedSrc ? '<div class="live-embed"><iframe src="' + escapeHtml(embedSrc) + '" title="' + escapeHtml(link.title) + '" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe></div>' : "");
                     }).join("");
                     renderCountdowns();
                 }

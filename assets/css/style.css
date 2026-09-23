@@ -565,7 +565,7 @@ input {
     width: 42px;
     height: 42px;
     color: var(--paper);
-    background: var(--coral);
+    background: var(--purple);
     border-radius: 50%;
     padding: 11px;
     font-size: 1.2rem;
@@ -823,7 +823,7 @@ input {
 }
 
 .builder-dots span:first-child {
-    background: var(--coral);
+    background: var(--purple);
 }
 
 .builder-tool {
@@ -972,7 +972,7 @@ input {
     min-height: 405px;
     padding: 18px 14px;
     color: var(--paper);
-    background: linear-gradient(160deg, #39216d, #8655f2 65%, #ff8378);
+    background: linear-gradient(160deg, #39216d, #8655f2 65%, #2f58d9);
     border: 6px solid var(--ink);
     border-radius: 34px;
     box-shadow: 0 18px 36px rgba(33, 20, 60, 0.22);
@@ -1622,7 +1622,7 @@ input {
     left: 50%;
     width: 218px;
     height: 218px;
-    background: conic-gradient(from 270deg, #42b99a 0 23%, #8fdd7a 23% 39%, #ffc994 39% 50%);
+    background: conic-gradient(from 270deg, #42b99a 0 23%, #8fdd7a 23% 39%, #ffc994 39% 50%, transparent 50% 100%);
     border-radius: 50%;
     transform: translateX(-50%);
     -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 31px), #000 0);
@@ -7132,6 +7132,86 @@ html {
 @media (max-width: 480px) {
     .dash-modal-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+/* Browser-only demo account notice */
+.auth-demo-note {
+    display: grid;
+    gap: 3px;
+    margin: 22px 0;
+    padding: 14px 16px;
+    border: 1px solid rgba(124, 66, 245, 0.2);
+    border-radius: 14px;
+    background: rgba(124, 66, 245, 0.07);
+    color: var(--ink-soft);
+    font-size: 0.82rem;
+    line-height: 1.5;
+}
+
+.auth-demo-note strong {
+    color: var(--ink);
+    font-size: 0.88rem;
+}
+
+/* Keep the dashboard navigation readable on phones. */
+@media (max-width: 620px) {
+    .dash-sidebar {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 14px;
+    }
+
+    .dash-brand {
+        min-width: 0;
+        padding: 4px 0;
+    }
+
+    .dash-plan {
+        justify-self: end;
+        gap: 8px;
+        padding: 8px 10px;
+        white-space: nowrap;
+    }
+
+    .dash-nav {
+        grid-column: 1 / -1;
+        order: initial;
+        width: 100%;
+        margin: 0;
+        gap: 6px;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+
+    .dash-nav::-webkit-scrollbar,
+    .dash-sidebar-footer::-webkit-scrollbar {
+        display: none;
+    }
+
+    .dash-nav-item {
+        flex: 0 0 auto;
+        min-height: 42px;
+        padding: 9px 12px;
+    }
+
+    .dash-sidebar-footer {
+        grid-column: 1 / -1;
+        display: flex;
+        width: 100%;
+        margin: 0;
+        gap: 6px;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+
+    .dash-sidebar-footer .dash-view-page {
+        flex: 0 0 auto;
+        min-height: 42px;
+        padding: 9px 10px;
+        white-space: nowrap;
     }
 }
 

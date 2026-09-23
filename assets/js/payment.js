@@ -69,7 +69,9 @@
     amountEl.textContent = money(total);
 
     function updateButton() {
-        button.textContent = "Pay " + money(total) + " with Paystack";
+        button.textContent = demoMode()
+            ? "Simulate " + money(total) + " demo checkout"
+            : "Pay " + money(total) + " with Paystack";
     }
 
     function selectMethod(next) {
@@ -79,9 +81,11 @@
             item.classList.toggle("is-active", active);
             item.setAttribute("aria-selected", active ? "true" : "false");
         });
-        hintEl.textContent = next === "card"
-            ? "Pay instantly with your debit or credit card."
-            : "Pay directly from your bank account with a one-time bank transfer.";
+        hintEl.textContent = demoMode()
+            ? "Demo selection only — no payment details will be requested."
+            : (next === "card"
+                ? "Pay instantly with your debit or credit card."
+                : "Pay directly from your bank account with a one-time bank transfer.");
     }
 
     methods.forEach(function (item) {
