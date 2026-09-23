@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/style.css?v=50">
+    <link rel="stylesheet" href="../assets/css/style.css?v=54">
 </head>
 <body class="live-page live-loading">
     <!-- Live link page for a created BioTrail profile -->
@@ -24,7 +24,11 @@
             <a class="live-edit" href="#" target="_top">Edit your page</a>
         </header>
 
-        <main class="live-main">
+<main class="live-main">
+            <div class="live-greeting" id="live-greeting" hidden>
+                <svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M480-520q-33 0-56.5-23.5T400-600q0-33 23.5-56.5T480-680q33 0 56.5 23.5T560-600q0 33-23.5 56.5T480-520Zm-160-80q-33 0-56.5-23.5T240-680q0-33 23.5-56.5T320-760q33 0 56.5 23.5T400-680q0 33-23.5 56.5T320-600Zm320 0q-33 0-56.5-23.5T560-680q0-33 23.5-56.5T640-760q33 0 56.5 23.5T720-680q0 33-23.5 56.5T640-600ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Z"/></svg>
+                <span id="live-greeting-text"></span>
+            </div>
             <div class="live-avatar" id="live-avatar" aria-hidden="true">BT</div>
             <h1 id="live-name">BioTrail creator</h1>
             <p class="live-role" id="live-role">Creative director &amp; storyteller</p>
@@ -39,7 +43,8 @@
     </div>
 
 <script src="../assets/js/dashboard-icons.js?v=46"></script>
-    <script src="../assets/js/account.js?v=45"></script>
+    <script src="../assets/js/account.js?v=46"></script>
+    <script src="../assets/js/stats.js?v=51"></script>
     <script>
         (function () {
             var account = window.bioTrailAccount || null;
@@ -52,6 +57,7 @@
                 }
             }
 
+            // --- Defaults (used when no page or preview state is present) -----
             var icons = window.bioTrailDashIcons || {};
             var defaultLinks = [
                 { title: "Watch my latest video", url: "https://youtube.com/@creator", icon: "smart_display", enabled: true },
@@ -59,7 +65,7 @@
                 { title: "Read my articles", url: "https://blog.example.com/posts", icon: "auto_stories", enabled: true },
                 { title: "Book a discovery call", url: "https://calendar.example.com/meet", icon: "calendar_month", enabled: true }
             ];
-            var defaultTheme = { accent: "lime", shape: "pill", bg: "paper" };
+            var defaultTheme = { accent: "lime", shape: "pill", bg: "paper", bgfx: "plain" };
 
             var ARROW = '<svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M640-624 284-268q-11 11-28 11t-28-11q-11-11-11-28t11-28l356-356H280q-17 0-28.5-11.5T240-720q0-17 11.5-28.5T280-760h400q17 0 28.5 11.5T720-720v400q0 17-11.5 28.5T680-280q-17 0-28.5-11.5T640-320v-304Z"/></svg>';
 
@@ -72,6 +78,96 @@
                 return host ? host.split("/")[0] : value;
             }
 
+            // --- F9: visitor greeting from ref/utm params ----------------------
+            function greetingSource() {
+                var params = new URLSearchParams(window.location.search);
+                var ref = params.get("ref") || params.get("r") || params.get("utm_source") || params.get("qref");
+                if (!ref) {
+                    return null;
+                }
+                var cleaned = String(ref).replace(/[-_+.]+/g, " ").trim();
+                if (!cleaned) {
+                    return null;
+                }
+                return cleaned.toLowerCase().split(/\s+/).map(function (word) {
+                    return word.charAt(0).toUpperCase() + word.slice(1);
+                }).join(" ");
+            }
+
+            // --- F13: embedded players for known platforms ---------------------
+            function embedUrl(value) {
+                var url = String(value || "");
+                var youtube = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([\w-]{6,})/i);
+                if (youtube) {
+                    return "https://www.youtube-nocookie.com/embed/" + youtube[1];
+                }
+                var vimeo = url.match(/vimeo\.com\/(\d+)/i);
+                if (vimeo) {
+                    return "https://player.vimeo.com/video/" + vimeo[1];
+                }
+                var spotify = url.match(/open\.spotify\.com\/(track|album|playlist|episode)\/([\w]+)/i);
+                if (spotify) {
+                    return "https://open.spotify.com/embed/" + spotify[1] + "/" + spotify[2];
+                }
+                var soundcloud = url.match(/soundcloud\.com\/[\w\-]+[\w\-\/\/]{0,}/i);
+                if (soundcloud) {
+                    return "https://w.soundcloud.com/player/?url=" + encodeURIComponent(url) + "&color=%23d8ff32";
+                }
+                var ted = url.match(/ted\.com\/talks\/([\w\-]+)/i);
+                if (ted) {
+                    return "https://embed.ted.com/talks/" + ted[1];
+                }
+                return null;
+            }
+
+            // --- F7: schedule visibility ----------------------------------------
+            function scheduleVisible(link, nowMs) {
+                var schedule = link && link.schedule;
+                if (!schedule) {
+                    return true;
+                }
+                if (schedule.start) {
+                    var start = new Date(schedule.start).getTime();
+                    if (!isNaN(start) && nowMs < start) {
+                        return false;
+                    }
+                }
+                if (schedule.end) {
+                    var end = new Date(schedule.end).getTime();
+                    if (!isNaN(end) && nowMs > end) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            // --- F15: countdown timers ------------------------------------------
+            function formatCountdown(iso) {
+                var diff = new Date(iso).getTime() - Date.now();
+                if (isNaN(diff)) {
+                    return "";
+                }
+                if (diff <= 0) {
+                    return "Live now";
+                }
+                var day = Math.floor(diff / 86400000);
+                var hour = Math.floor((diff % 86400000) / 3600000);
+                var minute = Math.floor((diff % 3600000) / 60000);
+                var second = Math.floor((diff % 60000) / 1000);
+                if (day > 0) {
+                    return day + "d " + hour + "h left";
+                }
+                var pad = function (n) { return (n < 10 ? "0" : "") + n; };
+                return pad(hour) + ":" + pad(minute) + ":" + pad(second);
+            }
+
+            function renderCountdowns() {
+                document.querySelectorAll(".live-link-countdown").forEach(function (element) {
+                    element.textContent = formatCountdown(element.getAttribute("data-countdown"));
+                });
+            }
+
+            // --- State resolution (preview cache, ?page= / ?username=, account) -----
             function resolveState(previewState) {
                 if (previewState && typeof previewState === "object" && ("pageId" in previewState || "links" in previewState)) {
                     return previewState;
@@ -106,13 +202,32 @@
                 return state;
             }
 
+// --- Live renderer (groups, schedules, embeds, countdowns, greeting) ----
             function renderLivePage(previewState) {
                 var state = resolveState(previewState || null);
                 var stored = state.profile || {};
                 var theme = state.theme || defaultTheme;
-                var links = (state.links || []).filter(function (link) { return link.enabled; });
+                var nowMs = Date.now();
+                var links = (state.links || []).filter(function (link) {
+                    return link.enabled && scheduleVisible(link, nowMs);
+                });
+                var groups = [];
+                links.forEach(function (link) {
+                    var group = String(link.group || "General");
+                    if (groups.indexOf(group) === -1) {
+                        groups.push(group);
+                    }
+                });
+                if (groups.indexOf(selectedGroup) === -1) {
+                    selectedGroup = groups[0] || "General";
+                }
+                var visibleLinks = links.filter(function (link) {
+                    return (String(link.group || "General") === selectedGroup) || groups.length <= 1;
+                });
+                currentLinks = visibleLinks;
                 var username = String(state.handle || stored.username || "mytrail").toLowerCase();
                 var pageId = state.pageId || null;
+                currentPageId = pageId;
                 var name = stored.name || state.title || "BioTrail creator";
                 var role = stored.role || "Creative director & storyteller";
                 var bio = stored.bio || "Bringing my projects, writing and shop into one place - follow along wherever you like.";
@@ -121,9 +236,11 @@
                 ["lime", "purple", "ink", "coral"].forEach(function (accent) { body.classList.remove("live-accent-" + accent); });
                 ["pill", "rounded", "square"].forEach(function (shape) { body.classList.remove("live-shape-" + shape); });
                 ["paper", "ink", "lime"].forEach(function (bg) { body.classList.remove("live-bg-" + bg); });
+                ["plain", "gradient", "waves", "dots", "aurora"].forEach(function (bgfx) { body.classList.remove("live-bgfx-" + bgfx); });
                 body.classList.add("live-accent-" + (theme.accent || "lime"));
                 body.classList.add("live-shape-" + (theme.shape || "pill"));
                 body.classList.add("live-bg-" + (theme.bg || "paper"));
+                body.classList.add("live-bgfx-" + (theme.bgfx || "plain"));
 
                 var url = document.getElementById("live-url");
                 var urlTooltip = document.getElementById("live-url-tooltip");
@@ -170,24 +287,82 @@
                 if (bioEl) {
                     bioEl.textContent = bio;
                 }
-
-                if (linksEl) {
-                    linksEl.innerHTML = links.map(function (link, index) {
-                        return '<a class="live-link' + (index === 0 ? " is-accent" : "") + '" href="' + link.url + '">' +
-                            '<span class="live-link-icon">' + (icons[link.icon] ? '<svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="' + icons[link.icon] + '"/></svg>' : "") + "</span>" +
-                            "<span><strong>" + link.title + "</strong><small>" + hostOf(link.url) + "</small></span>" +
-                            ARROW + "</a>";
-                    }).join("");
+                var greeting = document.getElementById("live-greeting");
+                var greetingText = document.getElementById("live-greeting-text");
+                var greetingSourceName = greetingSource();
+                if (greeting) {
+                    greeting.hidden = !greetingSourceName;
+                }
+                if (greetingText) {
+                    greetingText.textContent = greetingSourceName ? "Welcome from " + greetingSourceName : "";
                 }
 
-                document.title = name + " on BioTrail";
+                if (linksEl) {
+                    var tabsMarkup = groups.length > 1
+                        ? '<div class="live-groups" role="tablist" aria-label="Link groups">' + groups.map(function (group) {
+                            return '<button class="live-group' + (group === selectedGroup ? " is-active" : "") + '" type="button" role="tab" aria-selected="' + (group === selectedGroup) + '" data-group="' + String(group).replace(/[&"]/g, function (char) {
+                                return char === "&" ? "&amp;" : "&quot;";
+                            }) + '">' + String(group).replace(/[&<>"]/g, function (char) {
+                                return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char];
+                            }) + "</button>";
+                        }).join("") + "</div>"
+                        : "";
+                    linksEl.innerHTML = tabsMarkup + visibleLinks.map(function (link, index) {
+                        var embedSrc = link.embed ? embedUrl(link.url) : null;
+                        var label = link.countdown && !embedSrc
+                            ? '<small class="live-link-countdown" data-countdown="' + link.countdown + '">' + formatCountdown(link.countdown) + "</small>"
+                            : "<small>" + hostOf(link.url) + "</small>";
+                        return '<a class="live-link' + (index === 0 ? " is-accent" : "") + '" href="' + link.url + '">' +
+                            '<span class="live-link-icon">' + (icons[link.icon] ? '<svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="' + icons[link.icon] + '"/></svg>' : "") + "</span>" +
+                            "<span><strong>" + link.title + "</strong>" + label + "</span>" +
+                            ARROW + "</a>" +
+                            (embedSrc ? '<div class="live-embed"><iframe src="' + embedSrc + '" title="' + link.title + '" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe></div>' : "");
+                    }).join("");
+                    renderCountdowns();
+                }
+
+document.title = name + " on BioTrail";
                 body.classList.remove("live-loading");
+
+                if (window.self === window.top && pageId && !viewRecorded && window.bioTrailStats) {
+                    viewRecorded = true;
+                    window.bioTrailStats.recordView(pageId);
+                }
+            }
+
+            var currentLinks = [];
+            var currentPageId = null;
+            var viewRecorded = false;
+            var selectedGroup = "General";
+
+            // --- F3: analytics wiring (view + click tracking) ---------------------
+            var liveLinksEl = document.getElementById("live-links");
+            if (liveLinksEl) {
+                liveLinksEl.addEventListener("click", function (event) {
+                    var groupButton = event.target.closest ? event.target.closest(".live-group") : null;
+                    if (groupButton) {
+                        selectedGroup = groupButton.getAttribute("data-group");
+                        renderLivePage();
+                        return;
+                    }
+                    var anchor = event.target.closest ? event.target.closest("a.live-link") : null;
+                    if (!anchor || window.self !== window.top || !window.bioTrailStats) {
+                        return;
+                    }
+                    var index = Array.prototype.indexOf.call(liveLinksEl.querySelectorAll("a.live-link"), anchor);
+                    var link = currentLinks[index];
+                    if (link && currentPageId) {
+                        window.bioTrailStats.recordClick(currentPageId, link.title, link.url);
+                    }
+                });
+                setInterval(renderCountdowns, 1000);
             }
 
 var previewStateCache = null;
 
             renderLivePage();
 
+            // --- Preview sync (dashboard iframe protocol) -------------------------
             window.addEventListener("message", function (event) {
                 if (event.source !== window.parent || !event.data || event.data.type !== "biotrail:preview-update") {
                     return;

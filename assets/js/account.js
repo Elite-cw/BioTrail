@@ -82,8 +82,10 @@
         ];
     }
 
+    // F8/F16: theme shape includes the animated background effect (bgfx),
+    // so defaults here must always carry it to keep old saved pages coherent.
     function defaultTheme() {
-        return { accent: "lime", shape: "pill", bg: "paper" };
+        return { accent: "lime", shape: "pill", bg: "paper", bgfx: "plain" };
     }
 
     function migrate() {

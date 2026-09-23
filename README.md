@@ -11,7 +11,32 @@ BioTrail needs no build step and no dependencies.
 3. If the handle is taken you are sent to `view/login.html`; otherwise to `view/signup.html`.
 4. After sign-up you land in the dashboard (`app/dashboard.html`) where your page and links are managed.
 
-All pages reference shared, versioned assets (`assets/css/style.css?v=50`, `assets/js/*.js`). Bump the `?v=` query string on any asset you change so browsers pick up the new file instead of a cached copy.
+All pages reference shared, versioned assets (`assets/css/style.css?v=52`, `assets/js/*.js`). Bump the `?v=` query string on any asset you change so browsers pick up the new file instead of a cached copy.
+
+## How this version differs from LinkTree (and the earlier BioTrail)
+
+Everything is still 100% static and stored in your own browser (`localStorage`). The
+new version adds the requested link-page features on top of the original editor:
+
+| Feature | LinkTree | BioTrail (before) | BioTrail (now) |
+| --- | --- | --- | --- |
+| Works offline / from `file://`, no server | No (cloud) | Yes | Yes |
+| Claim a handle and build a live page | Yes | Yes | Yes |
+| Template themes chosen at sign-up | Paid | No | Yes (7 presets) |
+| Multiple pages per account | Limited | Yes (local) | Yes |
+| Visual editor with live preview iframe | Yes | Yes | Yes |
+| Animated page backgrounds | Some | No | Yes (gradient / waves / dots / aurora) |
+| Built-in QR code generator | Integration | No | Yes (v1–10, level M, verified) |
+| Downloadable trail / business card PNG | Link-in-bio only | No | Yes |
+| Real page analytics (views/clicks per day) | Paid | Fabricated demo numbers | Real, local-first (`biotrail_stats`) |
+| Schedule links to appear between times | Paid | No | Yes |
+| Group links into tabs on the page | Paid | No | Yes |
+| Countdown links ("starts in 00:12:34") | No | No | Yes |
+| Embedded players (YouTube / Vimeo / Spotify…) | Paid | No | Yes |
+| Auto-detects social links (icon + label) | Automatic | Manual selection | Yes |
+| Referral greeting via `?ref=` / `?utm_source=` | Limited | No | Yes |
+| Theme export / import (JSON) | No | No | Yes |
+| No analytics pixels, fully private | No | Yes | Yes |
 
 ## Folder structure
 
@@ -37,13 +62,15 @@ BioTrail/
     └── js/
         ├── account.js      Seed/migrate account data
         ├── dashboard-icons.js / dashboard-icons.json   Material-symbol icon paths
-        ├── dashboard.js    Editor logic (links, avatar, live preview, autosave)
+        ├── dashboard.js    Editor logic (links, avatar, live preview, autosave, QR trail card)
         ├── icon-paths.js   Shared icon helpers
-        ├── pages.js        Marketing/auth logic (claims, signup, login, plan routing)
+        ├── pages.js        Marketing/auth logic (claims, signup, login, plan routing, template seeds)
         ├── pages-list.js   Pages dashboard renderer
         ├── payment.js      Checkout logic (Paystack inline)
+        ├── qr.js           Zero-dependency QR encoder (byte mode, level M, v1–10)
         ├── script.js       Home-page logic
-        └── session.js      Logged-in nav, brand redirect, active-plan label
+        ├── session.js      Logged-in nav, brand redirect, active-plan label
+        └── stats.js        Local-first page analytics (views & link clicks per day)
 ```
 
 ## Site sections (page map)
@@ -56,7 +83,7 @@ BioTrail/
 - **Pricing (`view/pricing.html`)** – Free / Starter / Pro cards with a Monthly / Annual billing toggle. Plan buttons are wired to route by auth state.
 - **Sign up / Log in (`view/signup.html`, `view/login.html`)** – account creation and sign-in; both accept `?plan=&billing=` query params to continue to checkout.
 - **Start (`view/start.html`)** – for guests who pick a plan: shows the chosen package and offers **Create account** or **Log in**, carrying the plan forward.
-- **Dashboard (`app/dashboard.html`)** – editor with link list, avatar upload, design tools and a live preview iframe of `app/profile.html`.
+- **Dashboard (`app/dashboard.html`)** – editor with link list, avatar upload, design tools and a live preview iframe of `app/profile.html`. Link editor supports icons with social auto-detection, groups/tabs, scheduling windows, countdowns and embeds; the appearance panel adds animated backgrounds plus theme export/import; a **QR trail card** (downloadable PNG) generates from your page link.
 - **Pages (`app/pages.html`)** – manage your links, avatar and account, with a search box.
 - **Payment (`app/payment.html`)** – checkout summary with **Card** and **Bank transfer** options (Paystack).
 
@@ -67,7 +94,8 @@ Everything is stored in `localStorage` on your own machine:
 | Key                  | Purpose                                              |
 | -------------------- | ---------------------------------------------------- |
 | `biotrail_profile`   | `{ username, name, email, role, avatar }`            |
-| `biotrail_pages`     | Array of pages `{ handle, title, ... }`              |
+| `biotrail_pages`     | Array of pages `{ handle, title, links, theme, ... }` |
+| `biotrail_stats`     | Per-page analytics `{ pageId: { views, clicks } }`   |
 | `biotrail_session`   | `"active"` or `"signed_out"`                         |
 | `biotrail_plan`      | Active plan record after a successful checkout       |
 
@@ -107,7 +135,7 @@ On a simulated success, a `biotrail_plan` record is written to `localStorage` an
 
 The dashboard preview iframe (`app/profile.html`) receives edits through a two-way message protocol:
 
-1. On edit, `dashboard.js` posts `{ type: "biotrail:preview-update", pageId, links, accent, ... }` to the iframe.
+1. On edit, `dashboard.js` posts `{ type: "biotrail:preview-update", pageId, title, handle, profile, links, theme }` to the iframe.
 2. `app/profile.html` caches it (`previewStateCache`) and, when loaded, posts `biotrail:preview-request`.
 3. The parent replies with the latest state via `syncPreview()`.
 

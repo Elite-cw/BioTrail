@@ -368,6 +368,14 @@ input {
     background: #e7ebe4;
 }
 
+.nav-actions .button-light {
+    border-radius: 14px;
+}
+
+.nav-actions .button-dark {
+    border-radius: 999px;
+}
+
 .button-dark {
     color: var(--paper);
     background: var(--ink);
@@ -379,17 +387,25 @@ input {
 
 .menu-toggle {
     display: none;
+    align-items: center;
+    justify-content: center;
     width: 48px;
     height: 48px;
-    padding: 12px;
+    padding: 0;
+    flex-shrink: 0;
     background: var(--ink);
     border: 0;
     border-radius: 50%;
+    cursor: pointer;
 }
 
 .menu-toggle .material-icon {
+    display: block;
+    width: 24px;
+    height: 24px;
     color: var(--paper);
     font-size: 1.5rem;
+    vertical-align: middle;
 }
 
 /* Hero section */
@@ -1606,7 +1622,7 @@ input {
     left: 50%;
     width: 218px;
     height: 218px;
-    background: conic-gradient(from 270deg, #42b99a 0 26%, #8fdd7a 26% 49%, #d8ff71 49% 68%, #ffc994 68% 82%, rgba(23, 49, 39, 0.1) 82% 100%);
+    background: conic-gradient(from 270deg, #42b99a 0 23%, #8fdd7a 23% 39%, #ffc994 39% 50%);
     border-radius: 50%;
     transform: translateX(-50%);
     -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 31px), #000 0);
@@ -2769,8 +2785,8 @@ input {
         border-radius: 36px;
     }
 
-    .menu-toggle {
-        display: block;
+.menu-toggle {
+        display: inline-flex;
         cursor: pointer;
     }
 
@@ -4442,34 +4458,34 @@ main > section:not(.hero) {
 }
 
 .product-points li {
-    position: relative;
-    padding-left: 30px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
     font-size: 0.96rem;
     font-weight: 700;
     line-height: 1.5;
 }
 
-.product-points li::before {
-    position: absolute;
-    top: 1px;
-    left: 0;
+.product-points .material-icon {
     display: grid;
     place-items: center;
-    width: 20px;
-    height: 20px;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    padding: 5px;
+    margin-top: 1px;
     color: var(--paper);
     background: var(--purple);
     border-radius: 50%;
-    font-size: 0.7rem;
-    content: "âœ“";
+    font-size: 0.85rem;
 }
 
-.business-section .product-points li::before {
-    color: var(--ink);
+.business-section .product-points .material-icon {
+    color: var(--paper);
     background: #1e5a0d;
 }
 
-.audience-section .product-points li::before {
+.audience-section .product-points .material-icon {
     color: var(--ink);
     background: var(--lime);
 }
@@ -6977,4 +6993,306 @@ html {
     .dash-main {
         padding-bottom: max(80px, env(safe-area-inset-bottom));
     }
+}
+
+/* F4 - QR trail card */
+.dash-card-open {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    font-family: inherit;
+    text-align: left;
+    color: var(--ink);
+    cursor: pointer;
+}
+
+.dash-card-open:hover,
+.dash-card-open:focus-visible {
+    background: #f1f3ee;
+    outline: none;
+}
+
+.dash-sidebar-footer .dash-card-open {
+    margin-top: 0;
+}
+
+.dash-modal-card.is-card {
+    width: min(600px, 100%);
+}
+
+.trail-card-wrap {
+    margin: 16px 0 4px;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.trail-card-wrap canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* F7/F11/F13/F15 - schedules, groups, embeds, countdowns */
+.dash-modal-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.dash-badge {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(255, 119, 109, 0.16);
+    color: #b42318;
+    font-size: 0.66rem;
+    font-weight: 700;
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    vertical-align: 1px;
+}
+
+.dash-badge.is-countdown {
+    background: rgba(124, 66, 245, 0.12);
+    color: #6a2fd6;
+}
+
+.dash-badge.is-embed {
+    background: rgba(30, 30, 30, 0.08);
+    color: var(--ink-soft);
+}
+
+.dash-group-label {
+    display: inline-block;
+    margin-top: 4px;
+    padding: 2px 9px;
+    border-radius: 999px;
+    background: rgba(30, 30, 30, 0.07);
+    color: var(--ink-soft);
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+.live-groups {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+}
+
+.live-group {
+    padding: 7px 16px;
+    border: 2px solid var(--link-line);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--link-text-soft);
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.live-group:hover,
+.live-group:focus-visible {
+    color: var(--link-text);
+    outline: none;
+}
+
+.live-group.is-active {
+    background: var(--accent);
+    border-color: var(--accent-border);
+    color: var(--accent-text);
+}
+
+.live-embed {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid var(--link-line);
+    background: var(--link-icon-bg);
+}
+
+.live-embed iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.live-link-countdown {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.03em;
+}
+
+@media (max-width: 480px) {
+    .dash-modal-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* F12 - social link auto-detection feedback */
+.form-hint.is-detect.is-on {
+    color: var(--purple);
+    font-weight: 600;
+}
+
+.dash-icon-hint {
+    font-weight: 500;
+    color: var(--ink-soft);
+}
+
+/* F16 - theme copy tools */
+.dash-theme-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.dash-theme-tools .button {
+    border: 1px solid rgba(24, 33, 27, 0.12);
+    background: #f1f3ee;
+    color: var(--ink);
+}
+
+/* F8 - animated background effects (bgfx) */
+.live-page {
+    position: relative;
+    overflow-x: hidden;
+}
+
+.live-page::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.live-shell {
+    position: relative;
+    z-index: 1;
+}
+
+.live-bgfx-plain::before {
+    display: none;
+}
+
+/* Effect colours are picked per background so they always contrast with
+   the page instead of being hard-coded per effect. */
+.live-bg-paper {
+    --fx-a: var(--ink);
+    --fx-b: var(--purple);
+}
+
+.live-bg-ink {
+    --fx-a: var(--lime);
+    --fx-b: var(--paper);
+}
+
+.live-bg-lime {
+    --fx-a: var(--ink);
+    --fx-b: var(--purple);
+}
+
+.live-bgfx-gradient::before {
+    background: linear-gradient(115deg, transparent 0%, transparent 30%, var(--fx-a) 55%, transparent 80%);
+    background-size: 220% 220%;
+    background-position: 0% 50%;
+    animation: bgfx-drift 16s ease-in-out infinite alternate;
+    opacity: 0.16;
+}
+
+.live-bgfx-waves::before {
+    background:
+        radial-gradient(ellipse 130% 65% at 15% 120%, var(--fx-a) 0%, transparent 60%),
+        radial-gradient(ellipse 110% 58% at 55% 132%, var(--fx-b) 0%, transparent 58%),
+        radial-gradient(ellipse 120% 62% at 90% 124%, var(--fx-a) 0%, transparent 60%);
+    background-size: 220% 100%, 190% 100%, 210% 100%;
+    background-position: -10% 0, 0% 0, -4% 0;
+    animation: bgfx-waves 11s ease-in-out infinite alternate;
+    opacity: 0.15;
+}
+
+.live-bgfx-dots::before {
+    background-image: radial-gradient(var(--fx-a) 2px, transparent 2.5px);
+    background-size: 34px 34px;
+    background-position: 0 0;
+    animation: bgfx-dots 28s linear infinite;
+    opacity: 0.13;
+}
+
+.live-bgfx-aurora::before {
+    background:
+        radial-gradient(46% 52% at 18% 12%, var(--fx-a) 0%, transparent 62%),
+        radial-gradient(38% 46% at 82% 28%, var(--fx-b) 0%, transparent 60%),
+        radial-gradient(46% 52% at 62% 92%, var(--fx-a) 0%, transparent 62%);
+    background-size: 160% 160%;
+    background-position: 0% 0%;
+    animation: bgfx-aurora 24s ease-in-out infinite alternate;
+    opacity: 0.2;
+}
+
+@keyframes bgfx-drift {
+    from {
+        background-position: 0% 50%;
+    }
+    to {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes bgfx-waves {
+    from {
+        background-position: -10% 0, 0% 0, -4% 0;
+    }
+    to {
+        background-position: 110% 0, 96% 0, 118% 0;
+    }
+}
+
+@keyframes bgfx-dots {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: 34px 34px;
+    }
+}
+
+@keyframes bgfx-aurora {
+    to {
+        background-position: 100% 100%;
+        transform: scale(1.12);
+    }
+}
+
+/* F9 - visitor greeting banner */
+.live-greeting {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 18px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 2px solid var(--accent-border);
+    background: var(--accent);
+    color: var(--accent-text);
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+.live-greeting[hidden] {
+    display: none;
+}
+
+.live-greeting .material-icon {
+    width: 1.05em;
+    height: 1.05em;
+    color: var(--on-accent-arrow);
 }

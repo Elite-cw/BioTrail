@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/style.css?v=50">
+    <link rel="stylesheet" href="../assets/css/style.css?v=54">
 </head>
 <body class="dash-page dash-loading">
     <div class="dash">
@@ -44,10 +44,16 @@
                 </button>
             </nav>
 
-            <a class="dash-view-page" href="profile.html">
-                <svg class="material-icon" viewBox="0 -960 960 960" data-icon="visibility" aria-hidden="true" focusable="false"></svg>
-                View my page
-            </a>
+<div class="dash-sidebar-footer">
+                <a class="dash-view-page" href="profile.html">
+                    <svg class="material-icon" viewBox="0 -960 960 960" data-icon="visibility" aria-hidden="true" focusable="false"></svg>
+                    View my page
+                </a>
+                <button class="dash-view-page dash-card-open" type="button" id="trail-card-open">
+                    <svg class="material-icon" viewBox="0 -960 960 960" data-icon="share" aria-hidden="true" focusable="false"></svg>
+                    QR trail card
+                </button>
+            </div>
         </aside>
 
         <main class="dash-main">
@@ -117,13 +123,34 @@
                         </div>
                     </div>
 
-                    <div class="dash-swatch-group">
+<div class="dash-swatch-group">
                         <span class="dash-field-label">Background</span>
                         <div class="dash-swatches" id="background-options">
                             <button type="button" data-bg="paper" data-label="Light">Light</button>
                             <button type="button" data-bg="ink" data-label="Dark">Dark</button>
                             <button type="button" data-bg="lime" data-label="Lime">Lime</button>
                         </div>
+                    </div>
+
+                    <div class="dash-swatch-group">
+                        <span class="dash-field-label">Background effect</span>
+                        <div class="dash-swatches" id="bgfx-options">
+                            <button type="button" data-bgfx="plain" data-label="Plain">Plain</button>
+                            <button type="button" data-bgfx="gradient" data-label="Gradient">Gradient</button>
+                            <button type="button" data-bgfx="waves" data-label="Waves">Waves</button>
+                            <button type="button" data-bgfx="dots" data-label="Dots">Dots</button>
+                            <button type="button" data-bgfx="aurora" data-label="Aurora">Aurora</button>
+                        </div>
+                    </div>
+
+                    <div class="dash-swatch-group">
+                        <span class="dash-field-label">Theme copy</span>
+                        <div class="dash-theme-tools">
+                            <button class="button button-light" type="button" id="theme-export">Export theme</button>
+                            <label class="button button-light" for="theme-import">Import theme</label>
+                            <input id="theme-import" type="file" accept=".json,application/json" hidden>
+                        </div>
+                        <span class="form-hint">Export your theme to reuse or share it, or import one back.</span>
                     </div>
                 </div>
             </section>
@@ -263,12 +290,13 @@
                     <label for="link-title">Title</label>
                     <input id="link-title" type="text" placeholder="Watch my latest video" required>
                 </div>
-                <div class="form-field">
+<div class="form-field">
                     <label for="link-url">URL</label>
                     <input id="link-url" type="url" placeholder="https://youtube.com/..." required>
+                    <span class="form-hint is-detect" id="link-detect" aria-live="polite"></span>
                 </div>
                 <div class="form-field">
-                    <label for="link-icon">Icon</label>
+                    <label for="link-icon">Icon <small class="dash-icon-hint">(auto-picked when you paste a social link)</small></label>
                     <select id="link-icon">
                         <option value="smart_display">Video</option>
                         <option value="storefront">Store</option>
@@ -279,8 +307,38 @@
                         <option value="calendar_month">Booking</option>
                         <option value="bolt">Quick link</option>
                         <option value="link">Link</option>
+                        <option value="share">Social</option>
+                        <option value="star">Favourite</option>
+                        <option value="monitoring">Community</option>
+                        <option value="rocket_launch">Launch</option>
                     </select>
                 </div>
+                <div class="form-field">
+                    <label for="link-group">Group</label>
+                    <input id="link-group" type="text" list="link-group-options" placeholder="General" autocomplete="off">
+                    <datalist id="link-group-options"></datalist>
+                    <span class="form-hint">Group links into tabs on your page (e.g. "Social", "Shop").</span>
+                </div>
+                <div class="dash-modal-grid">
+                    <div class="form-field">
+                        <label for="link-schedule-start">Show from</label>
+                        <input id="link-schedule-start" type="datetime-local" autocomplete="off">
+                    </div>
+                    <div class="form-field">
+                        <label for="link-schedule-end">Show until</label>
+                        <input id="link-schedule-end" type="datetime-local" autocomplete="off">
+                    </div>
+                </div>
+                <span class="form-hint">Outside these times the link is hidden on your page. Leave both empty for an always-on link.</span>
+                <div class="form-field">
+                    <label for="link-countdown">Countdown to</label>
+                    <input id="link-countdown" type="datetime-local" autocomplete="off">
+                    <span class="form-hint">Shows a live countdown instead of the usual label. Leave empty for a normal link.</span>
+                </div>
+                <label class="dash-switch-row">
+                    <span>Embed content on your page</span>
+                    <span class="dash-toggle" id="link-embed" role="switch" aria-checked="false" tabindex="0"></span>
+                </label>
                 <label class="dash-switch-row">
                     <span>Enabled on your page</span>
                     <span class="dash-toggle is-on" id="link-enabled" role="switch" aria-checked="true" tabindex="0"></span>
@@ -294,12 +352,38 @@
         </div>
     </div>
 
+<!-- QR trail card modal -->
+    <div class="dash-modal" id="trail-card-modal" hidden>
+        <div class="dash-modal-card is-card" role="dialog" aria-modal="true" aria-labelledby="trail-card-title">
+            <div class="dash-modal-heading">
+                <h2 id="trail-card-title">QR trail card</h2>
+                <button class="dash-modal-close" id="trail-card-modal-close" type="button" aria-label="Close">
+                    <svg class="material-icon" viewBox="0 -960 960 960" data-icon="close" aria-hidden="true" focusable="false"></svg>
+                </button>
+            </div>
+            <p class="dash-panel-hint">A scannable card with your page link. Download it and share anywhere.</p>
+            <div class="trail-card-wrap">
+                <canvas id="trail-card-canvas" width="900" height="540" aria-label="Your BioTrail QR card"></canvas>
+            </div>
+            <div class="dash-modal-actions">
+                <button class="button button-light" type="button" id="trail-card-cancel">Close</button>
+                <button class="button button-dark" type="button" id="trail-card-download">
+                    <svg class="material-icon" viewBox="0 -960 960 960" data-icon="arrow_downward" aria-hidden="true" focusable="false"></svg>
+                    Download PNG
+                </button>
+            </div>
+            <p class="auth-message" id="trail-card-message" aria-live="polite"></p>
+        </div>
+    </div>
+
     <div class="dash-toast" id="dash-toast" role="status" hidden></div>
 
 <script src="../assets/js/icon-paths.js"></script>
 <script src="../assets/js/dashboard-icons.js"></script>
-<script src="../assets/js/account.js?v=45"></script>
-<script src="../assets/js/dashboard.js?v=48"></script>
+<script src="../assets/js/qr.js?v=52"></script>
+<script src="../assets/js/account.js?v=46"></script>
+<script src="../assets/js/stats.js?v=51"></script>
+<script src="../assets/js/dashboard.js?v=50"></script>
 <script src="../assets/js/session.js?v=47"></script>
 </body>
 </html>

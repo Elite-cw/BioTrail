@@ -386,6 +386,7 @@
     }
 
     // Signup form
+    // --- F1: template themes pre-seeded on signup -----------------------
     var signupForm = byId("signup-form");
 
     if (signupForm) {
@@ -397,6 +398,17 @@
         var nameField = byId("signup-name");
         var usernameField = byId("signup-username");
         var templateNotice = byId("template-notice");
+        // F1: maps the seven marketplace templates to a starting theme (accent/shape/bg/bgfx).
+        var templateThemes = {
+            "minimal-muse": { accent: "lime", shape: "pill", bg: "paper", bgfx: "plain" },
+            "sketch-line": { accent: "ink", shape: "rounded", bg: "paper", bgfx: "plain" },
+            "bold-statement": { accent: "lime", shape: "square", bg: "ink", bgfx: "plain" },
+            "studio-punch": { accent: "coral", shape: "square", bg: "paper", bgfx: "gradient" },
+            "pastel-stack": { accent: "purple", shape: "rounded", bg: "paper", bgfx: "aurora" },
+            "sky-route": { accent: "purple", shape: "pill", bg: "paper", bgfx: "waves" },
+            "full-bloom": { accent: "coral", shape: "pill", bg: "lime", bgfx: "dots" }
+        };
+        var chosenTemplateTheme = templateThemes[requestedTemplate] || null;
 
         if (requestedUsername && usernameField) {
             usernameField.value = requestedUsername;
@@ -406,7 +418,9 @@
         }
 
         if (requestedTemplate && templateNotice) {
-            templateNotice.textContent = "You chose the " + requestedTemplate.replace(/-/g, " ") + " template.";
+            templateNotice.textContent = chosenTemplateTheme
+                ? "You chose the '" + requestedTemplate.replace(/-/g, " ") + "' template - its colours, shape and background will be pre-applied to your page."
+                : "You chose the " + requestedTemplate.replace(/-/g, " ") + " template.";
         }
 
         signupForm.addEventListener("submit", function (event) {
@@ -465,6 +479,24 @@
                 email: email,
                 role: "Your trail is live"
             }));
+
+            if (chosenTemplateTheme) {
+                var seededPage = {
+                    id: "p" + Date.now(),
+                    title: name,
+                    handle: username.toLowerCase(),
+                    links: [
+                        { title: "Watch my latest video", url: "https://youtube.com/@" + username, icon: "smart_display", enabled: true },
+                        { title: "Shop the new collection", url: "https://shop.biotrail.me/" + username, icon: "storefront", enabled: true },
+                        { title: "Book a discovery call", url: "https://calendar.example.com/meet", icon: "calendar_month", enabled: true },
+                        { title: "Read my articles", url: "https://blog.example.com/posts", icon: "auto_stories", enabled: true }
+                    ],
+                    theme: chosenTemplateTheme,
+                    createdAt: Date.now()
+                };
+                localStorage.setItem("biotrail_pages", JSON.stringify([seededPage]));
+            }
+
             message.textContent = "Welcome to BioTrail, " + name + "! Taking you to your page…";
             message.classList.add("is-success");
             signupForm.querySelector(".button").disabled = true;

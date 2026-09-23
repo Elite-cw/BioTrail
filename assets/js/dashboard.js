@@ -96,6 +96,91 @@
         });
     }
 
+    // --- F7: link scheduling ----------------------------------------
+    // Visibility state from a link's schedule window.
+    function scheduleInfo(link) {
+        var schedule = link && link.schedule;
+        if (!schedule) {
+            return null;
+        }
+        var now = Date.now();
+        var start = schedule.start ? new Date(schedule.start).getTime() : null;
+        var end = schedule.end ? new Date(schedule.end).getTime() : null;
+        var visible = true;
+        if (start && now < start) {
+            visible = false;
+        }
+        if (end && now > end) {
+            visible = false;
+        }
+        return { visible: visible, start: start, end: end };
+    }
+
+    // --- F11: link groups ---------------------------------------------------
+    // Keep the modal's datalist of existing groups in sync with saved links.
+    function refreshGroupOptions() {
+        var datalist = document.getElementById("link-group-options");
+        if (!datalist) {
+            return;
+        }
+        var seen = {};
+        var values = ["General"];
+        links.forEach(function (link) {
+            var group = String(link.group || "").trim();
+            if (group && group !== "General" && !seen[group]) {
+                seen[group] = true;
+                values.push(group);
+            }
+        });
+        datalist.innerHTML = values.map(function (group) {
+            return '<option value="' + escapeHtml(group) + '"></option>';
+        }).join("");
+    }
+
+    // --- F12: social-link auto-detection ------------------------------------
+    // Recognise a social profile from its URL, then suggest icon + label.
+    var SOCIAL_LINKS = [
+        { hosts: ["youtube.com", "youtu.be"], icon: "smart_display", label: "YouTube", title: "Watch on YouTube" },
+        { hosts: ["twitter.com", "x.com"], icon: "share", label: "X / Twitter", title: "Follow on X" },
+        { hosts: ["facebook.com", "fb.com"], icon: "share", label: "Facebook", title: "Follow on Facebook" },
+        { hosts: ["instagram.com"], icon: "star", label: "Instagram", title: "Follow on Instagram" },
+        { hosts: ["tiktok.com"], icon: "bolt", label: "TikTok", title: "Follow on TikTok" },
+        { hosts: ["linkedin.com"], icon: "monitoring", label: "LinkedIn", title: "Connect on LinkedIn" },
+        { hosts: ["github.com", "github.io"], icon: "rocket_launch", label: "GitHub", title: "View my GitHub" },
+        { hosts: ["twitch.tv"], icon: "monitoring", label: "Twitch", title: "Watch on Twitch" },
+        { hosts: ["discord.com", "discord.gg"], icon: "mail", label: "Discord", title: "Join my Discord" },
+        { hosts: ["spotify.com"], icon: "star", label: "Spotify", title: "Listen on Spotify" },
+        { hosts: ["soundcloud.com"], icon: "star", label: "SoundCloud", title: "Listen on SoundCloud" },
+        { hosts: ["t.me", "telegram.me"], icon: "bolt", label: "Telegram", title: "Message on Telegram" },
+        { hosts: ["whatsapp.com", "wa.me"], icon: "mail", label: "WhatsApp", title: "Chat on WhatsApp" },
+        { hosts: ["reddit.com"], icon: "link", label: "Reddit", title: "Follow on Reddit" },
+        { hosts: ["pinterest.com"], icon: "star", label: "Pinterest", title: "Follow on Pinterest" }
+    ];
+
+    function detectSocial(value) {
+        if (!value) {
+            return null;
+        }
+        var raw = String(value).trim();
+        var url = null;
+        try {
+            url = new URL(/^https?:/i.test(raw) ? raw : "https://" + raw);
+        } catch (error) {
+            return null;
+        }
+        var host = url.hostname.replace(/^www\./, "").toLowerCase();
+        for (var i = 0; i < SOCIAL_LINKS.length; i += 1) {
+            var entry = SOCIAL_LINKS[i];
+            for (var h = 0; h < entry.hosts.length; h += 1) {
+                var candidate = entry.hosts[h].toLowerCase();
+                if (host === candidate || host.slice(-(candidate.length + 1)) === "." + candidate) {
+                    return entry;
+                }
+            }
+        }
+        return null;
+    }
+
     function toast(message) {
         var toastEl = document.getElementById("dash-toast");
         toastEl.textContent = message;
@@ -164,30 +249,27 @@
         syncPreview();
     }
 
-    function activeLinks() {
-        return links.filter(function (link) { return link.enabled; }).length;
+    // --- F3: analytics rendering --------------------------------------------
+    // Short weekday label from a YYYY-MM-DD key, computed via UTC to avoid TZ drift.
+    function weekdayLabel(dateKey) {
+        var parts = String(dateKey).split("-");
+        var weekday = new Date(Date.UTC(parts[0], parseInt(parts[1], 10) - 1, parts[2])).getUTCDay();
+        return ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][weekday];
     }
 
-    function clickCountFor(index) {
-        var bases = [187, 129, 96, 74, 61, 53, 48, 40, 34];
-        return bases[index % bases.length];
-    }
-
-    // Interactive seven-day line chart inspired by the NJC Global chart treatment.
-    function renderLineChart(totalViews) {
+    // Interactive seven-day line chart fed by the real recorded view series.
+    function renderLineChart(series) {
         var chart = document.getElementById("analytics-line-chart");
-        var days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-        var weights = [0.10, 0.13, 0.12, 0.145, 0.127, 0.175, 0.203];
-        var values = weights.map(function (weight) { return Math.round(totalViews * weight); });
-        var difference = totalViews - values.reduce(function (sum, value) { return sum + value; }, 0);
-        values[values.length - 1] += difference;
+        var days = series.map(function (point) { return weekdayLabel(point.day); });
+        var values = series.map(function (point) { return point.views; });
+        var peak = Math.max.apply(null, values);
+        var maxValue = peak === 0 ? 10 : Math.ceil(peak / 50) * 50;
 
         var width = 620;
         var baseline = 198;
         var top = 38;
         var startX = 48;
         var step = 88;
-        var maxValue = Math.ceil(Math.max.apply(null, values) / 50) * 50;
         var points = values.map(function (value, index) {
             return {
                 day: days[index],
@@ -238,21 +320,59 @@
     }
 
     function renderAnalytics() {
-        var views = 1284 + activeLinks() * 40;
-        var clicks = 508 + activeLinks() * 18;
+        var stats = window.bioTrailStats ? window.bioTrailStats.summary(activePageId, links) : null;
+        var series;
+        if (stats) {
+            series = stats.series;
+        } else {
+            series = [];
+            var now = new Date();
+            for (var d = 6; d >= 0; d -= 1) {
+                var day = new Date(now.getFullYear(), now.getMonth(), now.getDate() - d);
+                series.push({
+                    day: day.getFullYear() + "-" + ("0" + (day.getMonth() + 1)).slice(-2) + "-" + ("0" + day.getDate()).slice(-2),
+                    views: 0
+                });
+            }
+        }
+        var views = stats ? stats.views : 0;
+        var clicks = stats ? stats.clicks : 0;
+        var ctr = stats ? stats.ctr : 0;
+
         document.getElementById("stat-views").textContent = views.toLocaleString();
         document.getElementById("stat-clicks").textContent = clicks.toLocaleString();
-        document.getElementById("stat-ctr").textContent = Math.round((clicks / views) * 1000) / 10 + "%";
-        renderLineChart(views);
+        document.getElementById("stat-ctr").textContent = ctr + "%";
+
+        var statsEl = document.querySelector(".dash-stats");
+        if (stats && statsEl) {
+            var viewsTrendEl = statsEl.querySelector(".dash-stat.is-views .dash-stat-trend");
+            if (viewsTrendEl) {
+                viewsTrendEl.textContent = (stats.viewsTrend >= 0 ? "+" : "") + stats.viewsTrend + "%";
+            }
+            var clicksTrendEl = statsEl.querySelector(".dash-stat.is-clicks .dash-stat-trend");
+            if (clicksTrendEl) {
+                clicksTrendEl.textContent = (stats.clicksTrend >= 0 ? "+" : "") + stats.clicksTrend + "%";
+            }
+        }
+
+        renderLineChart(series);
 
         var topList = document.getElementById("top-links");
-        topList.innerHTML = links.slice(0, 4).map(function (link, index) {
+        var ranked = stats ? stats.topLinks : [];
+        if (ranked.length === 0) {
+            ranked = links.slice(0, 4).map(function (link) {
+                return { title: link.title, url: link.url, icon: link.icon, clicks: 0 };
+            });
+        }
+        topList.innerHTML = ranked.slice(0, 4).map(function (link) {
             return '<div class="dash-top-link"><span class="dash-link-thumb">' + iconSvg(link.icon) +
                 "</span><div><strong>" + escapeHtml(link.title) +
-                '</strong><small>' + clickCountFor(index) + " clicks</small></div></div>";
+                "</strong><small>" + link.clicks.toLocaleString() + " clicks</small></div></div>";
         }).join("");
     }
 
+    // --- F7/F11/F13/F15: link list rendering --------------------------------
+    // Renders each link card with its group label and schedule/countdown/embed badges.
     function renderLinks(filterValue) {
         var list = document.getElementById("link-card-list");
         var filter = (filterValue || "").toLowerCase().trim();
@@ -263,12 +383,26 @@
                 return "";
             }
             count += 1;
+            var linkBadges = "";
+            if (link.countdown) {
+                linkBadges += '<span class="dash-badge is-countdown">Countdown</span>';
+            } else {
+                var linkSchedule = scheduleInfo(link);
+                if (linkSchedule && !linkSchedule.visible) {
+                    linkBadges += '<span class="dash-badge">Scheduled</span>';
+                }
+            }
+            if (link.embed) {
+                linkBadges += '<span class="dash-badge is-embed">Embed</span>';
+            }
             return (
                 '<div class="dash-link-card' + (link.enabled ? "" : " is-off") + '" data-index="' + index + '">' +
                 '<svg class="material-icon dash-drag" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="' + icons.drag_indicator + '"/></svg>' +
                 '<span class="dash-link-thumb">' + iconSvg(link.icon) +
-                " </span><div class=\"dash-link-meta\"><strong>" + escapeHtml(link.title) +
-                "</strong><small>" + escapeHtml(link.url) + "</small></div>" +
+                " </span><div class=\"dash-link-meta\"><strong>" + escapeHtml(link.title) + linkBadges +
+                "</strong><small>" + escapeHtml(link.url) + "</small>" +
+                (link.group && link.group !== "General" ? '<span class="dash-group-label">' + escapeHtml(link.group) + "</span>" : "") +
+                "</div>" +
                 '<button class="dash-action-move" type="button" data-move="up" aria-label="Move link up">' + iconSvg("arrow_upward") + "</button>" +
                 '<button class="dash-action-move" type="button" data-move="down" aria-label="Move link down">' + iconSvg("arrow_downward") + "</button>" +
                 '<span class="dash-toggle' + (link.enabled ? " is-on" : "") + '" role="switch" aria-checked="' + link.enabled + '" tabindex="0" aria-label="Toggle ' + escapeHtml(link.title) + '"></span>' +
@@ -302,11 +436,17 @@
         var enabled = document.getElementById("link-enabled");
         var message = document.getElementById("link-message");
         var heading = document.getElementById("link-modal-title");
+        var group = document.getElementById("link-group");
+        var scheduleStart = document.getElementById("link-schedule-start");
+        var scheduleEnd = document.getElementById("link-schedule-end");
+        var countdown = document.getElementById("link-countdown");
+        var embed = document.getElementById("link-embed");
 
         message.textContent = "";
         editingIndex = isEdit ? parseInt(editingIndex, 10) : -1;
 
         document.getElementById("link-modal").hidden = false;
+        refreshGroupOptions();
 
         if (isEdit) {
             var link = links[editingIndex];
@@ -316,6 +456,13 @@
             icon.value = link.icon;
             enabled.classList.toggle("is-on", link.enabled);
             enabled.setAttribute("aria-checked", String(link.enabled));
+            group.value = link.group && link.group !== "General" ? link.group : "";
+            var schedule = link.schedule;
+            scheduleStart.value = (schedule && schedule.start) || "";
+            scheduleEnd.value = (schedule && schedule.end) || "";
+            countdown.value = link.countdown || "";
+            embed.classList.toggle("is-on", !!link.embed);
+            embed.setAttribute("aria-checked", String(!!link.embed));
         } else {
             heading.textContent = "Add new link";
             title.value = "";
@@ -323,6 +470,12 @@
             icon.value = "link";
             enabled.classList.add("is-on");
             enabled.setAttribute("aria-checked", "true");
+            group.value = "";
+            scheduleStart.value = "";
+            scheduleEnd.value = "";
+            countdown.value = "";
+            embed.classList.remove("is-on");
+            embed.setAttribute("aria-checked", "false");
         }
 
         title.focus();
@@ -332,12 +485,19 @@
         document.getElementById("link-modal").hidden = true;
     }
 
+    // --- F7/F11/F13/F15: link-modal save ------------------------------------
+    // Reads group, schedule window, countdown and embed switches into the link model.
     function saveLinkFromModal(event) {
         event.preventDefault();
         var title = document.getElementById("link-title").value.trim();
         var url = document.getElementById("link-url").value.trim();
         var icon = document.getElementById("link-icon").value;
         var enabled = document.getElementById("link-enabled").classList.contains("is-on");
+        var group = document.getElementById("link-group").value.trim() || "General";
+        var scheduleStart = document.getElementById("link-schedule-start").value;
+        var scheduleEnd = document.getElementById("link-schedule-end").value;
+        var countdown = document.getElementById("link-countdown").value;
+        var embed = document.getElementById("link-embed").classList.contains("is-on");
         var validUrl = /^https?:\/\/.+\..+/.test(url);
         var message = document.getElementById("link-message");
 
@@ -349,10 +509,21 @@
 
         message.classList.remove("is-error");
 
+        var nextLink = {
+            title: title,
+            url: url,
+            icon: icon,
+            enabled: enabled,
+            group: group,
+            schedule: (scheduleStart || scheduleEnd) ? { start: scheduleStart || null, end: scheduleEnd || null } : null,
+            countdown: countdown || null,
+            embed: embed
+        };
+
         if (editingIndex >= 0) {
-            links[editingIndex] = { title: title, url: url, icon: icon, enabled: enabled };
+            links[editingIndex] = nextLink;
         } else {
-            links.push({ title: title, url: url, icon: icon, enabled: enabled });
+            links.push(nextLink);
         }
 
         saveLinks(editingIndex >= 0 ? "Link updated." : "Link added.");
@@ -406,6 +577,46 @@
             linkEnabledToggle.click();
         }
     });
+
+    var linkEmbedToggle = document.getElementById("link-embed");
+    if (linkEmbedToggle) {
+        linkEmbedToggle.addEventListener("click", function () {
+            var on = linkEmbedToggle.classList.toggle("is-on");
+            linkEmbedToggle.setAttribute("aria-checked", String(on));
+        });
+        linkEmbedToggle.addEventListener("keydown", function (event) {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                linkEmbedToggle.click();
+            }
+        });
+    }
+
+    var linkUrlInput = document.getElementById("link-url");
+    var linkIconSelect = document.getElementById("link-icon");
+    var linkTitleInput = document.getElementById("link-title");
+    var linkDetectHint = document.getElementById("link-detect");
+    if (linkUrlInput) {
+        linkUrlInput.addEventListener("input", function () {
+            if (!linkDetectHint) {
+                return;
+            }
+            var detected = detectSocial(linkUrlInput.value);
+            if (detected) {
+                if (linkIconSelect && detected.icon) {
+                    linkIconSelect.value = detected.icon;
+                }
+                if (linkTitleInput && !linkTitleInput.value.trim() && detected.title) {
+                    linkTitleInput.value = detected.title;
+                }
+                linkDetectHint.textContent = "Detected: " + detected.label + " — icon set.";
+                linkDetectHint.classList.add("is-on");
+            } else {
+                linkDetectHint.textContent = "";
+                linkDetectHint.classList.remove("is-on");
+            }
+        });
+    }
 
     document.getElementById("preview-button").addEventListener("click", function () {
         persistEditorState();
@@ -516,7 +727,7 @@
         });
     });
 
-    ["accent-swatches", "shape-options", "background-options"].forEach(function (groupId) {
+    ["accent-swatches", "shape-options", "background-options", "bgfx-options"].forEach(function (groupId) {
         var group = document.getElementById(groupId);
         group.querySelectorAll("button").forEach(function (button) {
             button.addEventListener("click", function () {
@@ -526,8 +737,10 @@
                     theme.accent = button.getAttribute("data-accent");
                 } else if (groupId === "shape-options") {
                     theme.shape = button.getAttribute("data-shape");
-                } else {
+                } else if (groupId === "background-options") {
                     theme.bg = button.getAttribute("data-bg");
+                } else {
+                    theme.bgfx = button.getAttribute("data-bgfx");
                 }
                 persistPage();
                 syncPreview();
@@ -536,12 +749,78 @@
         });
     });
 
+    // --- F8/F16: appearance options (bgfx, export, import) -------------------
     function applyThemeSelections() {
         document.querySelectorAll("#accent-swatches [data-accent='" + theme.accent + "']").forEach(function (button) { button.classList.add("is-selected"); });
         document.querySelectorAll("#shape-options [data-shape='" + theme.shape + "']").forEach(function (button) { button.classList.add("is-selected"); });
         document.querySelectorAll("#background-options [data-bg='" + theme.bg + "']").forEach(function (button) { button.classList.add("is-selected"); });
+        document.querySelectorAll("#bgfx-options [data-bgfx='" + (theme.bgfx || "plain") + "']").forEach(function (button) { button.classList.add("is-selected"); });
     }
     applyThemeSelections();
+
+    var THEME_ACCENTS = ["lime", "purple", "ink", "coral"];
+    var THEME_SHAPES = ["pill", "rounded", "square"];
+    var THEME_BGS = ["paper", "ink", "lime"];
+    var THEME_BGFX = ["plain", "gradient", "waves", "dots", "aurora"];
+
+    function sanitizeThemeValue(value, allowed, fallback) {
+        return (allowed || []).indexOf(value) === -1 ? fallback : value;
+    }
+
+// --- F16: theme export / import (biotrail-theme.json) --------------------
+    document.getElementById("theme-export").addEventListener("click", function () {
+        var payload = { version: 1, theme: Object.assign({}, theme) };
+        var blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+        var link = document.createElement("a");
+        link.download = "biotrail-theme.json";
+        link.href = URL.createObjectURL(blob);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(function () { URL.revokeObjectURL(link.href); }, 0);
+        toast("Theme exported.");
+    });
+
+    var themeImportInput = document.getElementById("theme-import");
+    if (themeImportInput) {
+        themeImportInput.addEventListener("change", function () {
+            var file = themeImportInput.files && themeImportInput.files[0];
+            if (!file) {
+                return;
+            }
+            var reader = new FileReader();
+            reader.onload = function () {
+                try {
+                    var parsed = JSON.parse(String(reader.result || "{}"));
+                    var imported = parsed && parsed.theme ? parsed.theme : parsed;
+                    if (!imported || typeof imported !== "object") {
+                        throw new Error("bad theme");
+                    }
+                    if (imported.accent !== undefined) {
+                        theme.accent = sanitizeThemeValue(imported.accent, THEME_ACCENTS, theme.accent);
+                    }
+                    if (imported.shape !== undefined) {
+                        theme.shape = sanitizeThemeValue(imported.shape, THEME_SHAPES, theme.shape);
+                    }
+                    if (imported.bg !== undefined) {
+                        theme.bg = sanitizeThemeValue(imported.bg, THEME_BGS, theme.bg);
+                    }
+                    if (imported.bgfx !== undefined) {
+                        theme.bgfx = sanitizeThemeValue(imported.bgfx, THEME_BGFX, theme.bgfx);
+                    }
+                    document.querySelectorAll(".dash-swatches button.is-selected").forEach(function (button) { button.classList.remove("is-selected"); });
+                    applyThemeSelections();
+                    persistPage();
+                    syncPreview();
+                    toast("Theme imported.");
+                } catch (error) {
+                    toast("That file is not a valid BioTrail theme.");
+                }
+                themeImportInput.value = "";
+            };
+            reader.readAsText(file);
+        });
+    }
 
     function fieldValue(id) {
         return document.getElementById(id).value.trim();
@@ -696,9 +975,225 @@
     }
     document.body.classList.remove("dash-loading");
 
+    // --- F4: QR trail card ------------------------------------------------
+
+    var THEME_COLORS = { lime: "#d8ff32", purple: "#7c42f5", ink: "#1e1e1e", coral: "#ff7a59" };
+
+    function roundRectPath(ctx, x, y, width, height, radius) {
+        radius = Math.min(radius, width / 2, height / 2);
+        ctx.beginPath();
+        ctx.moveTo(x + radius, y);
+        ctx.lineTo(x + width - radius, y);
+        ctx.arcTo(x + width, y, x + width, y + radius, radius);
+        ctx.lineTo(x + width, y + height - radius);
+        ctx.arcTo(x + width, y + height, x + width - radius, y + height, radius);
+        ctx.lineTo(x + radius, y + height);
+        ctx.arcTo(x, y + height, x, y + height - radius, radius);
+        ctx.lineTo(x, y + radius);
+        ctx.arcTo(x, y, x + radius, y, radius);
+        ctx.closePath();
+    }
+
+    function fitText(ctx, text, maxWidth) {
+        var value = String(text || "").trim();
+        if (ctx.measureText(value).width <= maxWidth) {
+            return value;
+        }
+        while (value.length > 1) {
+            value = value.slice(0, -1);
+            if (ctx.measureText(value + "\u2026").width <= maxWidth) {
+                return value + "\u2026";
+            }
+        }
+        return value;
+    }
+
+    function trailCardColors() {
+        var bg = theme.bg || "paper";
+        var accent = theme.accent || "lime";
+        var bgCol = bg === "ink" ? "#1e1e1e" : (bg === "lime" ? "#d8ff32" : "#ffffff");
+        var textCol = bg === "ink" ? "#ffffff" : "#1e1e1e";
+        var softCol = bg === "ink" ? "rgba(255,255,255,0.64)" : "rgba(30,30,30,0.62)";
+        var accentCol = THEME_COLORS[accent] || "#1e1e1e";
+        if (bg === "ink" && accentCol === "#1e1e1e") {
+            accentCol = "#d8ff32";
+        }
+        if (bg !== "ink" && accentCol === "#d8ff32") {
+            accentCol = "#1e1e1e";
+        }
+        return { bg: bgCol, text: textCol, soft: softCol, accent: accentCol };
+    }
+
+    var trailCardCanvas = document.getElementById("trail-card-canvas");
+
+    function cardHandle() {
+        return String(activePage.handle || profile.username || "mytrail").toLowerCase();
+    }
+
+    function renderTrailCard() {
+        if (!trailCardCanvas) {
+            return;
+        }
+        var ctx = trailCardCanvas.getContext("2d");
+        var colors = trailCardColors();
+        var handle = cardHandle();
+        var qr = window.bioTrailQR ? window.bioTrailQR.make("https://biotrail.me/" + handle) : null;
+
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, 900, 540);
+        ctx.fillStyle = colors.accent;
+        ctx.fillRect(0, 0, 14, 540);
+
+        var plateX = 448;
+        var plateY = 60;
+        var plateSize = 430;
+        ctx.fillStyle = "#ffffff";
+        roundRectPath(ctx, plateX, plateY, plateSize, plateSize, 26);
+        ctx.fill();
+
+        if (qr) {
+            var pad = 32;
+            var draw = plateSize - pad * 2;
+            var moduleSize = Math.floor(draw / qr.size);
+            var offsetX = plateX + pad + Math.floor((draw - (moduleSize * qr.size)) / 2);
+            var offsetY = plateY + pad + Math.floor((draw - (moduleSize * qr.size)) / 2);
+            ctx.fillStyle = "#1e1e1e";
+            for (var row = 0; row < qr.size; row += 1) {
+                for (var col = 0; col < qr.size; col += 1) {
+                    if (qr.modules[row][col]) {
+                        ctx.fillRect(offsetX + (col * moduleSize), offsetY + (row * moduleSize), moduleSize, moduleSize);
+                    }
+                }
+            }
+        } else {
+            ctx.fillStyle = "#1e1e1e";
+            ctx.font = "700 22px 'Plus Jakarta Sans', sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText("biotrail.me/" + handle, plateX + plateSize / 2, plateY + plateSize / 2);
+            ctx.textAlign = "left";
+        }
+
+        var name = fitText(ctx, profile.name || activePage.title || "BioTrail creator", 340);
+        var role = fitText(ctx, profile.role || "Creative director & storyteller", 340);
+
+        var initials = name.trim().split(/\s+/).map(function (word) { return word.charAt(0); }).join("").slice(0, 2).toUpperCase();
+        ctx.fillStyle = colors.accent;
+        ctx.beginPath();
+        ctx.arc(104, 118, 44, 0, Math.PI * 2);
+        ctx.fill();
+        if (profile.avatar) {
+            try {
+                var avatarImg = new Image();
+                avatarImg.onload = function () {
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.arc(104, 118, 44, 0, Math.PI * 2);
+                    ctx.clip();
+                    ctx.drawImage(avatarImg, 60, 74, 88, 88);
+                    ctx.restore();
+                    renderTrailCardText(ctx, colors, name, role, handle);
+                };
+                avatarImg.src = profile.avatar;
+            } catch (error) {
+                renderTrailCardText(ctx, colors, name, role, handle);
+            }
+        } else {
+            ctx.fillStyle = colors.accent === "#d8ff32" ? "#1e1e1e" : "#ffffff";
+            ctx.font = "700 30px 'Plus Jakarta Sans', sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText(initials, 104, 126);
+            ctx.textAlign = "left";
+            renderTrailCardText(ctx, colors, name, role, handle);
+        }
+    }
+
+    function renderTrailCardText(ctx, colors, name, role, handle) {
+        ctx.fillStyle = colors.text;
+        ctx.font = "700 42px 'Plus Jakarta Sans', sans-serif";
+        ctx.textAlign = "left";
+        ctx.fillText(name, 60, 242);
+
+        ctx.fillStyle = colors.soft;
+        ctx.font = "500 20px 'Plus Jakarta Sans', sans-serif";
+        ctx.fillText(role, 60, 272);
+
+        ctx.fillStyle = colors.accent;
+        roundRectPath(ctx, 60, 292, 90, 6, 3);
+        ctx.fill();
+
+        ctx.font = "700 26px 'Plus Jakarta Sans', sans-serif";
+        ctx.fillText("biotrail.me/" + handle, 60, 340);
+
+        ctx.fillStyle = colors.soft;
+        ctx.font = "600 15px 'Plus Jakarta Sans', sans-serif";
+        ctx.fillText("SCAN TO OPEN MY BIOTRAIL PAGE", 60, 384);
+
+        ctx.fillStyle = colors.accent;
+        ctx.beginPath();
+        ctx.arc(64, 490, 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = colors.text;
+        ctx.font = "700 20px 'Plus Jakarta Sans', sans-serif";
+        ctx.fillText("BioTrail", 82, 497);
+    }
+
+    var trailCardModal = document.getElementById("trail-card-modal");
+
+    function openTrailCardModal() {
+        renderTrailCard();
+        document.getElementById("trail-card-message").textContent = "";
+        trailCardModal.hidden = false;
+    }
+
+    function closeTrailCardModal() {
+        if (trailCardModal) {
+            trailCardModal.hidden = true;
+        }
+    }
+
+    var trailCardOpen = document.getElementById("trail-card-open");
+    if (trailCardOpen) {
+        trailCardOpen.addEventListener("click", openTrailCardModal);
+    }
+    var trailCardClose = document.getElementById("trail-card-modal-close");
+    if (trailCardClose) {
+        trailCardClose.addEventListener("click", closeTrailCardModal);
+    }
+    var trailCardCancel = document.getElementById("trail-card-cancel");
+    if (trailCardCancel) {
+        trailCardCancel.addEventListener("click", closeTrailCardModal);
+    }
+    if (trailCardModal) {
+        trailCardModal.addEventListener("click", function (event) {
+            if (event.target === this) {
+                closeTrailCardModal();
+            }
+        });
+    }
+    var trailCardDownload = document.getElementById("trail-card-download");
+    if (trailCardDownload) {
+        trailCardDownload.addEventListener("click", function () {
+            if (!trailCardCanvas || !window.bioTrailQR) {
+                return;
+            }
+            try {
+                var link = document.createElement("a");
+                link.download = "biotrail-" + cardHandle() + "-card.png";
+                link.href = trailCardCanvas.toDataURL("image/png");
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                toast("Card downloaded.");
+            } catch (error) {
+                toast("Could not download the card.");
+            }
+        });
+    }
+
     document.addEventListener("keydown", function (event) {
         if (event.key === "Escape") {
             closeModal();
+            closeTrailCardModal();
             document.querySelectorAll(".dash-action-menu").forEach(function (menu) { menu.hidden = true; });
         }
     });
