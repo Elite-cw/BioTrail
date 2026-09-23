@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/style.css?v=60">
+    <link rel="stylesheet" href="../assets/css/style.css?v=61">
     <script src="../assets/js/auth-guard.js?v=1"></script>
 </head>
 <body class="dash-page dash-loading">
@@ -362,17 +362,36 @@
                     <svg class="material-icon" viewBox="0 -960 960 960" data-icon="close" aria-hidden="true" focusable="false"></svg>
                 </button>
             </div>
-            <p class="dash-panel-hint">A scannable card with your page link. Download it and share anywhere.</p>
+            <p class="dash-panel-hint">Share your live page as a link or send the complete QR card as an image.</p>
             <div class="trail-card-wrap">
                 <canvas id="trail-card-canvas" width="900" height="540" aria-label="Your BioTrail QR card"></canvas>
             </div>
-            <div class="dash-modal-actions">
-                <button class="button button-light" type="button" id="trail-card-cancel">Close</button>
+            <div class="trail-share-actions" aria-label="QR card sharing options">
+                <button class="button button-light" type="button" id="trail-link-copy">
+                    <svg class="material-icon" viewBox="0 -960 960 960" data-icon="link" aria-hidden="true" focusable="false"></svg>
+                    Copy link
+                </button>
+                <button class="button button-light" type="button" id="trail-link-share">
+                    <svg class="material-icon" viewBox="0 -960 960 960" data-icon="share" aria-hidden="true" focusable="false"></svg>
+                    Share link
+                </button>
+                <button class="button button-dark" type="button" id="trail-card-share">
+                    <svg class="material-icon" viewBox="0 -960 960 960" data-icon="share" aria-hidden="true" focusable="false"></svg>
+                    Share QR card
+                </button>
                 <button class="button button-dark" type="button" id="trail-card-download">
                     <svg class="material-icon" viewBox="0 -960 960 960" data-icon="arrow_downward" aria-hidden="true" focusable="false"></svg>
                     Download PNG
                 </button>
             </div>
+            <div class="trail-social-share" aria-label="Share your BioTrail link to social media">
+                <span>Share link to</span>
+                <a href="#" data-share-social="whatsapp" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                <a href="#" data-share-social="facebook" target="_blank" rel="noopener noreferrer">Facebook</a>
+                <a href="#" data-share-social="x" target="_blank" rel="noopener noreferrer">X</a>
+                <a href="#" data-share-social="linkedin" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            </div>
+            <button class="trail-card-close-link" type="button" id="trail-card-cancel">Close</button>
             <p class="auth-message" id="trail-card-message" aria-live="polite"></p>
         </div>
     </div>
@@ -384,7 +403,7 @@
 <script src="../assets/js/qr.js?v=52"></script>
 <script src="../assets/js/account.js?v=46"></script>
 <script src="../assets/js/stats.js?v=51"></script>
-<script src="../assets/js/dashboard.js?v=50"></script>
+<script src="../assets/js/dashboard.js?v=51"></script>
 <script src="../assets/js/session.js?v=49"></script>
 </body>
 </html>

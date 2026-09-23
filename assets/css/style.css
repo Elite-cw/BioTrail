@@ -7124,6 +7124,68 @@ html {
     height: auto;
 }
 
+.trail-share-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.trail-share-actions .button {
+    justify-content: center;
+    width: 100%;
+}
+
+.trail-social-share {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+    font-size: 0.76rem;
+}
+
+.trail-social-share > span {
+    color: var(--ink-soft);
+    font-weight: 700;
+}
+
+.trail-social-share a {
+    padding: 7px 10px;
+    color: var(--ink);
+    background: #eef1e4;
+    border-radius: 999px;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.trail-social-share a:hover,
+.trail-social-share a:focus-visible {
+    background: var(--lime);
+}
+
+.trail-card-close-link {
+    display: block;
+    margin: 14px auto 0;
+    padding: 4px 10px;
+    color: var(--ink-soft);
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+@media (max-width: 560px) {
+    .trail-share-actions {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* F7/F11/F13/F15 - schedules, groups, embeds, countdowns */
 .dash-modal-grid {
     display: grid;

@@ -1030,6 +1030,21 @@
         return String(activePage.handle || profile.username || "mytrail").toLowerCase();
     }
 
+    function profileShareUrl() {
+        if (/^https?:$/.test(window.location.protocol)) {
+            var profileUrl = new URL("profile.html", window.location.href);
+            profileUrl.search = "";
+            profileUrl.hash = "";
+            profileUrl.searchParams.set("page", activePageId);
+            return profileUrl.href;
+        }
+        return "https://biotrail.me/" + cardHandle();
+    }
+
+    function trailShareText() {
+        return "Visit " + (profile.name || activePage.title || "my") + " BioTrail page";
+    }
+
     function renderTrailCard() {
         if (!trailCardCanvas) {
             return;
@@ -1037,7 +1052,7 @@
         var ctx = trailCardCanvas.getContext("2d");
         var colors = trailCardColors();
         var handle = cardHandle();
-        var qr = window.bioTrailQR ? window.bioTrailQR.make("https://biotrail.me/" + handle) : null;
+        var qr = window.bioTrailQR ? window.bioTrailQR.make(profileShareUrl()) : null;
 
         ctx.fillStyle = colors.bg;
         ctx.fillRect(0, 0, 900, 540);
@@ -1142,6 +1157,7 @@
     function openTrailCardModal() {
         renderTrailCard();
         document.getElementById("trail-card-message").textContent = "";
+        updateSocialShareLinks();
         trailCardModal.hidden = false;
     }
 
@@ -1170,23 +1186,163 @@
             }
         });
     }
+    function setTrailCardMessage(message, isError) {
+        var messageElement = document.getElementById("trail-card-message");
+        if (!messageElement) {
+            return;
+        }
+        messageElement.textContent = message;
+        messageElement.classList.toggle("is-error", Boolean(isError));
+        messageElement.classList.toggle("is-success", !isError && Boolean(message));
+    }
+
+    function copyText(value) {
+        if (navigator.clipboard && window.isSecureContext) {
+            return navigator.clipboard.writeText(value);
+        }
+
+        return new Promise(function (resolve, reject) {
+            var input = document.createElement("textarea");
+            input.value = value;
+            input.setAttribute("readonly", "");
+            input.style.position = "fixed";
+            input.style.opacity = "0";
+            document.body.appendChild(input);
+            input.select();
+            try {
+                if (!document.execCommand("copy")) {
+                    throw new Error("Copy was not available");
+                }
+                resolve();
+            } catch (error) {
+                reject(error);
+            }
+            document.body.removeChild(input);
+        });
+    }
+
+    function downloadTrailCard() {
+        if (!trailCardCanvas || !window.bioTrailQR) {
+            return false;
+        }
+        try {
+            var link = document.createElement("a");
+            link.download = "biotrail-" + cardHandle() + "-card.png";
+            link.href = trailCardCanvas.toDataURL("image/png");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            toast("Card downloaded.");
+            return true;
+        } catch (error) {
+            toast("Could not download the card.");
+            return false;
+        }
+    }
+
+    function updateSocialShareLinks() {
+        var url = profileShareUrl();
+        var text = trailShareText();
+        var shareUrls = {
+            whatsapp: "https://wa.me/?text=" + encodeURIComponent(text + " " + url),
+            facebook: "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url),
+            x: "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text) + "&url=" + encodeURIComponent(url),
+            linkedin: "https://www.linkedin.com/sharing/share-offsite/?url=" + encodeURIComponent(url)
+        };
+
+        document.querySelectorAll("[data-share-social]").forEach(function (link) {
+            link.href = shareUrls[link.getAttribute("data-share-social")] || url;
+        });
+    }
+
+    var trailLinkCopy = document.getElementById("trail-link-copy");
+    if (trailLinkCopy) {
+        trailLinkCopy.addEventListener("click", function () {
+            copyText(profileShareUrl()).then(function () {
+                setTrailCardMessage("Profile link copied.", false);
+                toast("Link copied.");
+            }).catch(function () {
+                setTrailCardMessage("Could not copy the link. Select and copy it from your browser instead.", true);
+            });
+        });
+    }
+
+    var trailLinkShare = document.getElementById("trail-link-share");
+    if (trailLinkShare) {
+        trailLinkShare.addEventListener("click", function () {
+            if (!navigator.share) {
+                copyText(profileShareUrl()).then(function () {
+                    setTrailCardMessage("Sharing is not available in this browser, so the link was copied instead.", false);
+                }).catch(function () {
+                    setTrailCardMessage("Use one of the social buttons below to share your link.", false);
+                });
+                return;
+            }
+
+            navigator.share({
+                title: (profile.name || "My") + " BioTrail",
+                text: trailShareText(),
+                url: profileShareUrl()
+            }).then(function () {
+                setTrailCardMessage("Link shared.", false);
+            }).catch(function (error) {
+                if (!error || error.name !== "AbortError") {
+                    setTrailCardMessage("The share menu could not be opened.", true);
+                }
+            });
+        });
+    }
+
+    var trailCardShare = document.getElementById("trail-card-share");
+    if (trailCardShare) {
+        trailCardShare.addEventListener("click", function () {
+            if (!trailCardCanvas || !trailCardCanvas.toBlob) {
+                setTrailCardMessage("Image sharing is not available in this browser.", true);
+                return;
+            }
+
+            trailCardCanvas.toBlob(function (blob) {
+                if (!blob) {
+                    setTrailCardMessage("The QR card image could not be prepared.", true);
+                    return;
+                }
+
+                if (typeof File !== "function") {
+                    if (downloadTrailCard()) {
+                        setTrailCardMessage("Your browser cannot share image files directly, so the QR card was downloaded instead.", false);
+                    }
+                    return;
+                }
+
+                var file = new File([blob], "biotrail-" + cardHandle() + "-card.png", { type: "image/png" });
+                var shareData = {
+                    title: (profile.name || "My") + " BioTrail QR card",
+                    text: trailShareText(),
+                    files: [file]
+                };
+
+                if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                    navigator.share(shareData).then(function () {
+                        setTrailCardMessage("QR card shared.", false);
+                    }).catch(function (error) {
+                        if (!error || error.name !== "AbortError") {
+                            setTrailCardMessage("The QR card could not be shared.", true);
+                        }
+                    });
+                    return;
+                }
+
+                if (downloadTrailCard()) {
+                    setTrailCardMessage("Your browser cannot share image files directly, so the QR card was downloaded instead.", false);
+                }
+            }, "image/png");
+        });
+    }
+
     var trailCardDownload = document.getElementById("trail-card-download");
     if (trailCardDownload) {
         trailCardDownload.addEventListener("click", function () {
-            if (!trailCardCanvas || !window.bioTrailQR) {
-                return;
-            }
-            try {
-                var link = document.createElement("a");
-                link.download = "biotrail-" + cardHandle() + "-card.png";
-                link.href = trailCardCanvas.toDataURL("image/png");
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                toast("Card downloaded.");
-            } catch (error) {
-                toast("Could not download the card.");
-            }
+            downloadTrailCard();
         });
     }
 
