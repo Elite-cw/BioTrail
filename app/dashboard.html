@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/style.css?v=61">
+    <link rel="stylesheet" href="../assets/css/style.css?v=62">
     <script src="../assets/js/auth-guard.js?v=1"></script>
 </head>
 <body class="dash-page dash-loading">
@@ -279,7 +279,7 @@
 
     <!-- Add / edit link modal -->
     <div class="dash-modal" id="link-modal" hidden>
-        <div class="dash-modal-card" role="dialog" aria-modal="true" aria-labelledby="link-modal-title">
+        <div class="dash-modal-card is-link-editor" role="dialog" aria-modal="true" aria-labelledby="link-modal-title">
             <div class="dash-modal-heading">
                 <h2 id="link-modal-title">Add new link</h2>
                 <button class="dash-modal-close" id="link-modal-close" type="button" aria-label="Close">
@@ -314,32 +314,59 @@
                         <option value="rocket_launch">Launch</option>
                     </select>
                 </div>
-                <div class="form-field">
-                    <label for="link-group">Group</label>
-                    <input id="link-group" type="text" list="link-group-options" placeholder="General" autocomplete="off">
-                    <datalist id="link-group-options"></datalist>
-                    <span class="form-hint">Group links into tabs on your page (e.g. "Social", "Shop").</span>
-                </div>
-                <div class="dash-modal-grid">
-                    <div class="form-field">
-                        <label for="link-schedule-start">Show from</label>
-                        <input id="link-schedule-start" type="datetime-local" autocomplete="off">
+                <details class="link-optional-settings" id="link-advanced-options">
+                    <summary>
+                        <span>Optional display settings</span>
+                        <small>Group, schedule, countdown and embed</small>
+                    </summary>
+                    <div class="link-optional-settings-body">
+                        <div class="form-field">
+                            <label for="link-group">Group</label>
+                            <input id="link-group" type="text" list="link-group-options" placeholder="General" autocomplete="off">
+                            <datalist id="link-group-options"></datalist>
+                            <span class="form-hint">Group links into tabs on your page, such as Social or Shop.</span>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="link-visibility-mode">When should this link appear?</label>
+                            <select id="link-visibility-mode">
+                                <option value="always">Always visible</option>
+                                <option value="scheduled">Only during a scheduled window</option>
+                            </select>
+                        </div>
+                        <div id="link-schedule-fields" hidden>
+                            <div class="dash-modal-grid">
+                                <div class="form-field">
+                                    <label for="link-schedule-start">Starts</label>
+                                    <input id="link-schedule-start" type="datetime-local" autocomplete="off">
+                                </div>
+                                <div class="form-field">
+                                    <label for="link-schedule-end">Ends</label>
+                                    <input id="link-schedule-end" type="datetime-local" autocomplete="off">
+                                </div>
+                            </div>
+                            <span class="form-hint">The link stays hidden outside this interval. You may set either boundary or both.</span>
+                        </div>
+
+                        <div class="form-field">
+                            <label for="link-countdown-mode">Link label</label>
+                            <select id="link-countdown-mode">
+                                <option value="standard">Normal link</option>
+                                <option value="countdown">Show a countdown</option>
+                            </select>
+                        </div>
+                        <div class="form-field" id="link-countdown-fields" hidden>
+                            <label for="link-countdown">Countdown ends</label>
+                            <input id="link-countdown" type="datetime-local" autocomplete="off">
+                            <span class="form-hint">Visitors will see the remaining time on this link.</span>
+                        </div>
+
+                        <label class="dash-switch-row">
+                            <span>Embed supported content on the page</span>
+                            <span class="dash-toggle" id="link-embed" role="switch" aria-checked="false" tabindex="0"></span>
+                        </label>
                     </div>
-                    <div class="form-field">
-                        <label for="link-schedule-end">Show until</label>
-                        <input id="link-schedule-end" type="datetime-local" autocomplete="off">
-                    </div>
-                </div>
-                <span class="form-hint">Outside these times the link is hidden on your page. Leave both empty for an always-on link.</span>
-                <div class="form-field">
-                    <label for="link-countdown">Countdown to</label>
-                    <input id="link-countdown" type="datetime-local" autocomplete="off">
-                    <span class="form-hint">Shows a live countdown instead of the usual label. Leave empty for a normal link.</span>
-                </div>
-                <label class="dash-switch-row">
-                    <span>Embed content on your page</span>
-                    <span class="dash-toggle" id="link-embed" role="switch" aria-checked="false" tabindex="0"></span>
-                </label>
+                </details>
                 <label class="dash-switch-row">
                     <span>Enabled on your page</span>
                     <span class="dash-toggle is-on" id="link-enabled" role="switch" aria-checked="true" tabindex="0"></span>
@@ -403,7 +430,7 @@
 <script src="../assets/js/qr.js?v=52"></script>
 <script src="../assets/js/account.js?v=46"></script>
 <script src="../assets/js/stats.js?v=51"></script>
-<script src="../assets/js/dashboard.js?v=51"></script>
+<script src="../assets/js/dashboard.js?v=52"></script>
 <script src="../assets/js/session.js?v=49"></script>
 </body>
 </html>

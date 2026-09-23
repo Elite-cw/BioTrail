@@ -429,6 +429,20 @@
 
     var editingIndex = -1;
 
+    function syncLinkOptionalFields() {
+        var visibilityMode = document.getElementById("link-visibility-mode");
+        var countdownMode = document.getElementById("link-countdown-mode");
+        var scheduleFields = document.getElementById("link-schedule-fields");
+        var countdownFields = document.getElementById("link-countdown-fields");
+
+        if (visibilityMode && scheduleFields) {
+            scheduleFields.hidden = visibilityMode.value !== "scheduled";
+        }
+        if (countdownMode && countdownFields) {
+            countdownFields.hidden = countdownMode.value !== "countdown";
+        }
+    }
+
     function openModal(isEdit) {
         var title = document.getElementById("link-title");
         var url = document.getElementById("link-url");
@@ -441,8 +455,12 @@
         var scheduleEnd = document.getElementById("link-schedule-end");
         var countdown = document.getElementById("link-countdown");
         var embed = document.getElementById("link-embed");
+        var visibilityMode = document.getElementById("link-visibility-mode");
+        var countdownMode = document.getElementById("link-countdown-mode");
+        var advancedOptions = document.getElementById("link-advanced-options");
 
         message.textContent = "";
+        message.classList.remove("is-error", "is-success");
         editingIndex = isEdit ? parseInt(editingIndex, 10) : -1;
 
         document.getElementById("link-modal").hidden = false;
@@ -461,8 +479,16 @@
             scheduleStart.value = (schedule && schedule.start) || "";
             scheduleEnd.value = (schedule && schedule.end) || "";
             countdown.value = link.countdown || "";
+            visibilityMode.value = schedule && (schedule.start || schedule.end) ? "scheduled" : "always";
+            countdownMode.value = link.countdown ? "countdown" : "standard";
             embed.classList.toggle("is-on", !!link.embed);
             embed.setAttribute("aria-checked", String(!!link.embed));
+            advancedOptions.open = Boolean(
+                (link.group && link.group !== "General") ||
+                visibilityMode.value === "scheduled" ||
+                countdownMode.value === "countdown" ||
+                link.embed
+            );
         } else {
             heading.textContent = "Add new link";
             title.value = "";
@@ -474,10 +500,14 @@
             scheduleStart.value = "";
             scheduleEnd.value = "";
             countdown.value = "";
+            visibilityMode.value = "always";
+            countdownMode.value = "standard";
             embed.classList.remove("is-on");
             embed.setAttribute("aria-checked", "false");
+            advancedOptions.open = false;
         }
 
+        syncLinkOptionalFields();
         title.focus();
     }
 
@@ -497,6 +527,8 @@
         var scheduleStart = document.getElementById("link-schedule-start").value;
         var scheduleEnd = document.getElementById("link-schedule-end").value;
         var countdown = document.getElementById("link-countdown").value;
+        var visibilityMode = document.getElementById("link-visibility-mode").value;
+        var countdownMode = document.getElementById("link-countdown-mode").value;
         var embed = document.getElementById("link-embed").classList.contains("is-on");
         var validUrl = /^https?:\/\/.+\..+/.test(url);
         var message = document.getElementById("link-message");
@@ -504,6 +536,33 @@
         if (!title || !validUrl) {
             message.textContent = "Add a title and a full URL starting with http:// or https://";
             message.classList.add("is-error");
+            return;
+        }
+
+        if (visibilityMode !== "scheduled") {
+            scheduleStart = "";
+            scheduleEnd = "";
+        }
+        if (countdownMode !== "countdown") {
+            countdown = "";
+        }
+
+        if (visibilityMode === "scheduled" && !scheduleStart && !scheduleEnd) {
+            message.textContent = "Choose a start time, an end time, or both for the scheduled window.";
+            message.classList.add("is-error");
+            document.getElementById("link-schedule-start").focus();
+            return;
+        }
+        if (scheduleStart && scheduleEnd && new Date(scheduleStart).getTime() >= new Date(scheduleEnd).getTime()) {
+            message.textContent = "The scheduled end must be later than the start.";
+            message.classList.add("is-error");
+            document.getElementById("link-schedule-end").focus();
+            return;
+        }
+        if (countdownMode === "countdown" && !countdown) {
+            message.textContent = "Choose when the countdown should end.";
+            message.classList.add("is-error");
+            document.getElementById("link-countdown").focus();
             return;
         }
 
@@ -590,6 +649,15 @@
                 linkEmbedToggle.click();
             }
         });
+    }
+
+    var linkVisibilityMode = document.getElementById("link-visibility-mode");
+    var linkCountdownMode = document.getElementById("link-countdown-mode");
+    if (linkVisibilityMode) {
+        linkVisibilityMode.addEventListener("change", syncLinkOptionalFields);
+    }
+    if (linkCountdownMode) {
+        linkCountdownMode.addEventListener("change", syncLinkOptionalFields);
     }
 
     var linkUrlInput = document.getElementById("link-url");

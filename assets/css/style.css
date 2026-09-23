@@ -6172,6 +6172,7 @@ main > section:not(.hero) {
     display: grid;
     place-items: center;
     padding: 20px;
+    overflow-y: auto;
     background: rgba(24, 33, 27, 0.45);
 }
 
@@ -6181,6 +6182,91 @@ main > section:not(.hero) {
     border-radius: 22px;
     background: var(--paper);
     box-shadow: var(--shadow);
+}
+
+.dash-modal-card.is-link-editor {
+    max-height: calc(100dvh - 40px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+}
+
+.link-optional-settings {
+    margin: 4px 0 14px;
+    border: 1px solid rgba(24, 33, 27, 0.12);
+    border-radius: 16px;
+    background: #f7f8f4;
+    overflow: hidden;
+}
+
+.link-optional-settings summary {
+    position: relative;
+    display: grid;
+    gap: 3px;
+    padding: 15px 48px 15px 16px;
+    cursor: pointer;
+    list-style: none;
+}
+
+.link-optional-settings summary::-webkit-details-marker {
+    display: none;
+}
+
+.link-optional-settings summary::after {
+    content: "+";
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    color: var(--ink);
+    background: var(--paper);
+    border-radius: 50%;
+    font-size: 1.1rem;
+    font-weight: 700;
+    transform: translateY(-50%);
+}
+
+.link-optional-settings[open] summary::after {
+    content: "-";
+}
+
+.link-optional-settings summary span {
+    color: var(--ink);
+    font-size: 0.9rem;
+    font-weight: 800;
+}
+
+.link-optional-settings summary small {
+    color: var(--ink-soft);
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+.link-optional-settings-body {
+    display: grid;
+    gap: 2px;
+    padding: 16px;
+    border-top: 1px solid rgba(24, 33, 27, 0.1);
+    background: var(--paper);
+}
+
+.link-optional-settings-body > .dash-switch-row {
+    margin-bottom: 0;
+}
+
+@media (max-width: 520px) {
+    .dash-modal {
+        align-items: start;
+        padding: 10px;
+    }
+
+    .dash-modal-card.is-link-editor {
+        max-height: calc(100dvh - 20px);
+    }
+
 }
 
 .dash-modal-heading {
@@ -7282,7 +7368,7 @@ html {
     letter-spacing: 0.03em;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 520px) {
     .dash-modal-grid {
         grid-template-columns: 1fr;
     }
