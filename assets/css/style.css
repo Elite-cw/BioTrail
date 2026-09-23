@@ -4108,6 +4108,76 @@ main > section:not(.hero) {
 }
 
 /* Pricing */
+.pricing-account-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 22px 74px;
+    color: var(--paper);
+    background: var(--ink);
+}
+
+.pricing-account-bar[hidden] {
+    display: none;
+}
+
+.pricing-account-avatar {
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    width: 58px;
+    height: 58px;
+    color: var(--ink);
+    background: var(--lime);
+    border: 2px solid rgba(255, 255, 255, 0.72);
+    border-radius: 50%;
+    font-size: 0.92rem;
+    font-weight: 800;
+    overflow: hidden;
+}
+
+.pricing-account-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.pricing-account-details {
+    display: grid;
+    gap: 3px;
+    min-width: 0;
+    margin-right: auto;
+}
+
+.pricing-account-details p {
+    color: var(--lime);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.pricing-account-details strong {
+    overflow: hidden;
+    font-size: 1.08rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pricing-account-details > span {
+    color: #c7cfc8;
+    font-size: 0.78rem;
+}
+
+.pricing-account-bar .button-light {
+    color: var(--ink);
+    background: var(--paper);
+}
+
+.has-active-session .pricing-public-cta {
+    display: none;
+}
+
 .pricing-section {
     padding: 86px 74px;
     background: var(--paper);
@@ -4193,6 +4263,27 @@ main > section:not(.hero) {
     color: var(--paper);
     background: var(--ink);
     border-radius: 34px;
+}
+
+.plan-card.is-current-plan {
+    outline: 3px solid var(--lime);
+    outline-offset: 4px;
+}
+
+.plan-card.is-current-plan .plan-cta .button {
+    cursor: pointer;
+}
+
+@media (max-width: 720px) {
+    .pricing-account-bar {
+        align-items: flex-start;
+        flex-wrap: wrap;
+        padding: 18px 22px;
+    }
+
+    .pricing-account-bar .button {
+        width: 100%;
+    }
 }
 
 .plan-badge {

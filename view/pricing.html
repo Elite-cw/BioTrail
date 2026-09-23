@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/style.css?v=58">
+    <link rel="stylesheet" href="../assets/css/style.css?v=60">
 </head>
 <body>
     <div class="home-shell">
@@ -116,12 +116,23 @@
 
         <!-- Pricing page content -->
         <main>
+            <!-- Shown only when an active account opens pricing from the dashboard -->
+            <section class="pricing-account-bar" data-account-pricing hidden aria-label="Signed-in account">
+                <span class="pricing-account-avatar" data-pricing-avatar aria-hidden="true">BT</span>
+                <div class="pricing-account-details">
+                    <p>Upgrade your BioTrail</p>
+                    <strong data-pricing-name>My account</strong>
+                    <span><b data-pricing-handle>@mytrail</b> &middot; <span data-pricing-plan>Free plan</span></span>
+                </div>
+                <a class="button button-light" href="../app/pages.html" data-pricing-dashboard>Back to dashboard</a>
+            </section>
+
             <!-- Page hero -->
             <section class="page-hero">
                 <div class="page-hero-inner">
                     <p class="eyebrow">Pricing</p>
-                    <h1>Simple plans for every trail you build.</h1>
-                    <p>Start free and keep your page as long as you need. Upgrade for more trails, your own store and deeper audience insights - no surprises.</p>
+                    <h1 data-pricing-heading>Simple plans for every trail you build.</h1>
+                    <p data-pricing-copy>Start free and keep your page as long as you need. Upgrade for more trails, your own store and deeper audience insights - no surprises.</p>
                     <div class="page-actions">
                         <a class="button button-dark" href="signup.html">Start for free</a>
                         <a class="button button-light" href="products.html">See what's included</a>
@@ -140,7 +151,7 @@
                 <p class="billing-note" data-billing-note>Billed annually. Save up to 30% compared with monthly billing.</p>
 
                 <div class="pricing-grid">
-                    <article class="plan-card">
+                    <article class="plan-card" data-plan-card="free">
                         <h3 class="plan-name">Free</h3>
                         <div class="plan-price-row">
                             <span class="plan-price" data-price data-monthly="$0" data-annual="$0">$0</span>
@@ -159,7 +170,7 @@
                         </div>
                     </article>
 
-                    <article class="plan-card is-featured">
+                    <article class="plan-card is-featured" data-plan-card="starter">
                         <span class="plan-badge">Most popular</span>
                         <h3 class="plan-name">Starter</h3>
                         <div class="plan-price-row">
@@ -180,7 +191,7 @@
                         </div>
                     </article>
 
-                    <article class="plan-card">
+                    <article class="plan-card" data-plan-card="pro">
                         <h3 class="plan-name">Pro</h3>
                         <div class="plan-price-row">
                             <span class="plan-price" data-price data-monthly="$9" data-annual="$6">$6</span>
@@ -234,7 +245,7 @@
             </section>
 
             <!-- Closing call-to-action -->
-            <section class="closing-section">
+            <section class="closing-section pricing-public-cta">
                 <div>
                     <p class="section-kicker">Your next step starts here</p>
                     <h2>Start your corner of the internet today.</h2>
@@ -294,7 +305,7 @@
 
     <!-- Subpage interactions -->
     <script src="../assets/js/icon-paths.js"></script>
-    <script src="../assets/js/pages.js?v=48"></script>
-<script src="../assets/js/session.js?v=47"></script>
+    <script src="../assets/js/pages.js?v=49"></script>
+<script src="../assets/js/session.js?v=49"></script>
 </body>
 </html>

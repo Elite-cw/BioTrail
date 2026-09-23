@@ -368,6 +368,11 @@
                 var billing = activeBilling ? activeBilling.getAttribute("data-billing") : "annual";
                 var query = "?plan=" + encodeURIComponent(plan) + "&billing=" + encodeURIComponent(billing);
 
+                if (button.getAttribute("data-current-plan") === "true") {
+                    window.location.href = "../app/pages.html";
+                    return;
+                }
+
                 if (plan === "free") {
                     window.location.href = isLoggedIn() ? "../app/pages.html" : "start.html" + query;
                     return;
