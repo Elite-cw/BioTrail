@@ -60,8 +60,85 @@
 
     var links = activePage.links;
     var theme = activePage.theme;
+    var undoStack = [];
+    var undoButton = document.getElementById("dashboard-undo");
+    var settingsUndoCaptured = false;
 
     stashSet("biotrail_profile", profile);
+
+    function cloneState(value) {
+        return JSON.parse(JSON.stringify(value));
+    }
+
+    function captureDashboardState() {
+        return {
+            profile: cloneState(profile),
+            pages: cloneState(pages),
+            activePageId: activePage.id
+        };
+    }
+
+    function updateUndoButton() {
+        var latest = undoStack[undoStack.length - 1];
+        undoButton.disabled = !latest;
+        undoButton.title = latest ? "Undo " + latest.label : "Nothing to undo yet";
+        undoButton.setAttribute("aria-label", latest ? "Undo " + latest.label : "Nothing to undo yet");
+    }
+
+    function pushUndo(label) {
+        var snapshot = captureDashboardState();
+        var signature = JSON.stringify(snapshot);
+        var latest = undoStack[undoStack.length - 1];
+
+        if (latest && latest.signature === signature) {
+            return;
+        }
+
+        undoStack.push({ label: label, state: snapshot, signature: signature });
+        if (undoStack.length > 15) {
+            undoStack.shift();
+        }
+        updateUndoButton();
+    }
+
+    function restoreDashboardState(snapshot) {
+        profile = cloneState(snapshot.profile);
+        pages = cloneState(snapshot.pages);
+        activePageId = snapshot.activePageId;
+        activePage = pages.filter(function (page) { return page.id === activePageId; })[0] || pages[0];
+        links = activePage.links || [];
+        theme = activePage.theme || {};
+        activePage.links = links;
+        activePage.theme = theme;
+
+        stashSet("biotrail_profile", profile);
+        account.savePages(pages);
+        document.querySelectorAll(".dash-swatches button.is-selected").forEach(function (button) {
+            button.classList.remove("is-selected");
+        });
+        applyThemeSelections();
+        populateProfileForm();
+        renderProfileCard();
+        renderPageMeta();
+        renderLinks(document.getElementById("links-search").value);
+        renderAnalytics();
+        refreshGroupOptions();
+        settingsUndoCaptured = false;
+        syncPreview();
+    }
+
+    function undoLastChange() {
+        var entry = undoStack.pop();
+        if (!entry) {
+            return;
+        }
+        restoreDashboardState(entry.state);
+        updateUndoButton();
+        toast("Undid " + entry.label + ".");
+    }
+
+    undoButton.addEventListener("click", undoLastChange);
+    updateUndoButton();
 
     function persistPage() {
         account.savePages(pages);
@@ -458,10 +535,12 @@
         var visibilityMode = document.getElementById("link-visibility-mode");
         var countdownMode = document.getElementById("link-countdown-mode");
         var advancedOptions = document.getElementById("link-advanced-options");
+        var undoEditsButton = document.getElementById("link-undo-edits");
 
         message.textContent = "";
         message.classList.remove("is-error", "is-success");
         editingIndex = isEdit ? parseInt(editingIndex, 10) : -1;
+        undoEditsButton.hidden = !isEdit;
 
         document.getElementById("link-modal").hidden = false;
         refreshGroupOptions();
@@ -579,6 +658,7 @@
             embed: embed
         };
 
+        pushUndo(editingIndex >= 0 ? "link edit" : "new link");
         if (editingIndex >= 0) {
             links[editingIndex] = nextLink;
         } else {
@@ -616,6 +696,13 @@
     document.getElementById("add-link-row").addEventListener("click", function () { editingIndex = -1; openModal(false); });
 
     document.getElementById("link-form").addEventListener("submit", saveLinkFromModal);
+    document.getElementById("link-undo-edits").addEventListener("click", function () {
+        if (editingIndex >= 0) {
+            openModal(true);
+            document.getElementById("link-message").textContent = "Your unsaved edits were reset.";
+            document.getElementById("link-message").classList.add("is-success");
+        }
+    });
     document.getElementById("link-cancel").addEventListener("click", closeModal);
     document.getElementById("link-modal-close").addEventListener("click", closeModal);
 
@@ -732,6 +819,7 @@
             var direction = move.getAttribute("data-move");
             var swapTo = direction === "up" ? index - 1 : index + 1;
             if (swapTo >= 0 && swapTo < links.length) {
+                pushUndo("link order change");
                 var temp = links[index];
                 links[index] = links[swapTo];
                 links[swapTo] = temp;
@@ -743,6 +831,7 @@
 
         var toggle = event.target.closest(".dash-toggle");
         if (toggle) {
+            pushUndo("link visibility change");
             links[index].enabled = !links[index].enabled;
             saveLinks();
             renderLinks(document.getElementById("links-search").value);
@@ -767,11 +856,13 @@
                 editingIndex = index;
                 openModal(true);
             } else if (kind === "duplicate") {
+                pushUndo("link duplication");
                 var copy = Object.assign({}, links[index], { enabled: true, title: links[index].title + " (copy)" });
                 links.push(copy);
                 saveLinks("Link duplicated.");
                 renderLinks(document.getElementById("links-search").value);
             } else if (kind === "delete") {
+                pushUndo("link deletion");
                 links.splice(index, 1);
                 saveLinks("Link deleted.");
                 renderLinks(document.getElementById("links-search").value);
@@ -799,6 +890,7 @@
         var group = document.getElementById(groupId);
         group.querySelectorAll("button").forEach(function (button) {
             button.addEventListener("click", function () {
+                pushUndo("appearance change");
                 group.querySelectorAll("button").forEach(function (item) { item.classList.remove("is-selected"); });
                 button.classList.add("is-selected");
                 if (groupId === "accent-swatches") {
@@ -864,6 +956,7 @@
                     if (!imported || typeof imported !== "object") {
                         throw new Error("bad theme");
                     }
+                    pushUndo("theme import");
                     if (imported.accent !== undefined) {
                         theme.accent = sanitizeThemeValue(imported.accent, THEME_ACCENTS, theme.accent);
                     }
@@ -913,8 +1006,16 @@
         document.getElementById("settings-url-hint").textContent = "biotrail.me/" + profile.username;
     }
 
+    function ensureSettingsUndo() {
+        if (!settingsUndoCaptured) {
+            pushUndo("profile and page changes");
+            settingsUndoCaptured = true;
+        }
+    }
+
     ["settings-name", "settings-username", "settings-role", "settings-bio"].forEach(function (id) {
         document.getElementById(id).addEventListener("input", function () {
+            ensureSettingsUndo();
             document.getElementById("settings-message").textContent = "";
             document.getElementById("settings-message").className = "auth-message";
             readProfileFromForm();
@@ -943,6 +1044,7 @@
             }
             var reader = new FileReader();
             reader.onload = function () {
+                pushUndo("profile picture change");
                 profile.avatar = String(reader.result || "");
                 renderProfileCard();
                 persistEditorState();
@@ -955,6 +1057,7 @@
                 if (!profile.avatar) {
                     return;
                 }
+                pushUndo("profile picture removal");
                 profile.avatar = null;
                 avatarUpload.value = "";
                 renderProfileCard();
@@ -966,6 +1069,7 @@
 
     ["settings-page-name", "settings-page-handle"].forEach(function (id) {
         document.getElementById(id).addEventListener("input", function () {
+            ensureSettingsUndo();
             var name = fieldValue("settings-page-name");
             var handle = fieldValue("settings-page-handle").toLowerCase();
             activePage.title = name || activePage.title;
@@ -1028,6 +1132,7 @@
         renderPageMeta();
         message.textContent = "Saved! Your page/profile have been updated.";
         message.classList.add("is-success");
+        settingsUndoCaptured = false;
         toast("Saved.");
     });
 

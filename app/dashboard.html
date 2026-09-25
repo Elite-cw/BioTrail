@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/style.css?v=66">
+    <link rel="stylesheet" href="../assets/css/style.css?v=67">
     <script src="../assets/js/auth-guard.js?v=1"></script>
 </head>
 <body class="dash-page dash-loading">
@@ -59,9 +59,15 @@
 
         <main class="dash-main">
             <header class="dash-topbar">
-                <div class="dash-title">
-                    <p class="dash-kicker">Dashboard</p>
-                    <h1>Links</h1>
+                <div class="dash-heading">
+                    <div class="dash-title">
+                        <p class="dash-kicker">Dashboard</p>
+                        <h1>Links</h1>
+                    </div>
+                    <button class="dash-undo-button" id="dashboard-undo" type="button" disabled aria-label="Undo last dashboard change">
+                        <svg class="material-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M280-200v-80h284q63 0 109.5-40T720-420q0-60-46.5-100T564-560H312l104 104-56 56-200-200 200-200 56 56-104 104h252q97 0 166.5 63T800-420q0 94-69.5 157T564-200H280Z"/></svg>
+                        <span>Undo</span>
+                    </button>
                 </div>
                 <div class="dash-top-actions">
                     <label class="dash-search">
@@ -379,6 +385,7 @@
                     <span class="dash-toggle is-on" id="link-enabled" role="switch" aria-checked="true" tabindex="0"></span>
                 </label>
                 <div class="dash-modal-actions">
+                    <button class="button button-light dash-link-reset" type="button" id="link-undo-edits" hidden>Undo edits</button>
                     <button class="button button-light" type="button" id="link-cancel">Cancel</button>
                     <button class="button button-dark" type="submit">Save link</button>
                 </div>
@@ -437,7 +444,7 @@
 <script src="../assets/js/qr.js?v=52"></script>
 <script src="../assets/js/account.js?v=46"></script>
 <script src="../assets/js/stats.js?v=51"></script>
-<script src="../assets/js/dashboard.js?v=52"></script>
+<script src="../assets/js/dashboard.js?v=53"></script>
 <script src="../assets/js/session.js?v=50"></script>
 </body>
 </html>

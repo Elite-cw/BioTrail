@@ -5435,6 +5435,49 @@ main > section:not(.hero) {
     margin-bottom: 26px;
 }
 
+.dash-heading {
+    display: flex;
+    align-items: flex-end;
+    gap: 14px;
+    min-width: 0;
+}
+
+.dash-undo-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 38px;
+    padding: 0 13px;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid rgba(24, 33, 27, 0.16);
+    border-radius: 999px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.76rem;
+    font-weight: 800;
+    box-shadow: 0 5px 16px rgba(24, 33, 27, 0.07);
+    transition: border-color 150ms ease, transform 150ms ease, opacity 150ms ease;
+}
+
+.dash-undo-button .material-icon {
+    width: 18px;
+    height: 18px;
+}
+
+.dash-undo-button:not(:disabled):hover,
+.dash-undo-button:not(:disabled):focus-visible {
+    border-color: var(--ink);
+    outline: none;
+    transform: translateY(-1px);
+}
+
+.dash-undo-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.42;
+    box-shadow: none;
+}
+
 .dash-kicker {
     margin: 0 0 2px;
     color: var(--ink-soft);
@@ -6547,6 +6590,14 @@ main > section:not(.hero) {
     justify-content: flex-end;
     gap: 10px;
     margin-top: 4px;
+}
+
+.dash-link-reset {
+    margin-right: auto;
+}
+
+.dash-link-reset[hidden] {
+    display: none;
 }
 
 /* Delete page confirmation */
