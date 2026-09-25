@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/style.css?v=62">
+    <link rel="stylesheet" href="../assets/css/style.css?v=63">
     <script src="../assets/js/auth-guard.js?v=1"></script>
 </head>
 <body class="dash-page dash-loading">
@@ -327,14 +327,19 @@
                             <span class="form-hint">Group links into tabs on your page, such as Social or Shop.</span>
                         </div>
 
-                        <div class="form-field">
+                        <div class="form-field link-setting-card">
                             <label for="link-visibility-mode">When should this link appear?</label>
+                            <span class="link-setting-copy">Keep it visible all the time or publish it only within a chosen window.</span>
                             <select id="link-visibility-mode">
                                 <option value="always">Always visible</option>
-                                <option value="scheduled">Only during a scheduled window</option>
+                                <option value="scheduled">Use a scheduled window</option>
                             </select>
                         </div>
-                        <div id="link-schedule-fields" hidden>
+                        <div class="link-reveal-panel" id="link-schedule-fields" hidden>
+                            <div class="link-reveal-heading">
+                                <strong>Visibility window</strong>
+                                <span>The link will automatically appear and disappear.</span>
+                            </div>
                             <div class="dash-modal-grid">
                                 <div class="form-field">
                                     <label for="link-schedule-start">Starts</label>
@@ -348,21 +353,25 @@
                             <span class="form-hint">The link stays hidden outside this interval. You may set either boundary or both.</span>
                         </div>
 
-                        <div class="form-field">
-                            <label for="link-countdown-mode">Link label</label>
+                        <div class="form-field link-setting-card">
+                            <label for="link-countdown-mode">Display style</label>
+                            <span class="link-setting-copy">Use a regular link or build anticipation with a live timer.</span>
                             <select id="link-countdown-mode">
-                                <option value="standard">Normal link</option>
-                                <option value="countdown">Show a countdown</option>
+                                <option value="standard">Standard link</option>
+                                <option value="countdown">Countdown timer</option>
                             </select>
                         </div>
-                        <div class="form-field" id="link-countdown-fields" hidden>
+                        <div class="form-field link-reveal-panel" id="link-countdown-fields" hidden>
                             <label for="link-countdown">Countdown ends</label>
                             <input id="link-countdown" type="datetime-local" autocomplete="off">
                             <span class="form-hint">Visitors will see the remaining time on this link.</span>
                         </div>
 
-                        <label class="dash-switch-row">
-                            <span>Embed supported content on the page</span>
+                        <label class="dash-switch-row link-embed-setting">
+                            <span class="link-switch-copy">
+                                <strong>Embed supported content</strong>
+                                <small>Show a preview directly on your BioTrail page.</small>
+                            </span>
                             <span class="dash-toggle" id="link-embed" role="switch" aria-checked="false" tabindex="0"></span>
                         </label>
                     </div>

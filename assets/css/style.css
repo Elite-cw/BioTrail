@@ -6247,10 +6247,97 @@ main > section:not(.hero) {
 
 .link-optional-settings-body {
     display: grid;
-    gap: 2px;
+    gap: 12px;
     padding: 16px;
     border-top: 1px solid rgba(24, 33, 27, 0.1);
     background: var(--paper);
+}
+
+.link-setting-card {
+    gap: 5px;
+    margin: 0;
+    padding: 14px;
+    border: 1px solid rgba(24, 33, 27, 0.09);
+    border-radius: 14px;
+    background: #f7f8f4;
+}
+
+.link-setting-card label {
+    font-size: 0.82rem;
+}
+
+.link-setting-copy {
+    margin-bottom: 6px;
+    color: var(--ink-soft);
+    font-size: 0.71rem;
+    line-height: 1.45;
+}
+
+.link-setting-card select {
+    min-height: 50px;
+    background-color: var(--paper);
+}
+
+.link-reveal-panel {
+    display: grid;
+    gap: 12px;
+    margin: -2px 0 2px;
+    padding: 14px;
+    border: 1px solid rgba(124, 66, 245, 0.2);
+    border-radius: 14px;
+    background: rgba(124, 66, 245, 0.055);
+}
+
+#link-schedule-fields[hidden],
+#link-countdown-fields[hidden] {
+    display: none !important;
+}
+
+.link-reveal-panel.form-field {
+    margin-bottom: 2px;
+}
+
+.link-reveal-heading {
+    display: grid;
+    gap: 2px;
+}
+
+.link-reveal-heading strong {
+    font-size: 0.8rem;
+}
+
+.link-reveal-heading span {
+    color: var(--ink-soft);
+    font-size: 0.7rem;
+    line-height: 1.45;
+}
+
+.link-reveal-panel .dash-modal-grid .form-field {
+    margin-bottom: 0;
+}
+
+.link-embed-setting {
+    margin: 0;
+    padding: 14px;
+    border: 1px solid rgba(24, 33, 27, 0.09);
+    background: #f1f3ee;
+}
+
+.link-switch-copy {
+    display: grid;
+    gap: 3px;
+}
+
+.link-switch-copy strong {
+    color: var(--ink);
+    font-size: 0.82rem;
+}
+
+.link-switch-copy small {
+    color: var(--ink-soft);
+    font-size: 0.69rem;
+    font-weight: 600;
+    line-height: 1.4;
 }
 
 .link-optional-settings-body > .dash-switch-row {
@@ -6265,6 +6352,10 @@ main > section:not(.hero) {
 
     .dash-modal-card.is-link-editor {
         max-height: calc(100dvh - 20px);
+    }
+
+    .link-optional-settings-body {
+        padding: 12px;
     }
 
 }
