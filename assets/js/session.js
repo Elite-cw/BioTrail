@@ -1,6 +1,60 @@
 (function () {
     "use strict";
 
+    function setupBackToTop() {
+        if (!document.body || document.querySelector(".back-to-top")) {
+            return;
+        }
+
+        var button = document.createElement("button");
+        button.className = "back-to-top";
+        button.type = "button";
+        button.hidden = true;
+        button.setAttribute("aria-label", "Back to top");
+        button.setAttribute("title", "Back to top");
+        button.innerHTML =
+            '<svg class="back-to-top-icon" viewBox="0 -960 960 960" aria-hidden="true" focusable="false">' +
+            '<path d="m240-400 240-240 240 240-56 56-144-144v368h-80v-368L296-344l-56-56Z"/></svg>' +
+            '<span>Back to top</span>';
+        document.body.appendChild(button);
+
+        var ticking = false;
+
+        function updateButton() {
+            var pageHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+            var isScrollable = pageHeight > window.innerHeight + 120;
+            var shouldShow = isScrollable && window.scrollY > Math.max(320, window.innerHeight * 0.45);
+
+            button.hidden = !isScrollable;
+            button.classList.toggle("is-visible", shouldShow);
+            ticking = false;
+        }
+
+        function requestUpdate() {
+            if (!ticking) {
+                ticking = true;
+                window.requestAnimationFrame(updateButton);
+            }
+        }
+
+        button.addEventListener("click", function () {
+            var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+        });
+
+        window.addEventListener("scroll", requestUpdate, { passive: true });
+        window.addEventListener("resize", requestUpdate);
+        window.addEventListener("load", requestUpdate);
+
+        if (typeof ResizeObserver !== "undefined") {
+            new ResizeObserver(requestUpdate).observe(document.body);
+        }
+
+        updateButton();
+    }
+
+    setupBackToTop();
+
     function isLoggedIn() {
         try {
             var session = localStorage.getItem("biotrail_session");
