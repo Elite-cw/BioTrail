@@ -5034,8 +5034,11 @@ main > section:not(.hero) {
     border: 1px solid rgba(24, 33, 27, 0.14);
     background: var(--paper);
     color: var(--ink-soft);
+    cursor: copy;
+    font-family: inherit;
     font-size: 0.84rem;
     font-weight: 700;
+    text-align: left;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -5074,6 +5077,12 @@ main > section:not(.hero) {
 .live-url:focus-visible {
     color: var(--ink);
     border-color: var(--ink);
+}
+
+.live-url.is-copied {
+    color: var(--ink);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 24%, transparent);
 }
 
 .live-edit {

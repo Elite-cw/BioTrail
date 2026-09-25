@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/style.css?v=66">
+    <link rel="stylesheet" href="../assets/css/style.css?v=68">
 </head>
 <body class="live-page live-loading">
     <!-- Live link page for a created BioTrail profile -->
@@ -18,7 +18,7 @@
                 BioTrail<svg class="material-icon brand-mark" viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M680-80q-50 0-85-35t-35-85q0-6 3-28L282-392q-16 15-37 23.5t-45 8.5q-50 0-85-35t-35-85q0-50 35-85t85-35q24 0 45 8.5t37 23.5l281-164q-2-7-2.5-13.5T560-760q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35q-24 0-45-8.5T598-672L317-508q2 7 2.5 13.5t.5 14.5q0 8-.5 14.5T317-452l281 164q16-15 37-23.5t45-8.5q50 0 85 35t35 85q0 50-35 85t-85 35Zm0-80q17 0 28.5-11.5T720-200q0-17-11.5-28.5T680-240q-17 0-28.5 11.5T640-200q0 17 11.5 28.5T680-160ZM200-440q17 0 28.5-11.5T240-480q0-17-11.5-28.5T200-520q-17 0-28.5 11.5T160-480q0 17 11.5 28.5T200-440Zm508.5-291.5Q720-743 720-760t-11.5-28.5Q697-800 680-800t-28.5 11.5Q640-777 640-760t11.5 28.5Q663-720 680-720t28.5-11.5ZM680-200ZM200-480Zm480-280Z"/></svg>
             </a>
             <span class="live-url-wrap">
-                <a class="live-url" href="#" id="live-url" aria-label="Your BioTrail address"></a>
+                <button class="live-url" type="button" id="live-url" aria-label="Copy your BioTrail address"></button>
                 <span class="live-url-tooltip" id="live-url-tooltip" role="tooltip"></span>
             </span>
             <a class="live-edit" href="#" target="_top">Edit your page</a>
@@ -94,6 +94,42 @@
                 } catch (error) {
                     return "#";
                 }
+            }
+
+            function copyText(value) {
+                if (navigator.clipboard && window.isSecureContext) {
+                    return navigator.clipboard.writeText(value);
+                }
+
+                return new Promise(function (resolve, reject) {
+                    var input = document.createElement("textarea");
+                    input.value = value;
+                    input.setAttribute("readonly", "");
+                    input.style.position = "fixed";
+                    input.style.opacity = "0";
+                    document.body.appendChild(input);
+                    input.select();
+                    try {
+                        if (!document.execCommand("copy")) {
+                            throw new Error("Copy was not available");
+                        }
+                        resolve();
+                    } catch (error) {
+                        reject(error);
+                    }
+                    document.body.removeChild(input);
+                });
+            }
+
+            function profileCopyUrl(pageId, username) {
+                if (/^https?:$/.test(window.location.protocol)) {
+                    var shareUrl = new URL("profile.html", window.location.href);
+                    shareUrl.search = "";
+                    shareUrl.hash = "";
+                    shareUrl.searchParams.set(pageId ? "page" : "username", pageId || username);
+                    return shareUrl.href;
+                }
+                return "https://biotrail.me/" + username;
             }
 
             // --- F9: visitor greeting from ref/utm params ----------------------
@@ -272,12 +308,11 @@
                 if (url) {
                     var fullUrl = "biotrail.me/" + username;
                     url.textContent = fullUrl;
-                    url.title = fullUrl;
-                    url.setAttribute("aria-label", "Your BioTrail address: " + fullUrl);
+                    url.title = "Copy " + fullUrl;
+                    url.dataset.copyUrl = profileCopyUrl(pageId, username);
+                    url.dataset.displayUrl = fullUrl;
+                    url.setAttribute("aria-label", "Copy BioTrail address: " + fullUrl);
                     url.setAttribute("aria-describedby", "live-url-tooltip");
-                    url.href = pageId
-                        ? "profile.html?page=" + encodeURIComponent(pageId)
-                        : "profile.html?username=" + encodeURIComponent(username);
                 }
                 if (urlTooltip) {
                     urlTooltip.textContent = fullUrl;
@@ -348,6 +383,37 @@ document.title = name + " on BioTrail";
             var currentPageId = null;
             var viewRecorded = false;
             var selectedGroup = "General";
+            var copyFeedbackTimer = null;
+
+            var liveUrlButton = document.getElementById("live-url");
+            if (liveUrlButton) {
+                liveUrlButton.addEventListener("click", function () {
+                    var tooltip = document.getElementById("live-url-tooltip");
+                    var displayUrl = liveUrlButton.dataset.displayUrl || liveUrlButton.textContent;
+                    window.clearTimeout(copyFeedbackTimer);
+                    copyText(liveUrlButton.dataset.copyUrl || ("https://" + displayUrl)).then(function () {
+                        liveUrlButton.classList.add("is-copied");
+                        if (tooltip) {
+                            tooltip.textContent = "Link copied!";
+                        }
+                        copyFeedbackTimer = window.setTimeout(function () {
+                            liveUrlButton.classList.remove("is-copied");
+                            if (tooltip) {
+                                tooltip.textContent = displayUrl;
+                            }
+                        }, 1600);
+                    }).catch(function () {
+                        if (tooltip) {
+                            tooltip.textContent = "Could not copy link";
+                        }
+                        copyFeedbackTimer = window.setTimeout(function () {
+                            if (tooltip) {
+                                tooltip.textContent = displayUrl;
+                            }
+                        }, 1600);
+                    });
+                });
+            }
 
             // --- F3: analytics wiring (view + click tracking) ---------------------
             var liveLinksEl = document.getElementById("live-links");
