@@ -4398,6 +4398,47 @@ main > section:not(.hero) {
     margin-bottom: 40px;
 }
 
+.auth-card-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 40px;
+}
+
+.auth-card .auth-card-nav .brand {
+    margin-bottom: 0;
+}
+
+.auth-back {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 7px;
+    min-height: 40px;
+    padding: 0 14px;
+    color: var(--ink);
+    background: #f1f3ee;
+    border: 1px solid #dfe3dc;
+    border-radius: 999px;
+    font-size: 0.76rem;
+    font-weight: 800;
+    transition: border-color 160ms ease, transform 160ms ease, background 160ms ease;
+}
+
+.auth-back .material-icon {
+    width: 18px;
+    height: 18px;
+}
+
+.auth-back:hover,
+.auth-back:focus-visible {
+    background: var(--paper);
+    border-color: var(--ink);
+    outline: none;
+    transform: translateY(-1px);
+}
+
 .auth-card h1 {
     margin-bottom: 10px;
 }
